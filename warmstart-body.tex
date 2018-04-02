@@ -145,8 +145,9 @@ W_0 = Q,\ \mathcal{V}=\{\},\ \mathcal{K}=\{\}\\
 while\ W_{k+1}\not= W_k:\\
 \ \ \ \ Z_{k+1}^i = Z\cup (B\cap R^i\cap \text{Pre}_{\exists, \forall}^{T,U}(W_k))\\
 \ \ \ \ [X^i, \mathcal{C}^i]= \text{Win}_{\exists,\forall}^{T,U} (B\mathbf{\ U\ }Z_{k+1}^i), \forall i \in I\\
-\ \ \ \ W_{k+1} = \bigcap_{i\in I} X^i,\ \mathcal{K}(i) = \mathcal{C}^i, \forall i\in I\\
-\mathcal{V}(1)=W_k,\ \mathcal{V}(i+1) = B\cap R^i, \forall i\in I\\
+\ \ \ \ W_{k+1} = \bigcap_{i\in I} X^i\\
+\mathcal{V}(1)=W_k,\ \mathcal{V}(i+1) = B\cap R^i,\ 
+\mathcal{K}(i) = \mathcal{C}^i, \forall i\in I\\
 W_{\infty} = W_k,\ \mathcal{C} = (\mathcal{V},\mathcal{K},x)
 \end{cases}\label{win_interm}
 \end{align}
@@ -609,10 +610,10 @@ Now imagine that some holes on the ground are detected, as shown in Figure \ref{
 \end{table}
 
 \begin{table}
-	\caption{Comparison of re-synthesis time and patching time under random action profiles. The first row is number of unavailable actions. For each number, choose 10 random sets of unavailable actions. The last two rows are the average time used for re-synthesizing and patching.}
+	\caption{Comparison of re-synthesis time and patching time under random action profiles. The first row is number of unavailable actions ($ \sharp U_d $). For each number, choose 10 random sets of unavailable actions. The last two rows are the average time used for re-synthesizing and patching.}
 	\begin{tabular}{ccccccc}
 		\hline 
-		$ \exists U_d $ & $ 1 $ &$ 5 $ & $ 10 $ & $ 15 $ & $ 20 $ & $ 25 $ \\ 
+		$ \sharp U_d $ & $ 1 $ &$ 5 $ & $ 10 $ & $ 15 $ & $ 20 $ & $ 25 $ \\ 
 		\hline 
 		$ t_{syn}(s) $ & $ 289.7 $ & $ 281.1 $ & $ 292.8 $ & $ 358.6 $ &  $ 367.1 $ & $ 618.1 $ \\
 		$ t_{pat}(s)$ & $ 3.2 $ & $ 4.1 $ & $ 5.1 $ & $ 7.2 $ & $ 8.3 $ & $ 17.4 $ \\ 
