@@ -1,0 +1,218 @@
+%%% -*-BibTeX-*-
+%%% Do NOT edit. File created by BibTeX with style
+%%% ACM-Reference-Format-Journals [18-Jan-2012].
+
+\begin{thebibliography}{13}
+
+%%% ====================================================================
+%%% NOTE TO THE USER: you can override these defaults by providing
+%%% customized versions of any of these macros before the \bibliography
+%%% command.  Each of them MUST provide its own final punctuation,
+%%% except for \shownote{}, \showDOI{}, and \showURL{}.  The latter two
+%%% do not use final punctuation, in order to avoid confusing it with
+%%% the Web address.
+%%%
+%%% To suppress output of a particular field, define its macro to expand
+%%% to an empty string, or better, \unskip, like this:
+%%%
+%%% \newcommand{\showDOI}[1]{\unskip}   % LaTeX syntax
+%%%
+%%% \def \showDOI #1{\unskip}           % plain TeX syntax
+%%%
+%%% ====================================================================
+
+\ifx \showCODEN    \undefined \def \showCODEN     #1{\unskip}     \fi
+\ifx \showDOI      \undefined \def \showDOI       #1{#1}\fi
+\ifx \showISBNx    \undefined \def \showISBNx     #1{\unskip}     \fi
+\ifx \showISBNxiii \undefined \def \showISBNxiii  #1{\unskip}     \fi
+\ifx \showISSN     \undefined \def \showISSN      #1{\unskip}     \fi
+\ifx \showLCCN     \undefined \def \showLCCN      #1{\unskip}     \fi
+\ifx \shownote     \undefined \def \shownote      #1{#1}          \fi
+\ifx \showarticletitle \undefined \def \showarticletitle #1{#1}   \fi
+\ifx \showURL      \undefined \def \showURL       {\relax}        \fi
+% The following commands are used for tagged output and should be
+% invisible to TeX
+\providecommand\bibfield[2]{#2}
+\providecommand\bibinfo[2]{#2}
+\providecommand\natexlab[1]{#1}
+\providecommand\showeprint[2][]{arXiv:#2}
+
+\bibitem[\protect\citeauthoryear{Bloem, Jobstmann, Piterman, Pnueli, and
+  Saʼar}{Bloem et~al\mbox{.}}{2012}]%
+        {bloem2012synthesis}
+\bibfield{author}{\bibinfo{person}{Roderick Bloem}, \bibinfo{person}{Barbara
+  Jobstmann}, \bibinfo{person}{Nir Piterman}, \bibinfo{person}{Amir Pnueli},
+  {and} \bibinfo{person}{Yaniv Saʼar}.} \bibinfo{year}{2012}\natexlab{}.
+\newblock \showarticletitle{Synthesis of reactive (1) designs}.
+\newblock \bibinfo{journal}{\emph{J. Comput. System Sci.}}
+  \bibinfo{volume}{78}, \bibinfo{number}{3} (\bibinfo{year}{2012}),
+  \bibinfo{pages}{911--938}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Ehlers}{Ehlers}{2011}]%
+        {ehlers2011generalized}
+\bibfield{author}{\bibinfo{person}{R{\"u}diger Ehlers}.}
+  \bibinfo{year}{2011}\natexlab{}.
+\newblock \showarticletitle{Generalized Rabin (1) synthesis with applications
+  to robust system synthesis}. In \bibinfo{booktitle}{\emph{NASA Formal Methods
+  Symposium}}. Springer, \bibinfo{pages}{101--115}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Ehlers, Lafortune, Tripakis, and Vardi}{Ehlers
+  et~al\mbox{.}}{2017}]%
+        {ehlers2017supervisory}
+\bibfield{author}{\bibinfo{person}{R{\"u}diger Ehlers},
+  \bibinfo{person}{St{\'e}phane Lafortune}, \bibinfo{person}{Stavros Tripakis},
+  {and} \bibinfo{person}{Moshe~Y Vardi}.} \bibinfo{year}{2017}\natexlab{}.
+\newblock \showarticletitle{Supervisory control and reactive synthesis: a
+  comparative introduction}.
+\newblock \bibinfo{journal}{\emph{Discrete Event Dynamic Systems}}
+  \bibinfo{volume}{27}, \bibinfo{number}{2} (\bibinfo{year}{2017}),
+  \bibinfo{pages}{209--260}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Liu and Ozay}{Liu and Ozay}{2014}]%
+        {Liu2014}
+\bibfield{author}{\bibinfo{person}{Jun Liu} {and} \bibinfo{person}{Necmiye
+  Ozay}.} \bibinfo{year}{2014}\natexlab{}.
+\newblock \showarticletitle{{Abstraction , Discretization , and Robustness in
+  Temporal Logic Control of Dynamical Systems}}.
+\newblock \bibinfo{journal}{\emph{International Conferance on Hybrid Systems:
+  Computation and Control (HSCC)}} (\bibinfo{year}{2014}),
+  \bibinfo{pages}{293--302}.
+\newblock
+\showISBNx{9781450327329}
+\urldef\tempurl%
+\url{https://doi.org/10.1145/2562059.2562137}
+\showDOI{\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Livingston and Murray}{Livingston and
+  Murray}{2014}]%
+        {Livingston2014}
+\bibfield{author}{\bibinfo{person}{Scott~C. Livingston} {and}
+  \bibinfo{person}{Richard~M. Murray}.} \bibinfo{year}{2014}\natexlab{}.
+\newblock \showarticletitle{{Hot-swapping robot task goals in reactive formal
+  synthesis}}.
+\newblock \bibinfo{journal}{\emph{Proceedings of the IEEE Conference on
+  Decision and Control}} (\bibinfo{year}{2014}), \bibinfo{pages}{101--107}.
+\newblock
+\showISBNx{9781467360883}
+\showISSN{07431546}
+\urldef\tempurl%
+\url{https://doi.org/10.1109/CDC.2014.7039366}
+\showDOI{\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Livingston, Prabhakar, Jose, and
+  Murray}{Livingston et~al\mbox{.}}{2013}]%
+        {Livingston}
+\bibfield{author}{\bibinfo{person}{Scott~C Livingston},
+  \bibinfo{person}{Pavithra Prabhakar}, \bibinfo{person}{Alex~B Jose}, {and}
+  \bibinfo{person}{Richard~M Murray}.} \bibinfo{year}{2013}\natexlab{}.
+\newblock \showarticletitle{{Patching task-level robot controllers based on a
+  local $\mu$-calculus formula}}. In \bibinfo{booktitle}{\emph{Robotics and
+  Automation (ICRA), 2013 IEEE International Conference on}}. IEEE,
+  \bibinfo{pages}{4588--4595}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Nilsson, Ozay, and Liu}{Nilsson
+  et~al\mbox{.}}{2017}]%
+        {Nilsson2017}
+\bibfield{author}{\bibinfo{person}{Petter Nilsson}, \bibinfo{person}{Necmiye
+  Ozay}, {and} \bibinfo{person}{Jun Liu}.} \bibinfo{year}{2017}\natexlab{}.
+\newblock \showarticletitle{{Augmented finite transition systems as
+  abstractions for control synthesis}}.
+\newblock \bibinfo{journal}{\emph{Discrete Event Dynamic Systems: Theory and
+  Applications}} \bibinfo{volume}{27}, \bibinfo{number}{2} (\bibinfo{date}{jun}
+  \bibinfo{year}{2017}), \bibinfo{pages}{301--340}.
+\newblock
+\showISSN{15737594}
+\urldef\tempurl%
+\url{https://doi.org/10.1007/s10626-017-0243-z}
+\showDOI{\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Pnueli and Rosner}{Pnueli and Rosner}{1989}]%
+        {pnueli1989synthesis}
+\bibfield{author}{\bibinfo{person}{Amir Pnueli} {and} \bibinfo{person}{Roni
+  Rosner}.} \bibinfo{year}{1989}\natexlab{}.
+\newblock \showarticletitle{On the synthesis of a reactive module}. In
+  \bibinfo{booktitle}{\emph{Proceedings of the 16th ACM SIGPLAN-SIGACT
+  symposium on Principles of programming languages}}. ACM,
+  \bibinfo{pages}{179--190}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Ramadge and Wonham}{Ramadge and
+  Wonham}{1987}]%
+        {ramadge1987supervisory}
+\bibfield{author}{\bibinfo{person}{Peter~J Ramadge} {and}
+  \bibinfo{person}{W~Murray Wonham}.} \bibinfo{year}{1987}\natexlab{}.
+\newblock \showarticletitle{Supervisory control of a class of discrete event
+  processes}.
+\newblock \bibinfo{journal}{\emph{SIAM journal on control and optimization}}
+  \bibinfo{volume}{25}, \bibinfo{number}{1} (\bibinfo{year}{1987}),
+  \bibinfo{pages}{206--230}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Schmuck, Moor, and Majumdar}{Schmuck
+  et~al\mbox{.}}{2017}]%
+        {schmuckrelation}
+\bibfield{author}{\bibinfo{person}{Anne-Kathrin Schmuck},
+  \bibinfo{person}{Thomas Moor}, {and} \bibinfo{person}{Rupak Majumdar}.}
+  \bibinfo{year}{2017}\natexlab{}.
+\newblock \bibinfo{booktitle}{\emph{On the Relation between Reactive Synthesis
+  and Supervisory Control of Non-Terminating Processes}}.
+\newblock \bibinfo{type}{{T}echnical {R}eport}. \bibinfo{institution}{MPI-SWS}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Sun, Ozay, Wolff, Liu, and Murray}{Sun
+  et~al\mbox{.}}{2014}]%
+        {Sun2014}
+\bibfield{author}{\bibinfo{person}{Fei Sun}, \bibinfo{person}{Necmiye Ozay},
+  \bibinfo{person}{Eric~M Wolff}, \bibinfo{person}{Jun Liu}, {and}
+  \bibinfo{person}{Richard~M Murray}.} \bibinfo{year}{2014}\natexlab{}.
+\newblock \showarticletitle{{Efficient control synthesis for augmented finite
+  transition systems with an application to switching protocols}}. In
+  \bibinfo{booktitle}{\emph{Proceedings of the American Control Conference}}.
+  \bibinfo{pages}{3273--3280}.
+\newblock
+\showISBNx{9781479932726}
+\showISSN{07431619}
+\urldef\tempurl%
+\url{https://doi.org/10.1109/ACC.2014.6859428}
+\showDOI{\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Wolff, Topcu, and Murray}{Wolff
+  et~al\mbox{.}}{2013}]%
+        {wolff2013efficient}
+\bibfield{author}{\bibinfo{person}{Eric~M Wolff}, \bibinfo{person}{Ufuk Topcu},
+  {and} \bibinfo{person}{Richard~M Murray}.} \bibinfo{year}{2013}\natexlab{}.
+\newblock \showarticletitle{Efficient reactive controller synthesis for a
+  fragment of linear temporal logic}. In \bibinfo{booktitle}{\emph{Robotics and
+  Automation (ICRA), 2013 IEEE International Conference on}}. IEEE,
+  \bibinfo{pages}{5033--5040}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Wong, Ehlers, and Kress-Gazit}{Wong
+  et~al\mbox{.}}{2014}]%
+        {wong2014correct}
+\bibfield{author}{\bibinfo{person}{Kai~Weng Wong}, \bibinfo{person}{R{\"u}diger
+  Ehlers}, {and} \bibinfo{person}{Hadas Kress-Gazit}.}
+  \bibinfo{year}{2014}\natexlab{}.
+\newblock \showarticletitle{Correct High-level Robot Behavior in Environments
+  with Unexpected Events.}. In \bibinfo{booktitle}{\emph{Robotics: Science and
+  Systems}}.
+\newblock
+
+
+\end{thebibliography}
