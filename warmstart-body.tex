@@ -116,6 +116,8 @@ Given $\widehat{W} \subseteq W $, a simple controller $ \mathcal{C} $ \textbf{re
 	\label{def:cont}
 \end{definition}
 
+Overall, a controller is a tree structure with controllers at each node and simple controllers at the leaf nodes. The list $\mathcal{K}$ for each controller (node) denotes the children of that controller in the tree.
+
  {\color{purple} Winning sets and controllers} for specifications in the form of \eqref{phi} are computed iteratively via the following fixed-point based algorithm {\color{purple} (see \cite{Nilsson2017})}. Each fixed-point operator has two outputs: the winning set (1st) and controller (2nd). When a fixed-point operator appear in set calculation, it refers to its first output, i.e. the winning set.
  
  \begin{remark}
