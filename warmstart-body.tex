@@ -96,9 +96,9 @@ The procedure of abstraction-based control synthesis is as follows:
 
 The specification considered in this work is of the form:
 \begin{align}
-\phi = \Square A \wedge \Diamond \Square B \wedge \left( \bigwedge_{i\in I} \Square \Diamond G^i\right)\label{phi}
+\phi = \Square A \wedge \Diamond \Square B \wedge \left( \bigwedge_{i\in I} \Square \Diamond R^i\right)\label{phi}
 \end{align}
-{\color{purple} for subsets $A$, $B$, $G^i \subseteq Q$ defining atomic propositions. Such specifications can express properties of \emph{safety} ($\Square A$), \emph{stability} ($\Diamond \Square B$) and \emph{progress} ($\Square \Diamond G^i$). (In the original AFTS paper: "invariance, persistence and reccurence")}
+{\color{purple} for subsets $A$, $B$, $R^i \subseteq Q$ defining atomic propositions. Such specifications can express properties of \emph{safety} ($\Square A$), \emph{stability} ($\Diamond \Square B$) and \emph{progress} ($\Square \Diamond R^i$). (In the original AFTS paper: "invariance, persistence and reccurence")}
 
 \begin{definition}
 	{\color{purple} A} \textbf{winning set} of the specification $ \phi $ over an AFTS $ T = (Q, U, \rightarrow_T, G, AP, h_Q) $, written as $ W_{\phi} $, is the largest subset of $ Q $ s.t. if the system $ T $ is initially in $ W_{\phi} $, specification can be enforced.
@@ -112,7 +112,7 @@ A \textbf{simple controller} for a winning set $ W $ over an AFTS is a function 
 Given $\widehat{W} \subseteq W $, a simple controller $ \mathcal{C} $ \textbf{restricted to} $ \widehat{W} $ means that the domain of $ \mathcal{C} $ is restricted to $\widehat{W}$.
 
 \begin{definition}
-	For the AFTS $ T=\{Q,U,\rightarrow_T,G,AP,h_Q\} $, a \textbf{controller} $ \mathcal{C} $ for a winning set $ \text{Win}^T(\phi) $ is a tuple $ (\mathcal{V},\mathcal{K},x) $, where $ \mathcal{V} $ is a partially ordered subset of $ 2^Q $, $ \mathcal{K} $ is a partially ordered set of controllers or simple controllers, i.e. so-called sub-controllers of $ \mathcal{C} $, and $ x $ is an internal variable that saves the index of sub-controllers called last time. 
+	For the AFTS $ T=\{Q,U,\rightarrow_T,G,AP,h_Q\} $, a \textbf{controller} $ \mathcal{C} $ for a winning set $ \text{Win}^T(\phi) $ is a tuple $ (\mathcal{V},\mathcal{K},x) $, where $ \mathcal{V} $ is a list of subsets of $ Q $, $ \mathcal{K} $ is a list of controllers or simple controllers, i.e. so-called sub-controllers of $ \mathcal{C} $, and $ x $ is an internal variable that saves the index of sub-controllers called last time. 
 	\label{def:cont}
 \end{definition}
 
@@ -123,13 +123,13 @@ Given $\widehat{W} \subseteq W $, a simple controller $ \mathcal{C} $ \textbf{re
  \end{remark}
  
 \begin{align}
-& [V_{\infty},\mathcal{C}] =\  \text{Win}_{\exists, \forall}^{T,U}\left(\Square A \wedge \Diamond \Square B \wedge \left( \bigwedge_{i\in I} \Square \Diamond G^i\right)\right)\\
+& [V_{\infty},\mathcal{C}] =\  \text{Win}_{\exists, \forall}^{T,U}\left(\Square A \wedge \Diamond \Square B \wedge \left( \bigwedge_{i\in I} \Square \Diamond R^i\right)\right)\\
 =&\begin{cases}V_{\text{inv}} = \text{\text{Win}}^{T,U}_{\exists, \forall} ((A\mathbf{U}\emptyset)\vee \Square (A\wedge \Diamond Q))\\
 \text{Restrict~ synthesis~ to~ }V_{\text{inv}}\\
 V_0 = \emptyset,\ \mathcal{V}=\{\},\ \mathcal{K} = \{\}\\
 while\ V_{k+1} \not= V_k:\\
 \ \ \ \ Z_{k+1} = \text{Pre}_{\exists,\forall}^{T,U} (V_k) \bigcup \text{PGPre}_{\exists,\forall}^{T,U} (V_k, Q)\\
-\ \ \ \ [V_{k+1}, \mathcal{C}_{k+1}]=\text{Win}_{\exists,\forall}^{T} ((B \mathbf{\ U\ }Z_{k+1}) \vee \Square (B\wedge ( \bigwedge_{i\in I}\Diamond G^i))\\
+\ \ \ \ [V_{k+1}, \mathcal{C}_{k+1}]=\text{Win}_{\exists,\forall}^{T} ((B \mathbf{\ U\ }Z_{k+1}) \vee \Square (B\wedge ( \bigwedge_{i\in I}\Diamond R^i))\\
 \ \ \ \ \mathcal{V}(k+1)=V_{k+1},\ \mathcal{K}(k+1) = \mathcal{C}_{k+1}\\
 V_{\infty} = V_k,\ \mathcal{C}=(\mathcal{V},\mathcal{K},x)
 \end{cases}\label{win_phi}
@@ -137,25 +137,25 @@ V_{\infty} = V_k,\ \mathcal{C}=(\mathcal{V},\mathcal{K},x)
 
 The winning set {\color{purple} that results from} \eqref{win_phi} is {\color{purple} equal to} $ V_{\infty} $, i.e. {\color{purple} the limit of the expanding sequence $V_k$}. $ \mathcal{C} $ is the controller corresponding to the winning set $ V_{\infty} $. The building blocks of the above algorithm are as follows:
 \begin{align}
-&[W_{\infty},\mathcal{C}]= \ \text{Win}_{\sharp,\forall}^{T,U}((B\mathbf{\ U\ }Z)\vee \Square (B\wedge(\bigwedge_{i\in I}\Diamond G^i)) )\\
+&[W_{\infty},\mathcal{C}]= \ \text{Win}_{\exists,\forall}^{T,U}((B\mathbf{\ U\ }Z)\vee \Square (B\wedge(\bigwedge_{i\in I}\Diamond R^i)) )\\
 =&\begin{cases}
 W_0 = Q,\ \mathcal{V}=\{\},\ \mathcal{K}=\{\}\\
 while\ W_{k+1}\not= W_k:\\
-\ \ \ \ Z_{k+1}^i = Z\cup (B\cap G^i\cap \text{Pre}_{\sharp, \forall}^{T,U}(W_k))\\
-\ \ \ \ [X^i, \mathcal{C}^i]= \text{Win}_{\sharp,\forall}^{T,U} (B\mathbf{\ U\ }Z_{k+1}^i), \forall i \in I\\
+\ \ \ \ Z_{k+1}^i = Z\cup (B\cap R^i\cap \text{Pre}_{\exists, \forall}^{T,U}(W_k))\\
+\ \ \ \ [X^i, \mathcal{C}^i]= \text{Win}_{\exists,\forall}^{T,U} (B\mathbf{\ U\ }Z_{k+1}^i), \forall i \in I\\
 \ \ \ \ W_{k+1} = \bigcap_{i\in I} X^i,\ \mathcal{K}(i) = \mathcal{C}^i, \forall i\in I\\
-\mathcal{V}(1)=W_k,\ \mathcal{V}(i+1) = B\cap G^i, \forall i\in I\\
+\mathcal{V}(1)=W_k,\ \mathcal{V}(i+1) = B\cap R^i, \forall i\in I\\
 W_{\infty} = W_k,\ \mathcal{C} = (\mathcal{V},\mathcal{K},x)
 \end{cases}\label{win_interm}
 \end{align}
 \begin{align}
-&[X_{\infty},\mathcal{C}]= \text{Win}_{\sharp,\forall}^{T,U} (B\mathbf{\ U\ }Z)\\
+&[X_{\infty},\mathcal{C}]= \text{Win}_{\exists,\forall}^{T,U} (B\mathbf{\ U\ }Z)\\
 =&\begin{cases}
 X_0 = \emptyset,\ \mathcal{V}=\{\},\ \mathcal{K}=\{\}\\
 while\ X_{k+1}\not= X_k\\
 \ \ \ \ [V^1_k,C^1_k]=
-\text{Pre}_{\sharp,\forall}^{T,U}(X_k)\\
-\ \ \ \  [V^2_k,C^2_k]=\text{PGPre}_{\sharp,\forall}^{T,U}(Z\cup(B\cap V^1_k),B)\\
+\text{Pre}_{\exists,\forall}^{T,U}(X_k)\\
+\ \ \ \  [V^2_k,C^2_k]=\text{PGPre}_{\exists,\forall}^{T,U}(Z\cup(B\cap V^1_k),B)\\
 \ \ \ \ X_{k+1} =Z\cup (B\cap V^1_k)\cup V^2_k\\
 \ \ \ \ \mathcal{V}(2k-1)=V^1_k, \mathcal{V}(2k)=V^2_k\\
 \ \ \ \ \mathcal{K}(2k-1)=C^1_k,\ \mathcal{K}(2k)=C^2_k\\
@@ -175,9 +175,9 @@ for\ U\in 2^U:\\
 \end{cases}\label{win_pgpre}
 \end{align}
 \begin{align}
-&[W,\mathcal{C}]=\text{Pre}_{\sharp_1,\sharp_2}^{T,U}(V)\\
+&[W,\mathcal{C}]=\text{Pre}_{\exists,\forall}^{T,U}(V)\\
 =&\begin{cases}
-W = \{q_1\in Q: \sharp_1 (u\in U) \sharp_2 (q_2\ s.t.\ (q_1, u, q_2) \in \rightarrow_T), q_2\in V\}\\
+W = \{q_1\in Q: \exists (u\in U) \forall (q_2\ s.t.\ (q_1, u, q_2) \in \rightarrow_T), q_2\in V\}\\
 D(q)=\{u\in U: \forall (q_2\ s.t.\ (q,u,q_2)),\ q_2\in V\}\\
 \mathcal{C}=\{(q,D(q)):q\in Q, D(q)\not=\emptyset\}
 \end{cases}\label{eqn:pre}\\
@@ -190,7 +190,7 @@ Y_{\infty} = Y_k,\ \mathcal{C}\ restricted\ to\ Y_{\infty}
 \end{cases} \label{win_inv}
 \end{align}
 
-The winning sets {\color{purple} resulting from} \eqref{win_interm}, \eqref{win_until}, \eqref{win_inv} are $ W_{\infty} $, $ X_{\infty} $ and $ Y_{\infty} $. {\color{purple} $\text{Pre}_{\sharp_1,\sharp_2}^{T,U}$ is a one-step reachability operator, and $\text{Inv}_{\sharp}^{U,G}(Z,B)$ computes $Y_\infty \subseteq (G\cap B) - Z$ from where the state can be controlled (with actions in $U$) to either remain inside $Y_\infty$ or reach $Z$, but because $G$ is a progress group under $U$, remaining indefinitely in $G$ is impossible and therefore $Z$ is
+The winning sets {\color{purple} resulting from} \eqref{win_interm}, \eqref{win_until}, \eqref{win_inv} are $ W_{\infty} $, $ X_{\infty} $ and $ Y_{\infty} $. {\color{purple} $\text{Pre}_{\exists,\forall}^{T,U}$ is a one-step reachability operator, and $\text{Inv}_{\exists}^{U,G}(Z,B)$ computes $Y_\infty \subseteq (G\cap B) - Z$ from where the state can be controlled (with actions in $U$) to either remain inside $Y_\infty$ or reach $Z$, but because $G$ is a progress group under $U$, remaining indefinitely in $G$ is impossible and therefore $Z$ is
 eventually reached, which is why $Y_\infty$ is a winning set for $B\mathbf{\ U\ }Z$.}
 
 %The control strategy enforcing the specification in the winning set $ W_{\phi} $ can be extracted in the meantime when executing the fixed-point operators \cite{Nilsson2017}. 
@@ -199,15 +199,15 @@ eventually reached, which is why $Y_\infty$ is a winning set for $B\mathbf{\ U\ 
 
 
 \begin{definition} \textbf{Execution of controllers}:
-	In the execution time, a controller $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ acts as a function that maps the current state $ s(t) $ to a set of feasible actions according to the following rules:
+	In the execution time, a controller $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ acts as a function that maps the current state to a set of feasible actions according to the following rules: Assume that the current state is $ s(t) $. Denote the outputs of controller as $ \mathcal{C}(s(t)) $.
 	
 	(i) update internal variable $ x $: 
 	
 	For controllers returned by \eqref{win_phi},\eqref{win_until},\eqref{win_inv}:
 	\begin{displaymath}
 	x(t) =	\begin{cases}
-	\text{arg}\min_{x\leq x(t-1)}\{u(t)\in \mathcal{V}(x)\},\ \ if\ x(t-1)\not=0\\
-	\text{arg}\min_{x}\{u(t),\ \ otherwise
+	\text{arg}\min_{y\leq x(t-1)}\{u(t)\in \mathcal{V}(y)\},\ \ if\ x(t-1)\not=0\\
+	\text{arg}\min_{y}\{u(t)\in \mathcal{V}(y)\},\ \ otherwise
 	\end{cases}
 	\end{displaymath}
 	\quad For controllers returned by \eqref{win_interm}:
@@ -217,9 +217,9 @@ eventually reached, which is why $Y_\infty$ is a winning set for $B\mathbf{\ U\ 
 	x(t-1),\ otherwise
 	\end{cases}
 	\end{displaymath}
-	(ii) pass the input $ s(t) $ to sub-controllers of $ \mathcal{C} $ based on internal variable $ x(t) $:
+	\quad(ii) pass the input $ s(t) $ to the $ x(t)^{th} $ sub-controllers of $ \mathcal{C} $:
 	\begin{displaymath}
-	\mathcal{C}(s(t)) = \mathcal{K}(x(t))(s(t))
+	I = \mathcal{K}(x(t))(s(t))
 	\end{displaymath}
 
 	Namely, internal variable $ x(t) $ will be updated firstly each time $ \mathcal{C} $  is called. The output action sets of $ \mathcal{C} $ is equal to the output of the $ x(t)^{th} $ sub-controller in the partially ordered set $ \mathcal{K} $ given the input $ u(t) $, i.e. $ \mathcal{K}(x(t))(u(t)) $. The same process will happen recursively in the execution of $ \mathcal{K}(x(t))(u(t)) $, until a simple controller is reached. 
@@ -271,7 +271,7 @@ eventually reached, which is why $Y_\infty$ is a winning set for $B\mathbf{\ U\ 
 
 	\subsection{Problem Statement}
 
-Consider an AFTS $ T = (Q,U,\rightarrow_T,G,AP,h_Q) $ and a LTL specification $ \phi = \Square A \wedge \Diamond \Square B \wedge \left( \bigvee_{i\in I} \Square \Diamond G^i\right) $. Compute its winning set and the winning control strategy (or controller) via fixed-point operator \eqref{win_phi}, denoted by $ W_{\phi} $ and $ \mu_{\phi} $ (or $ \mathcal{C}_{\phi} $).
+Consider an AFTS $ T = (Q,U,\rightarrow_T,G,AP,h_Q) $ and a LTL specification $ \phi = \Square A \wedge \Diamond \Square B \wedge \left( \bigvee_{i\in I} \Square \Diamond R^i\right) $. Compute its winning set and the winning control strategy (or controller) via fixed-point operator \eqref{win_phi}, denoted by $ W_{\phi} $ and $ \mu_{\phi} $ (or $ \mathcal{C}_{\phi} $).
 
 Now disable some actions $ U_d \subseteq U$, i.e. getting a new AFTS $ \widehat{T} = (Q,U-U_d,\rightarrow_T,G,AP,h_Q) $ and re-compute the winning set and control strategy, denoted by $ \widehat{W}_{\phi} $ and $ \widehat{\mu}_{\phi} $ (or controller $ \widehat{\mathcal{C}}_{\phi} $), via the same fixed-point operator.
 
@@ -290,7 +290,7 @@ Now disable some actions $ U_d \subseteq U$, i.e. getting a new AFTS $ \widehat{
 If $ C_{\phi} $ is implemented to contain all the possible control strategies, Theorem \ref{thm: 1} says that $ \mathcal{C}_{\phi} $ should contain all the information of $ \widehat{\mathcal{C}}_{\phi} $, which implies there is a possibility to obtain $ \widehat{\mathcal{C}}_{\phi} $ by modifying the existing controller.
 
 \begin{problem}
-	Given an AFTS $ T = (Q,U,\rightarrow_T,G,AP,h_Q) $, a LTL specification $ \phi = \Square A \wedge \Diamond \Square B \wedge \left( \bigvee_{i\in I} \Square \Diamond G^i\right) $, the winning set $ W_{\phi} $ and controller $ \mathcal{C}_{\phi} $, if a set of actions $ U_d\subseteq U $ in $ T $ is unavailable, find the new winning set and controller based on $ W_{\phi} $ and $ \mathcal{C}_{\phi} $.
+	Given an AFTS $ T = (Q,U,\rightarrow_T,G,AP,h_Q) $, a LTL specification $ \phi = \Square A \wedge \Diamond \Square B \wedge \left( \bigvee_{i\in I} \Square \Diamond R^i\right) $, the winning set $ W_{\phi} $ and controller $ \mathcal{C}_{\phi} $, if a set of actions $ U_d\subseteq U $ in $ T $ is unavailable, find the new winning set and controller based on $ W_{\phi} $ and $ \mathcal{C}_{\phi} $.
 \end{problem}
 
 \section{PATCHING METHOD}
@@ -459,17 +459,17 @@ Let's denote $ X_k $ in \eqref{win_until} with inputs $ \widehat{U},B,\widehat{Z
 	For $ k\geq n $, it's enough to show that $ X^t_k \subseteq X_n $, then the correctness again is guaranteed by \eqref{patch_pre} and \eqref{patch_pg}. According to \eqref{win_pgpre}, it's easy to show that $ \text{PGPre}_{\exists,\forall}^{T,U-U_d}(Z_1,B)\subseteq \text{PGPre}_{\exists,\forall}^{T,U}(Z_1,B)\subseteq \text{PGPre}_{\exists,\forall}^{T,U}(Z_2,B) $ for $ Z_1\subseteq Z_2 $. Prove by induction:  $ X_0^t = X_0 $. Assume that $ X_k^t \subseteq X_k $. Then $ \text{PGPre}^{T,U-U_d}_{\exists,\forall}(X^t_{k},B) \subseteq \text{PGPre}^{T,U-U_d}_{\exists,\forall}(X_{k},B)$. It's trivial that $ Pre^{T,U-U_d}_{\exists,\forall}(X^t_{k},B) \subseteq Pre^{T,U-U_d}_{\exists,\forall}(X_{k},B)$. Hence, $ X^t_{k+1}\subseteq X_{k+1} $. By induction argument, $ X_{k}^t\subseteq X_{k+1} \forall k$. But since $ \forall k>n, X_k=X_n $. $ X^t_k \subseteq X_n, \forall k>n $.
 \end{proof}
 
-Assume that $ W $ and $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ are the winning set and controller resulting from $\text{Win}_{\exists,\forall}^{T,U}((B\mathbf{\ U\ }Z)\vee \Square(B\wedge (\bigwedge_{i\in I} \Diamond G^i)) $. Given that $ \widehat{Z}\subseteq Z $ and $ \widehat{U}\subseteq U $, modify $ W $ and $ \mathcal{C} $ for $\text{Win}_{\exists,\forall}^{T,U}((B\mathbf{\ U\ }\widehat{Z})\vee \Square(B\wedge (\bigwedge_{i\in I} \Diamond G^i)) $. The patching operator for \eqref{win_interm}, written as $\overline{\text{Win}}^{T, U}_{\exists,\forall (\psi)}  $ is 
+Assume that $ W $ and $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ are the winning set and controller resulting from $\text{Win}_{\exists,\forall}^{T,U}((B\mathbf{\ U\ }Z)\vee \Square(B\wedge (\bigwedge_{i\in I} \Diamond R^i)) $. Given that $ \widehat{Z}\subseteq Z $ and $ \widehat{U}\subseteq U $, modify $ W $ and $ \mathcal{C} $ for $\text{Win}_{\exists,\forall}^{T,U}((B\mathbf{\ U\ }\widehat{Z})\vee \Square(B\wedge (\bigwedge_{i\in I} \Diamond R^i)) $. The patching operator for \eqref{win_interm}, written as $\overline{\text{Win}}^{T, U}_{\exists,\forall (\psi)}  $ is 
 \begin{align}
 &[\widehat{W}_{\infty},\widehat{\mathcal{C}}]=\overline{\text{Win}}^{T, U}_{\exists,\forall (\psi)} (\mathcal{C},Z,\widehat{Z},U_d)\\
 =&\begin{cases}
 W_0 = \mathcal{V}(1),\widehat{\mathcal{V}}=\mathcal{V},\widehat{\mathcal{K}}=\mathcal{K}\\
-Z_{\infty}^i = Z\cup (B\cap G^i\cap \text{Pre}_{\exists, \forall}^{T,U}(W_0))\\
-\widehat{Z}_{0}^i = \widehat{Z}\cup (B\cap G^i\cap \text{Pre}_{\exists, \forall}^{T,U-U_d}(W_0))\\
+Z_{\infty}^i = Z\cup (B\cap R^i\cap \text{Pre}_{\exists, \forall}^{T,U}(W_0))\\
+\widehat{Z}_{0}^i = \widehat{Z}\cup (B\cap R^i\cap \text{Pre}_{\exists, \forall}^{T,U-U_d}(W_0))\\
 [X^i_0,\widehat{\mathcal{K}}(i)] = \overline{\text{Win}}^{T,U}_{\exists,\forall, (B\mathbf{U}Z)}(\widehat{\mathcal{K}}(i),Z_\infty^i,\widehat{Z}_0^i, U_d)\\
 \widehat{W}_{0} = \bigcap_{i\in I} X^i_0\\
 while\ \widehat{W}_{k+1}\not=\widehat{W}_k:\\
-\ \ \ \ \widehat{Z}_{k+1}^i = \widehat{Z} \cup (B\cap G^i\cap \text{Pre}_{\exists, \forall}^{T,U-U_d}(\widehat{W}_k))\\
+\ \ \ \ \widehat{Z}_{k+1}^i = \widehat{Z} \cup (B\cap R^i\cap \text{Pre}_{\exists, \forall}^{T,U-U_d}(\widehat{W}_k))\\
 \ \ \ \ [X^i_{k+1},\widehat{\mathcal{K}}(i)]=\overline{\text{Win}}^{T,U}_{\exists,\forall,(B\mathbf{U}Z)}(\widehat{\mathcal{K}}(i),\widehat{Z}_k^i,\widehat{Z}_{k+1}^i, U_d)\\
 \ \ \ \ \widehat{W}_{k+1} = \bigcap_{i\in I} X^i_{k+1}\\
 \widehat{W}_\infty = \widehat{W}_k,\ \widehat{\mathcal{C}}=(\widehat{\mathcal{V}},\widehat{\mathcal{K}},x)
@@ -479,9 +479,9 @@ while\ \widehat{W}_{k+1}\not=\widehat{W}_k:\\
 \begin{proof}
 	Assume that $ W_t $ is the winning set of \eqref{win_interm} with input parameters $ U-U_d $, $ B $, $ C_i $ and $ \widehat{Z} $. To show that $ W_t=\widehat{W}_\infty $, it's enough to show that $ W_t\subseteq \widehat{W}_\infty $, i.e. $ \widehat{W}_\infty $ is a larger winning set than $ W_t $. Then by the completeness of \eqref{win_interm}, $ W_t=\widehat{W}_\infty $. 
 	
-	First of all, prove that $ W_t \subseteq W_0 $: For any trajectories satisfying $ (B\mathbf{\ U\ }\widehat{Z})\vee \Square(B\wedge (\bigwedge_{i\in I} \Diamond G^i) $, it satisfies $  (B\mathbf{\ U\ }Z)\vee \Square(B\wedge (\bigwedge_{i\in I} \Diamond G^i) $, so directly we have $ W_t\subseteq W_0 $. 
+	First of all, prove that $ W_t \subseteq W_0 $: For any trajectories satisfying $ (B\mathbf{\ U\ }\widehat{Z})\vee \Square(B\wedge (\bigwedge_{i\in I} \Diamond R^i) $, it satisfies $  (B\mathbf{\ U\ }Z)\vee \Square(B\wedge (\bigwedge_{i\in I} \Diamond R^i) $, so directly we have $ W_t\subseteq W_0 $. 
 	
-	Next, prove $ W_t\subseteq \widehat{W}_k, \forall k $ by induction: Since $ W_t\subseteq W_0 $, $ Z_t^i =\widehat{Z}\cup (B\cap G^i\cap \text{Pre}_{\exists,\forall}^{T,U-U_d}(W_t)) \subseteq \widehat{Z}_0^i$. Hence $ \text{Win}_{\exists,\forall}^{T,U-U_d}(B\mathbf{\ U\ }Z_t^i)\subseteq  \text{Win}_{\exists,\forall}^{T,U-U_d}(B\mathbf{\ U\ }\widehat{Z}_0^i) $ (proven by induction: show that $ X_k $ in \eqref{patch_until} for $ Z_t^i $ is contained by $ X_k $ in \eqref{patch_until} for $ \widehat{Z}_0^i $, for all $ k $). Then, $ W_t = \bigcap_{i\in I} \text{Win}_{\exists,\forall}^{T,U-U_d} (B\mathbf{\ U\ } Z_{t}^i)\subseteq  \bigcap_{i\in I} \text{Win}_{\exists,\forall}^{T,U-U_d}(B\mathbf{\ U\ }\widehat{Z}_0^i)  = \widehat{W}_0$, which is the base case. Assume that $ W_t\subseteq \widehat{W}_k $. Then we have $ Z_t^i \subseteq \widehat{Z}_{k+1}^i $ and $ W_t\subseteq \widehat{W}_{k+1} $ for the same arguments in the base case. Hence by induction, $ W_t^i \subseteq \widehat{W}_{k}, \forall k $. 
+	Next, prove $ W_t\subseteq \widehat{W}_k, \forall k $ by induction: Since $ W_t\subseteq W_0 $, $ Z_t^i =\widehat{Z}\cup (B\cap R^i\cap \text{Pre}_{\exists,\forall}^{T,U-U_d}(W_t)) \subseteq \widehat{Z}_0^i$. Hence $ \text{Win}_{\exists,\forall}^{T,U-U_d}(B\mathbf{\ U\ }Z_t^i)\subseteq  \text{Win}_{\exists,\forall}^{T,U-U_d}(B\mathbf{\ U\ }\widehat{Z}_0^i) $ (proven by induction: show that $ X_k $ in \eqref{patch_until} for $ Z_t^i $ is contained by $ X_k $ in \eqref{patch_until} for $ \widehat{Z}_0^i $, for all $ k $). Then, $ W_t = \bigcap_{i\in I} \text{Win}_{\exists,\forall}^{T,U-U_d} (B\mathbf{\ U\ } Z_{t}^i)\subseteq  \bigcap_{i\in I} \text{Win}_{\exists,\forall}^{T,U-U_d}(B\mathbf{\ U\ }\widehat{Z}_0^i)  = \widehat{W}_0$, which is the base case. Assume that $ W_t\subseteq \widehat{W}_k $. Then we have $ Z_t^i \subseteq \widehat{Z}_{k+1}^i $ and $ W_t\subseteq \widehat{W}_{k+1} $ for the same arguments in the base case. Hence by induction, $ W_t^i \subseteq \widehat{W}_{k}, \forall k $. 
 	
 	Finally prove $ \widehat{W}_{k} $ converges by induction: $ \widehat{Z}_0^i \subseteq Z_{\infty}^i $. Hence $ \widehat{W}_0 =\bigcap_{i\in I} \text{Win}_{\exists,\forall}^{T,U-U_d}(B\mathbf{\ U\ }\widehat{Z}_0^i)\subseteq \bigcap_{i\in I} \text{Win}_{\exists,\forall}^{T,U}(B\mathbf{\ U\ }Z_{\infty}^i) = W_0 $, which is the base case. Assume that $ \widehat{W}_{k+1} \subseteq \widehat{W}_k $.  Then $ \widehat{Z}_{k+1}^i\subseteq \widehat{Z}_{k}^i  $ and $ \widehat{W}_{k+1} =\bigcap_{i\in I} \text{Win}_{\exists,\forall}^{T,U-U_d}(B\mathbf{\ U\ }\widehat{Z}_{k+1}^i)\subseteq \bigcap_{i\in I} \text{Win}_{\exists,\forall}^{T,U}(B\mathbf{\ U\ }\widehat{Z}_{k}^i) = \widehat{W}_k $. By induction argument, $ \{\widehat{W}_k\} $ is a decreasing sequence of finite sets, which converges surely.
 \end{proof}
@@ -490,7 +490,7 @@ Now we are ready to modify controller in \eqref{win_phi}, since we have all the 
 
 Assume that $ W $ and $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ are the winning set and controller resulting from 
 \begin{displaymath}
- \text{Win}_{\exists, \forall}^T\left(\Square A \wedge \Diamond \Square B \wedge \left( \bigwedge_{i\in I} \Square \Diamond G^i\right)\right)
+ \text{Win}_{\exists, \forall}^T\left(\Square A \wedge \Diamond \Square B \wedge \left( \bigwedge_{i\in I} \Square \Diamond R^i\right)\right)
 \end{displaymath}
 
  Assuming that $ \vert \mathcal{K}\vert = n $. For patching purpose, we need some extra information: the partially ordered sets of winning sets and controllers returned by $\text{Pre}_{\exists,\forall}^{T,U}(V_k)$ in \eqref{win_phi}, i.e. $ [\mathcal{V}_1(k),\mathcal{K}_1(k)]=\text{Pre}_{\exists,\forall}^{T,U}(V_k)$;  the partially ordered sets of winning sets and controllers returned by $ \text{PGPre}_{\exists,\forall}^{T}(V_k, B) $ in \eqref{win_phi}, i.e. $ [\mathcal{V}_2(k), \mathcal{K}_2(k)]= \text{PGPre}_{\exists,\forall}^{T}(V_k, B)$ ($ k=1,..., n $) ; the controller $ \mathcal{C}_{Inv} $ returned by $ \text{\text{Win}}^{T,U}_{\exists, \forall} ((A\mathbf{U}\emptyset)\vee \Square (A\wedge \Diamond Q)) $ in the first line of \eqref{win_phi}. To restrict action space to $ \widehat{U} = U-U_d $, the patching operator for \eqref{win_phi} is 
@@ -515,11 +515,11 @@ for~ k\geq n\ and\ \widehat{V}_{k+1}\not=\widehat{V}_k:\\
 \end{cases}\label{patching_final}
 \end{align}
 
-The modified winning set $ \widehat{V}_{\infty} $ and controller $ \widehat{\mathcal{C}} $ will be equal to outputs resulting from $ \text{Win}_{\exists, \forall}^{T,U-U_d}\left(\Square A \wedge \Diamond \Square B \wedge \left( \bigwedge_{i\in I} \Square \Diamond G^i\right)\right) $. The same as \eqref{patch_until}, the patching algorithm has two parts: one for modifying existing sub-controllers; one for adding new ones until convergence.
+The modified winning set $ \widehat{V}_{\infty} $ and controller $ \widehat{\mathcal{C}} $ will be equal to outputs resulting from $ \text{Win}_{\exists, \forall}^{T,U-U_d}\left(\Square A \wedge \Diamond \Square B \wedge \left( \bigwedge_{i\in I} \Square \Diamond R^i\right)\right) $. The same as \eqref{patch_until}, the patching algorithm has two parts: one for modifying existing sub-controllers; one for adding new ones until convergence.
 
 \begin{proof}
 	The correctness of $ \widehat{V}_{\text{inv}} $ is guaranteed by \eqref{patch_interm}.
-	For $ k\leq n $, the correctness of $ \widehat{V}_{k} $ is guaranteed by \eqref{patch_pre}, \eqref{patch_pg} and \eqref{patch_interm}. Assume that $ V^t_k $ and $ V_k $ are intermediate results in \eqref{win_phi} with action space $ U-U_d $ and $ U $ respectively. For $ k > n$, the correctness is guaranteed by  \eqref{patch_pre}, \eqref{patch_pg} and \eqref{patch_interm} as long as $ V^t_{k} \subseteq V_n $. We can prove it in the same way as the proof of \eqref{patch_until}. For simplicity, we can apply Theorem 1 instead:  Assume that $ V_k^t $ converges to $ V_{\infty}^t $ and $ V_k $ converges to $ V_{\infty} $. By Theorem \ref{thm: 1}, we have $ V^t_{\infty}\subseteq V_{\infty} = V_n $. Next, prove that $ \{V^t_k\} $ is a monotonic increasing sequence of sets by induction. $ \emptyset = V^t_0 \subseteq V^t_1 $. Assume that $ V^t_{k-1}\subseteq V^t_{k}$. Then it's not hard to see that $ Z^t_k \subseteq Z^t_{k+1} $, and $ V^t_k = \text{Win}_{\exists,\forall}^{T} ((B \mathbf{\ U\ }Z_{k}) \vee \Square (B\wedge ( \bigwedge_{i\in I}\Diamond G^i))\subseteq \text{Win}_{\exists,\forall}^{T} ((B \mathbf{\ U\ }Z_{k+1}) \vee \Square (B\wedge ( \bigwedge_{i\in I}\Diamond G^i))=V^t_{k+1} $ (this must be true otherwise \eqref{patch_interm} can't be correct). So $ V^t_k \subseteq V_n, \forall k $. 
+	For $ k\leq n $, the correctness of $ \widehat{V}_{k} $ is guaranteed by \eqref{patch_pre}, \eqref{patch_pg} and \eqref{patch_interm}. Assume that $ V^t_k $ and $ V_k $ are intermediate results in \eqref{win_phi} with action space $ U-U_d $ and $ U $ respectively. For $ k > n$, the correctness is guaranteed by  \eqref{patch_pre}, \eqref{patch_pg} and \eqref{patch_interm} as long as $ V^t_{k} \subseteq V_n $. We can prove it in the same way as the proof of \eqref{patch_until}. For simplicity, we can apply Theorem 1 instead:  Assume that $ V_k^t $ converges to $ V_{\infty}^t $ and $ V_k $ converges to $ V_{\infty} $. By Theorem \ref{thm: 1}, we have $ V^t_{\infty}\subseteq V_{\infty} = V_n $. Next, prove that $ \{V^t_k\} $ is a monotonic increasing sequence of sets by induction. $ \emptyset = V^t_0 \subseteq V^t_1 $. Assume that $ V^t_{k-1}\subseteq V^t_{k}$. Then it's not hard to see that $ Z^t_k \subseteq Z^t_{k+1} $, and $ V^t_k = \text{Win}_{\exists,\forall}^{T} ((B \mathbf{\ U\ }Z_{k}) \vee \Square (B\wedge ( \bigwedge_{i\in I}\Diamond R^i))\subseteq \text{Win}_{\exists,\forall}^{T} ((B \mathbf{\ U\ }Z_{k+1}) \vee \Square (B\wedge ( \bigwedge_{i\in I}\Diamond R^i))=V^t_{k+1} $ (this must be true otherwise \eqref{patch_interm} can't be correct). So $ V^t_k \subseteq V_n, \forall k $. 
 	
 \end{proof}
 
@@ -598,7 +598,7 @@ Now imagine that some holes on the ground are detected, as shown in Figure \ref{
 		\hline 
 		$ U_d $ & $ [1] $ &$ [1:5] $ & $ [1:10] $ & $ [1:15] $ & $ [1:20] $ & $ [1:25] $ \\ 
 		\hline 
-		$ \sharp $trans & $ 100\% $ & $ 96.57\% $ & $ 81.22\% $ & $ 60.55\% $ & $ 39.67\% $ & $ 19.00\% $\\
+		$ \exists $trans & $ 100\% $ & $ 96.57\% $ & $ 81.22\% $ & $ 60.55\% $ & $ 39.67\% $ & $ 19.00\% $\\
 		$ t_{syn}(s) $ & $ 244.2 $ & $ 581.2 $ & $ 756.1 $ & $ 532.7 $ & $ 315.1 $ & $ 129.4 $ \\
 		$ t_{pat}(s)$ & $ 3.4 $ & $ 12.6 $ & $ 13.4 $ & $ 13.1 $ & $ 11.4 $ & $ 9.9 $ \\ 
 		\hline 
@@ -610,7 +610,7 @@ Now imagine that some holes on the ground are detected, as shown in Figure \ref{
 	\caption{Comparison of re-synthesis time and patching time under random action profiles. The first row is number of unavailable actions. For each number, choose 10 random sets of unavailable actions. The last two rows are the average time used for re-synthesizing and patching.}
 	\begin{tabular}{ccccccc}
 		\hline 
-		$ \sharp U_d $ & $ 1 $ &$ 5 $ & $ 10 $ & $ 15 $ & $ 20 $ & $ 25 $ \\ 
+		$ \exists U_d $ & $ 1 $ &$ 5 $ & $ 10 $ & $ 15 $ & $ 20 $ & $ 25 $ \\ 
 		\hline 
 		$ t_{syn}(s) $ & $ 289.7 $ & $ 281.1 $ & $ 292.8 $ & $ 358.6 $ &  $ 367.1 $ & $ 618.1 $ \\
 		$ t_{pat}(s)$ & $ 3.2 $ & $ 4.1 $ & $ 5.1 $ & $ 7.2 $ & $ 8.3 $ & $ 17.4 $ \\ 
