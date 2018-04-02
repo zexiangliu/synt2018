@@ -127,11 +127,10 @@ Given $\widehat{W} \subseteq W $, a simple controller $ \mathcal{C} $ \textbf{re
 =&\begin{cases}V_{\text{inv}} = \text{\text{Win}}^{T,U}_{\exists, \forall} ((A\mathbf{U}\emptyset)\vee \Square (A\wedge \Diamond Q))\\
 \text{Restrict~ synthesis~ to~ }V_{\text{inv}}\\
 V_0 = \emptyset,\ \mathcal{V}=\{\},\ \mathcal{K} = \{\}\\
-while\ V_{k+1} \not= V_k\\
-\ \ Z_{k+1} = \text{Pre}_{\exists,\forall}^{T,U} (V_k) \bigcup \text{PGPre}_{\exists,\forall}^{T,U} (V_k, Q)\\
-\ \ [V_{k+1}, \mathcal{C}_{k+1}]=\text{Win}_{\exists,\forall}^{T} ((B \mathbf{\ U\ }Z_{k+1}) \vee \Square (B\wedge ( \bigwedge_{i\in I}\Diamond G^i))\\
-\ \ \mathcal{V}(k+1)=V_{k+1},\ \mathcal{K}(k+1) = \mathcal{C}_{k+1}\\
-end\\
+while\ V_{k+1} \not= V_k:\\
+\ \ \ \ Z_{k+1} = \text{Pre}_{\exists,\forall}^{T,U} (V_k) \bigcup \text{PGPre}_{\exists,\forall}^{T,U} (V_k, Q)\\
+\ \ \ \ [V_{k+1}, \mathcal{C}_{k+1}]=\text{Win}_{\exists,\forall}^{T} ((B \mathbf{\ U\ }Z_{k+1}) \vee \Square (B\wedge ( \bigwedge_{i\in I}\Diamond G^i))\\
+\ \ \ \ \mathcal{V}(k+1)=V_{k+1},\ \mathcal{K}(k+1) = \mathcal{C}_{k+1}\\
 V_{\infty} = V_k,\ \mathcal{C}=(\mathcal{V},\mathcal{K},x)
 \end{cases}\label{win_phi}
 \end{align}
@@ -141,7 +140,7 @@ The winning set {\color{purple} that results from} \eqref{win_phi} is {\color{pu
 &[W_{\infty},\mathcal{C}]= \ \text{Win}_{\sharp,\forall}^{T,U}((B\mathbf{\ U\ }Z)\vee \Square (B\wedge(\bigwedge_{i\in I}\Diamond G^i)) )\\
 =&\begin{cases}
 W_0 = Q,\ \mathcal{V}=\{\},\ \mathcal{K}=\{\}\\
-while\ W_{k+1}\not= W_k\\
+while\ W_{k+1}\not= W_k:\\
 \ \ \ \ Z_{k+1}^i = Z\cup (B\cap G^i\cap \text{Pre}_{\sharp, \forall}^{T,U}(W_k))\\
 \ \ \ \ [X^i, \mathcal{C}^i]= \text{Win}_{\sharp,\forall}^{T,U} (B\mathbf{\ U\ }Z_{k+1}^i), \forall i \in I\\
 \ \ \ \ W_{k+1} = \bigcap_{i\in I} X^i,\ \mathcal{K}(i) = \mathcal{C}^i, \forall i\in I\\
@@ -167,11 +166,11 @@ X_{\infty}=X_k,\ \mathcal{C} = (\mathcal{V},\mathcal{K},x)
 &[Z_{\infty},\mathcal{C}]=\text{PGPre}_{\exists,\forall}^{T,U} (Z,B)\\
 =&\begin{cases}
 Z_{\infty} = Z,\ \mathcal{V} = \{\},\ \mathcal{K}=\{\}, k = 1\\
-for\ U\in 2^U\\
-\ \ for\ G\in G(U)\\
+for\ U\in 2^U:\\
+\ \ for\ G\in G(U):\\
 \ \ \ \ \ \  [V_k,\mathcal{C}_k]=Inv_{\exists}^{U,G}(Z_{\infty},B)\\
 \ \ \ \ \ \ Z_{\infty} = Z_{\infty} \cup V_k\\
-\ \ \ \ \ \ \mathcal{V}(k)=V_k,\ \mathcal{K}(k)=\mathcal{C}_k,\ k=k+1\\
+\ \ \ \ \ \ \mathcal{V}(k)=V_k,\ \mathcal{K}(k)=\mathcal{C}_k,\ k++\\
 \mathcal{C} = (\mathcal{V},\mathcal{K},x)
 \end{cases}\label{win_pgpre}
 \end{align}
@@ -184,7 +183,7 @@ D(q)=\{u\in U: \forall (q_2\ s.t.\ (q,u,q_2)),\ q_2\in V\}\\
 \end{cases}\label{eqn:pre}\\
 &[Y_{\infty},\mathcal{C}]=\text{Inv}_{\exists}^{D,G}(Z,B)\\
 =&\begin{cases}Y_0 = (G\cap B) - Z\\
-while\ Y_{k+1}\not=Y_k\\
+while\ Y_{k+1}\not=Y_k:\\
 \ \ \ \ Y_{k+1} = Y_k\cap \text{Pre}_{\exists,\forall}^{T,D}(Y_k\cup Z)\\
 [-,\mathcal{C}] = Pre^{T,D}_{\exists,\forall}(Y_k\cup Z)\\
 Y_{\infty} = Y_k,\ \mathcal{C}\ restricted\ to\ Y_{\infty}
@@ -200,26 +199,30 @@ eventually reached, which is why $Y_\infty$ is a winning set for $B\mathbf{\ U\ 
 
 
 \begin{definition} \textbf{Execution of controllers}:
-	In the execution time, a controller $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ acts as a function that maps the current state $ u(t) $ to a set of feasible actions according to the following rules:
+	In the execution time, a controller $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ acts as a function that maps the current state $ s(t) $ to a set of feasible actions according to the following rules:
 	
+	(i) update internal variable $ x $: 
+	
+	For controllers returned by \eqref{win_phi},\eqref{win_until},\eqref{win_inv}:
 	\begin{displaymath}
-	\mathcal{C}(u(t)) = \mathcal{K}(x(t))(u(t))
+	x(t) =	\begin{cases}
+	\text{arg}\min_{x\leq x(t-1)}\{u(t)\in \mathcal{V}(x)\},\ \ if\ x(t-1)\not=0\\
+	\text{arg}\min_{x}\{u(t),\ \ otherwise
+	\end{cases}
 	\end{displaymath}
-\quad	For controllers returned by \eqref{win_phi},\eqref{win_until},\eqref{win_inv}:
+	\quad For controllers returned by \eqref{win_interm}:
 	\begin{displaymath}
-		x(t) =	\begin{cases}
-		\text{arg}\min_{x\leq x(t-1)}\{u(t)\in \mathcal{V}(x)\},\ \ if\ x(t-1)\not=0\\
-		\text{arg}\min_{x}\{u(t),\ \ otherwise
-		\end{cases}
+	x(t) = \begin{cases}
+	x(t-1)+1 \mod\vert\mathcal{K}\vert,\ \ if\ u(t)\in \mathcal{V}(x(t-1)+1)\\
+	x(t-1),\ otherwise
+	\end{cases}
 	\end{displaymath}
-\quad For controllers returned by \eqref{win_interm}:
+	(ii) pass the input $ s(t) $ to sub-controllers of $ \mathcal{C} $ based on internal variable $ x(t) $:
 	\begin{displaymath}
-		x(t) = \begin{cases}
-		x(t-1)+1 \mod\vert\mathcal{K}\vert,\ \ if\ u(t)\in \mathcal{V}(x(t-1)+1)\\
-		x(t-1),\ otherwise
-		\end{cases}
+	\mathcal{C}(s(t)) = \mathcal{K}(x(t))(s(t))
 	\end{displaymath}
-	Namely, internal variable $ x(t) $ will be updated each time $ \mathcal{C} $  is called. The output action sets of $ \mathcal{C} $ is equal to the output of the $ x(t)^{th} $ sub-controller in the partially ordered set $ \mathcal{K} $ given the input $ u(t) $, i.e. $ \mathcal{K}(x(t))(u(t)) $. The same process will happen recursively in the execution of $ \mathcal{K}(x(t))(u(t)) $, until a simple controller is reached. 
+
+	Namely, internal variable $ x(t) $ will be updated firstly each time $ \mathcal{C} $  is called. The output action sets of $ \mathcal{C} $ is equal to the output of the $ x(t)^{th} $ sub-controller in the partially ordered set $ \mathcal{K} $ given the input $ u(t) $, i.e. $ \mathcal{K}(x(t))(u(t)) $. The same process will happen recursively in the execution of $ \mathcal{K}(x(t))(u(t)) $, until a simple controller is reached. 
 	%Assume the current state is $ s_t $. Each time a controller is called with input $ s_t $, the controller updates its internal variable according to $ s_t $, the winning sets of sub-controllers and the current value of internal variable. Then, the sub-controller indexed by the new value of internal variable would be called with $ s_t $ as input. Repeat the above procedure inductively until a simple controller is reached, which returns the set of feasible actions for $ s_t $. \label{ref:cont}
 \end{definition}
 
@@ -374,7 +377,7 @@ Next, $ Y $ and $ \mathcal{C} $ assume that  the winning set and controller resu
 Y_0 = Y\cup (\Delta Z\cap G \cap B)\\
 \Delta Y_0 = Q - (Y_0 \cup \widehat{Z})\\
 T_0  = T(\mathcal{C})\cup E_0\\
-while \ Y_{k+1}\not= Y_k\\
+while \ Y_{k+1}\not= Y_k:\\
 \ \ \ \ \Delta Y_{k+1} = \text{Pre}_{\forall,\exists}^{T_k,D}(\Delta Y_k) \\
 \ \ \ \ T_{k+1} = T_{k}\backslash (\Delta Y_{k+1},*,*)\\
 \ \ \ \ Y_{k+1} = Y_k- \Delta Y_{k+1}\\
@@ -412,12 +415,12 @@ Assume that $ Z $ and $ \mathcal{C} = (\mathcal{V},\mathcal{K},x) $ are the winn
 &[\widehat{Z}_{\infty},\widehat{\mathcal{C}}]=\overline{\text{PGPre}}_{\exists,\forall}^{T,U} (\mathcal{C},Z,\widehat{Z},U_d)\\
 &= \begin{cases}
 Z_{\infty} = Z,\ \widehat{Z}_{\infty}=\widehat{Z},\ \widehat{\mathcal{V}}=\{\},\ \widehat{\mathcal{K}}=\{\},\ k = 1\\
-for\ U\in 2^U\\
-\ \ for\ G\in G(U)\\
+for\ U\in 2^U:\\
+\ \ for\ G\in G(U):\\
 \ \ \ \ \ \ if\ U_d\cap U = \emptyset:\\
 \ \ \ \ \ \ \ \  [\widehat{\mathcal{V}}(k),\widehat{\mathcal{K}}(k)]=\overline{Inv}_{\exists}^{U,G}(\mathcal{V}(k),\mathcal{K}(k),Z_\infty, \widehat{Z}_\infty)\\
 \ \ \ \ \ \ else:\ \widehat{\mathcal{V}}(k)=\emptyset, \widehat{\mathcal{K}}(k) = \emptyset\\
-\ \ \ \ \ \  Z_\infty = Z_\infty\cup \mathcal{V}(k),\ \widehat{Z}_{\infty} = \widehat{Z}_{\infty} \cup \widehat{\mathcal{V}}(k),\ k=k+1\\
+\ \ \ \ \ \  Z_\infty = Z_\infty\cup \mathcal{V}(k),\ \widehat{Z}_{\infty} = \widehat{Z}_{\infty} \cup \widehat{\mathcal{V}}(k),\ k++\\
 Remove\ all\ \emptyset\ in\ \widehat{\mathcal{V}}\ and \ \widehat{\mathcal{K}},\ \ 
 \widehat{\mathcal{C}} = (\widehat{\mathcal{V}},\widehat{\mathcal{K}},x)
 \end{cases}\label{patch_pg}
@@ -465,7 +468,7 @@ Z_{\infty}^i = Z\cup (B\cap G^i\cap \text{Pre}_{\exists, \forall}^{T,U}(W_0))\\
 \widehat{Z}_{0}^i = \widehat{Z}\cup (B\cap G^i\cap \text{Pre}_{\exists, \forall}^{T,U-U_d}(W_0))\\
 [X^i_0,\widehat{\mathcal{K}}(i)] = \overline{\text{Win}}^{T,U}_{\exists,\forall, (B\mathbf{U}Z)}(\widehat{\mathcal{K}}(i),Z_\infty^i,\widehat{Z}_0^i, U_d)\\
 \widehat{W}_{0} = \bigcap_{i\in I} X^i_0\\
-while\ \widehat{W}_{k+1}\not=\widehat{W}_k\\
+while\ \widehat{W}_{k+1}\not=\widehat{W}_k:\\
 \ \ \ \ \widehat{Z}_{k+1}^i = \widehat{Z} \cup (B\cap G^i\cap \text{Pre}_{\exists, \forall}^{T,U-U_d}(\widehat{W}_k))\\
 \ \ \ \ [X^i_{k+1},\widehat{\mathcal{K}}(i)]=\overline{\text{Win}}^{T,U}_{\exists,\forall,(B\mathbf{U}Z)}(\widehat{\mathcal{K}}(i),\widehat{Z}_k^i,\widehat{Z}_{k+1}^i, U_d)\\
 \ \ \ \ \widehat{W}_{k+1} = \bigcap_{i\in I} X^i_{k+1}\\
@@ -496,13 +499,13 @@ Assume that $ W $ and $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ are the winnin
 =&\begin{cases}\widehat{V}_{\text{inv}} = \overline{\text{Win}}^{T,U}_{\exists, \forall,(\psi)} (\mathcal{C}_{Inv},\emptyset,\emptyset,U_d)\\
 Restrict~ synthesis~ to~ \widehat{V}_{\text{inv}}\\
 \widehat{V}_0 = \emptyset,\ \mathcal{V}(0)=\emptyset,\ \widehat{\mathcal{V}}=\{\},\ \widehat{\mathcal{K}}=\{\}\\
-For~k\in \{0,1,2,...,n-1\}\ and\ \widehat{V}_{k+1}\not=\widehat{V}_k:\\
+for~k\in \{0,1,2,...,n-1\}\ and\ \widehat{V}_{k+1}\not=\widehat{V}_k:\\
 \ \ \ \ \widehat{Z}_{k+1}^1 =  \overline{\text{Pre}}_{\exists,\forall}^{T,U}(\mathcal{K}_1(k+1),\mathcal{V}(k)-\widehat{V}_k,U_d)\\
 \ \ \ \ \widehat{Z}_{k+1}^2 = \overline{\text{PGPre}}_{\exists,\forall}^{T,U} ( \mathcal{K}_2(k+1),\mathcal{V}(k), \widehat{V}_k,U_d)\\
 \ \ \ \ Z_{k+1}=\mathcal{V}_1(k+1)\cup\mathcal{V}_2(k+1),\  \widehat{Z}_{k+1} = \widehat{Z}_{k+1}^1\bigcup\widehat{Z}_{k+1}^2  \\
 \ \ \ \ [\widehat{V}_{k+1},\widehat{\mathcal{K}}(k+1)]=\overline{\text{Win}}_{\exists,\forall,(\psi)}^{T, U}(\mathcal{K}(k+1),Z_{k+1},\widehat{Z}_{k+1},U_d)\\
 \ \ \ \ \widehat{\mathcal{V}}(k+1)=\widehat{V}_{k+1}\\
-For~ k\geq n\ and\ \widehat{V}_{k+1}\not=\widehat{V}_k:\\
+for~ k\geq n\ and\ \widehat{V}_{k+1}\not=\widehat{V}_k:\\
 \ \ \ \ \widehat{Z}_{k+1}^1 =  \overline{\text{Pre}}_{\exists,\forall}^{T,U}(\mathcal{K}_1(n),\mathcal{V}(n-1)-\widehat{V}_k,U_d)\\
 \ \ \ \ \widehat{Z}_{k+1}^2 = \overline{\text{PGPre}}_{\exists,\forall}^{T,U} ( \mathcal{K}_2(n),\mathcal{V}(n-1), \widehat{V}_k,U_d)\\
 \ \ \ \ \widehat{Z}_{k+1} = \widehat{Z}_{k+1}^1\bigcup\widehat{Z}_{k+1}^2  \\
