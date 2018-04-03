@@ -327,7 +327,7 @@ In this section, we formally define the problem of interest. {\color{blue}it is 
 {\color{purple} Somewhere we should give the main steps of the solution also. I think one thing that would be important is to state clearly what can and cannot change in the structure of the controller when $U$ is modified. I guess it is not only a change of the transitions, like in the example, since in some cases the number of steps to convergence can be modified. But then what exactly remains invariant? Only the "depth" of the controller? } {\color{teal} I think basically everything could be changed in the patching operator.} {\color{purple} OK}
 
 \begin{problem}
-	Given an AFTS $ T = (Q,U,\rightarrow_T,G,AP,h_Q) $, an LTL specification $ \phi = \Square A \wedge \Diamond \Square B \wedge \left( \bigvee_{i\in I} \Square \Diamond R^i\right) $, the winning set $ W_{\phi} $ and controller $ \mathcal{C}_{\phi} $, if a set of actions $ U_d\subseteq U $ in $ T $ is unavailable, find the new winning set and a controller {\color{purple} } based on $ W_{\phi} $ and $ \mathcal{C}_{\phi} $.
+	Given an AFTS $ T = (Q,U,\rightarrow_T,G,AP,h_Q) $, an LTL specification $ \phi = \Square A \wedge \Diamond \Square B \wedge \left( \bigvee_{i\in I} \Square \Diamond R^i\right) $, the winning set $ W_{\phi} $ and controller $ \mathcal{C}_{\phi} $, if a set of actions $ U_d\subseteq U $ in $ T $ is unavailable, find the new winning set and a controller {\color{purple} with an algorithm that exploits the knowledge of $ W_{\phi} $ and $ \mathcal{C}_{\phi} $.} based on $ W_{\phi} $ and $ \mathcal{C}_{\phi} $.
 \end{problem}
 
 
@@ -352,7 +352,7 @@ Consider an AFTS $ T = (Q,U,\rightarrow_T,G,AP,h_Q) $ and {\color{blue} an} LTL 
 	(i) For any state $ s\in \widehat{W}_{\phi} $, if the system $ \widehat{T} $ starting from $ s $ could be controlled under an infinite sequence of actions and satisfy the specification, so is $ T $, since $ T $ can apply exactly the same sequence of actions and get the same trajectory. Hence $ s\in W_{\phi} $, for \eqref{win_phi} is sound and complete (See Lemma 13 in \cite{Nilsson2017}). Therefore $ \widehat{W}_{\phi}\subseteq W_{\phi} $. (ii) any control strategy in $ \widehat{T} $ works in $ T $ by construction, which implies $ \widehat{\mu}_{\phi} \subseteq \mu_{\phi}$.
 \end{proof}
 
-If $ C_{\phi} $ is implemented to contain all the possible control strategies, Theorem \ref{thm: 1} says that $ \mathcal{C}_{\phi} $ should contain all the information of $ \widehat{\mathcal{C}}_{\phi} $, which implies there is a possibility to obtain $ \widehat{\mathcal{C}}_{\phi} $ by modifying the existing controller.
+If $ C_{\phi} $ is implemented to contain all the possible control strategies, Theorem \ref{thm: 1} says that $ \mathcal{C}_{\phi} $ should contain all the information of $ \widehat{\mathcal{C}}_{\phi} $, which implies there is a possibility to obtain $ \widehat{\mathcal{C}}_{\phi} $ by modifying the existing controller. {\color{purple} I have mixed feeling about this last remark; "contain all the information" is a vague notion}
 
 
 %From the perspective of implementation, a controller $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ is a data structure that organizes simple controllers in a hierarchy way. The partially ordered sets $ \mathcal{V} $  and internal variable are only used during execution. So the basic step for patching a controller is to modify its simple controllers, which are discussed in Section \ref{sec:patching_simple}. 
@@ -360,14 +360,14 @@ If $ C_{\phi} $ is implemented to contain all the possible control strategies, T
 \subsection{Patching Simple Controllers}
 \label{sec:patching_simple}
 \begin{definition}
-	Given a simple controller $ \mathcal{C} $ over an AFTS $T = (Q,U,\rightarrow_T, G,AP,h_Q) $, a \textbf{finite transition system} (FTS) corresponding to $ \mathcal{C} $ is $T(\mathcal{C}) = (Q_C, U_C, \rightarrow_{T(\mathcal{C})})$, where $ Q_C $ is the set of states that appear in $ \rightarrow_{T(\mathcal{C})} $, $ U_C=\{u: u\in \mathcal{C}(s), \forall s\in W\} $, $ \rightarrow_{T(\mathcal{C})} =\{(s_1,u,s_2)\in \rightarrow_T: s_1\in W,s_2\in Q, u\in \mathcal{C}(s_1)\} $. \label{def:T_C}
+	Given a simple controller $ \mathcal{C} $ over an AFTS $T = (Q,U,\rightarrow_T, G,AP,h_Q) $, a \textbf{finite transition system} (FTS) corresponding to $ \mathcal{C} $ is $T(\mathcal{C}) = (Q_C, U_C, \rightarrow_{T(\mathcal{C})})$ {\color{purple} I'm not sure $T(C)$ is the best notation, since $T$ is usually our AFTS; A(C)?}, where $ Q_C $ is the set of states that appear in $ \rightarrow_{T(\mathcal{C})} $, $ U_C=\{u: u\in \mathcal{C}(s), \forall s\in W\} $, $ \rightarrow_{T(\mathcal{C})} =\{(s_1,u,s_2)\in \rightarrow_T: s_1\in W,s_2\in Q, u\in \mathcal{C}(s_1)\} $. \label{def:T_C}
 \end{definition}
 
 \begin{remark}
 	By Definition \ref{def:T_C}, $ T(\mathcal{C}) $ can be easily constructed from the simple controller $ \mathcal{C} $ and the AFTS $ T $. Conversely, $ \mathcal{C} $ can be constructed from $ T(\mathcal{C}) $ by $ \mathcal{C} = \{(s,D(s)):s\in W,D(s)\not=\emptyset\} $, where $ D(s)=\{u:(s,u,s_2)\in \rightarrow_{T(\mathcal{C})}\} $.
 \end{remark}
 {\color{blue} don't abbreviate "not", write "do not", "does not", etc.}
-Due to the easy conversion between  $ \mathcal{C} $ and $ T(\mathcal{C}) $, we can modify a simple controller $ \mathcal{C} $ by modifying its corresponding FTS $ T(\mathcal{C}) $ and then converting $ T(\mathcal{C}) $ to $ \mathcal{C} $, with the advantages that $ T(\mathcal{C}) $ contains the necessary transition information, which $ \mathcal{C} $ doesn't have, and is easier to manipulate. 
+Due to the easy conversion between  $ \mathcal{C} $ and $ T(\mathcal{C}) $, we can modify a simple controller $ \mathcal{C} $ by modifying its corresponding FTS $ T(\mathcal{C}) $ and then converting $ T(\mathcal{C}) $ to $ \mathcal{C} $, with the advantages that $ T(\mathcal{C}) $ contains the necessary transition information, which $ \mathcal{C} $ doesn't have, and is easier to manipulate. {\color{purple} Not clear}
 
 Assume the AFTS $ T = (Q,U,\rightarrow_T, G, AP, h_Q) $ is the abstraction of the system that needs to be controlled. Assume that $ T(\mathcal{C})=(Q_{\mathcal{C}}, U_{\mathcal{C}},\rightarrow_{T(\mathcal{C})})$ is a transition system corresponding to a simple controller $ \mathcal{C} $. 
 
