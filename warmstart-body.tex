@@ -438,11 +438,12 @@ Next, assume that $ Y $ and $ \mathcal{C} $ are the winning set and controller r
 Y_0 = Y\cup (\Delta Z\cap G \cap B)\\
 \Delta Y_0 = Q - (Y_0 \cup \widehat{Z})\\
 T_0  = T(\mathcal{C})\cup E_0\\
-{\color{purple} k=0 }\\
+{\color{purple} k=0}\\
 while \ Y_{k+1}\not= Y_k:\\
 \ \ \ \ \Delta Y_{k+1} = \text{Pre}_{\forall,\exists}^{T_k,D}(\Delta Y_k) \\
 \ \ \ \ T_{k+1} = T_{k}\backslash (\Delta Y_{k+1},*,*)\\
 \ \ \ \ Y_{k+1} = Y_k- \Delta Y_{k+1}\\
+\ \ \ \ {\color{purple} k=0}\\
 \widehat{Y}=Y_k,\ T(\widehat{C}) = T_{k}
 \end{cases}\label{patch_inv}
 \end{align}
