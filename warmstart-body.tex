@@ -146,7 +146,7 @@ controller is, not necessarily a simple controller that has been constructed to 
 Given $\widehat{W} \subseteq W $, a simple controller $ \mathcal{C} $ \textbf{restricted to} $ \widehat{W} $ means that the domain of $ \mathcal{C} $ is restricted to $\widehat{W}$.
 
 \begin{definition}
-	For the AFTS $ T=\{Q,U,\rightarrow_T,G,AP,h_Q\} $, a \textbf{controller} $ \mathcal{C} $ for a winning set $ \text{Win}^T(\phi) $ is a tuple $ (\mathcal{V},\mathcal{K},x) $, where $ \mathcal{V} $ is a list of subsets of $ Q $, $ \mathcal{K} $ is a list of controllers or simple controllers, i.e. so-called sub-controllers of $ \mathcal{C} $, and $ x $ is an internal variable that saves the index of sub-controllers called last time.
+	For the AFTS $ T=\{Q,U,\rightarrow_T,G,AP,h_Q\} $, a \textbf{controller} $ \mathcal{C} $ for a winning set $ \text{Win}^T(\phi) $ is a tuple $ (\mathcal{V},\mathcal{K},x) $, where $ \mathcal{V} $ is a list of subsets of $ Q $, $ \mathcal{K} $ is a list of controllers or simple controllers, i.e. so-called {\color{purple} which we refer to as} sub-controllers of $ \mathcal{C} $, and $ x $ is an internal variable that saves the index of sub-controllers called last time. {\color{purple} Same remark as with the simple controllers: no need for a connection to winning sets here. Also, I still believe that the transition graph is lacking in this definition: without it, we don't know how to update $x$}
 	\label{def:cont}
 \end{definition}
  
