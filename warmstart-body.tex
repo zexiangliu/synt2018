@@ -42,7 +42,7 @@ The paper is organized as follows: In Section \ref{sec:pre}, we give the problem
 \label{sec:pre}
 \subsection{Notation}
 
-For two sets $ A $ and $ B $, the set difference is denoted by $ A-B $. A function or a map $ F: C\rightarrow D $ {\color{purple} corresponds to  the set} $ \{(c,F(c)):c\in C, F(c)\in D \} $.{\color{teal}A list $ \mathcal{V}=[x_1,...,x_n] $ is a totally ordered set, where $ \mathcal{V}(i) $ refers to its $ i $th-order element. To assign $ x_i $ to be the $ i $th element in	 $ \mathcal{V} $ is written as $ \mathcal{V}(i) = x_i $.} {\color{purple} Not sure it is really useful to define functions or maps here, the terms are barely used in the rest of the document (function x4, map x1)} 
+For two sets $ A $ and $ B $, the set difference is denoted by $ A-B $. A function or a map $ F: C\rightarrow D $ {\color{purple} corresponds to  the set} $ \{(c,F(c)):c\in C, F(c)\in D \} $. A list $ \mathcal{V}=[x_1,...,x_n] $ is a totally ordered set, where $ \mathcal{V}(i) $ refers to its $ i $th-order element. To assign $ x_i $ to be the $ i $th element in	 $ \mathcal{V} $, we write $ \mathcal{V}(i) = x_i $. %{\color{purple} Not sure it is really useful to define functions or maps here, the terms are barely used in the rest of the document (function x4, map x1)} 
 
 \subsection{Augmented Finite Transition Systems}
 
@@ -54,7 +54,7 @@ We consider plants modeled as augmented finite transition systems, a discrete st
 		$G$ by exclusively choosing actions from $U$. This restricts the behaviors allowed by the transition relation. Moreover, it is assumed that the $G$ is not invariant under the actions $U$ for the well-formedness of the definition (see \cite{Nilsson2017,Sun2014,Liu2014}).}
 \end{definition}
 
-A \emph{trajectory} of an AFTS is an infinite sequence $ s = \{s(n)\}_{n=0}^{\infty} $ of states such that for any two consecutive states $s(n), s(n+1)$ in the sequence, there is an action $a\in U$, such that $(s(n),a,s(n+a))\in \rightarrow_T$. Roughly speaking, control synthesis problem for an AFTS is to compute a function, i.e., control strategy, that restricts the possible actions at each time a state is visited so that only the desirable trajectories of the AFTS remain. A control strategy is formally defined next.
+A \emph{trajectory} of an AFTS $T$ is an infinite sequence $ s = \{s(n)\}_{n=0}^{\infty} $ of its states such that for any two consecutive states $s(n), s(n+1)$ in the sequence, there is an action $a\in U$, such that $(s(n),a,s(n+1))\in \rightarrow_T$. Roughly speaking, control synthesis problem for an AFTS is to compute a function, i.e., control strategy, that restricts the possible actions at each time a state is visited so that only the desirable trajectories of the AFTS remain. A control strategy is formally defined next.
 
 \begin{definition}
 	A \textbf{control strategy} for an AFTS is a partial function $ \mu:~(Q\times U)^*\times Q\rightarrow 2^U $ which maps the history of state-action pairs and the current state to a set of actions.
