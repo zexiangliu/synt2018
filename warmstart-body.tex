@@ -247,7 +247,7 @@ In the execution time, a controller $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ 
 		\text{arg}\min_{y}\{s\in \mathcal{V}(y)\},\ \ \text{otherwise}
 		\end{cases}
 		\end{displaymath}
-		\item  if $ \mathcal{C} $ is returned by \eqref{win_interm} {\color{purple} just $x \mod ..$? It seems that $x$ may remain constant with this definition, are you sure that this is correct?}:
+		\item  if $ \mathcal{C} $ is returned by \eqref{win_interm} {\color{purple} just $x \mod ..$? It seems that $x$ may remain constant with this definition, are you sure that this is correct?}{\color{teal} there's $ +1 $ after mod}:
 		\begin{displaymath}
 		x^+ = \begin{cases}
 		x\mod\vert\mathcal{K}\vert + 1,\ \ \text{if}\ s\in \mathcal{V}(x+1)\\
@@ -309,7 +309,7 @@ In the execution time, a controller $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ 
 		\label{fig:xupdate}
 	\end{figure}
 	
-	$ \mathcal{C} $, $ \mathcal{C}_1^0 $ and $ \mathcal{C}_i^1 $ are returned by \eqref{win_phi}, \eqref{win_interm} and \eqref{win_until}. $ \mathcal{C}_i^{2,k} $ are simple controllers returned by \eqref{eqn:pre}. Each time $ \mathcal{C} $ is called, $ (x,x^0_1,x^1_1,x^1_2) $ is updated according to Definition \ref{def:exec}, and one of the simple controllers in $ \mathcal{C} $ is reached, which determines the set of feasible control inputs. The update rules for internal variables in this example \ref{def:exec} {\color{purple} example \ref{ex:exec}} can be illustrated by the transition graph in Figure \ref{fig:xupdate}, which is consistent with Definition \ref{def:exec}. %is determined by $ \mathcal{C}^{2,k}_{x^1_{k}} (s)$ (if $ x^0 = k  $).
+	$ \mathcal{C} $, $ \mathcal{C}_1^0 $ and $ \mathcal{C}_i^1 $ are returned by \eqref{win_phi}, \eqref{win_interm} and \eqref{win_until}. $ \mathcal{C}_i^{2,k} $ are simple controllers returned by \eqref{eqn:pre}. Each time $ \mathcal{C} $ is called, $ (x,x^0_1,x^1_1,x^1_2) $ is updated according to Definition \ref{def:exec}, and one of the simple controllers in $ \mathcal{C} $ is reached, which determines the set of feasible control inputs. The update rules for internal variables in this example \ref{ex:exec} can be illustrated by the transition graph in Figure \ref{fig:xupdate}, which is consistent with Definition \ref{def:exec}. %is determined by $ \mathcal{C}^{2,k}_{x^1_{k}} (s)$ (if $ x^0 = k  $).
 	
 	For example, initialize the internal variables to be $ (1,1,1,1) $ {\color{purple} Is this initialization just an example, or is it compulsory to initialize the variables with these values?}. Let's start from $ s_1 $ and run $ \mathcal{C}(s_1) $: The updated internal variables would be $ (1,2,1,2) $, after $ \mathcal{C}(s_1), \mathcal{C}^0_1(s_1)$, $ \mathcal{C}^1_2(s_1) $ and $ \mathcal{C}^{2,1}_2(s_1) $ are called recursively. The set of feasible actions is $ \{b\}= \mathcal{C}^{2,1}_2(s_1) $. Under action $ b $, the system in Figure \ref{fig:eg1} transits to $ s_2 $. Now run $ \mathcal{C}(s_2) $. The internal variable would be updated to $ (1,2,1,1) $. The set of feasible actions is$ \{d,f\}=\mathcal{C}^{2,1}_1(s_2) $. Let's keep doing this and always take the first action in the output of $ \mathcal{C} $ at each execution. The trajectory under control of $\mathcal{C} $ would be $ s_1,s_2,s_4,s_2,s_1,...$, where the sequence of actions is $ b,d,e,c,... $. The trajectory visits $ A $ and $ B $ in turn, satisfying the given specification.
 	
