@@ -54,8 +54,10 @@ We consider plants modeled as augmented finite transition systems, a discrete st
 		$G$ by exclusively choosing actions from $U$. This restricts the behaviors allowed by the transition relation. Moreover, it is assumed that $G$ is not invariant under the actions $U$ for the well-formedness of the definition (see \cite{Nilsson2017,Sun2014,Liu2014}).}
 \end{definition}
 
-A \emph{trajectory} of an AFTS $T$ is an infinite sequence $ s = \{s(n)\}_{n=0}^{\infty} $ 
-{\color{purple} an infinite sequence $\{s(n)\}_{n=0}^{\infty}$ (I wouldn't introduce an $s$ here for the whole sequence since later we use several times the variable $s$ to refer to a single state)}
+A \emph{trajectory} of an AFTS $T$ is an infinite sequence 
+{\color{purple} an infinite sequence $\{s(n)\}_{n=0}^{\infty}$ 
+	%(I wouldn't introduce an $s$ here for the whole sequence since later we use several times the variable $s$ to refer to a single state)
+}
 of its states such that for any two consecutive states $s(n), s(n+1)$ in the sequence, there is an action $a\in U$, such that $(s(n),a,s(n+1))\in \rightarrow_T$. 
 
 \subsection{Linear Temporal Logic}
