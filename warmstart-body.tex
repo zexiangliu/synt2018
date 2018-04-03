@@ -442,7 +442,7 @@ $ \widehat{Y} $ and $ \widehat{C} $ returned by \eqref{patch_inv} are the same a
 
 Given a simple controller $ \mathcal{C} $ and new synthesis settings, both \eqref{patch_pre} and \eqref{patch_inv} try to find $ T(\widehat{\mathcal{C}}) $ inside $ T(\mathcal{C}) $. However, if we re-synthesize the new simple controller from scratch, \eqref{eqn:pre} and \eqref{win_inv} would try to find $ T(\mathcal{C}) $ in the whole AFTS $ T $, which roughly needs more computation cost.
 
-\subsection{Patching Controllers}
+\subsection{Patching General Controllers}
 
 %\begin{assumption}
 %	A fixed-point patching operators has access to outputs and inputs of the corresponding fixed-point operator, as well as all the intermediate winning sets and controllers of the fixed-point operators generated at each iterative step. 
@@ -469,7 +469,7 @@ Remove\ all\ \emptyset\ in\ \widehat{\mathcal{V}}\ and \ \widehat{\mathcal{K}},\
 \end{align}
 
 \begin{theorem}
-	$ \widehat{Z}_\infty $ and $ \widehat{C} $ returned by \eqref{patch_pg} would be the same as outputs resulting from $ \text{PGPre}_{\exists, \forall}^{T,\widehat{U}}(\widehat{Z},B)$.	
+	$ \widehat{Z}_\infty $ and $ \widehat{C} $ returned by \eqref{patch_pg} are the same as outputs resulting from $ \text{PGPre}_{\exists, \forall}^{T,\widehat{U}}(\widehat{Z},B)$.	
 \end{theorem}
 
 \begin{proof}
@@ -498,7 +498,7 @@ for~k\geq n\ and\ \widehat{X}_{k+1}\not=\widehat{X}_k:	\\
 The above patch algorithm has two parts: part one modifies the existing sub-controllers for $ k\leq n $; part two adds new sub-controllers by modifying the $ n $th existing sub-controller until convergence. The winning set $ \widehat{X}_{\infty} $, and controller $ \widehat{\mathcal{C}} $ would be equal to the outputs of \eqref{win_until} with input parameters $ \widehat{U},B,\widehat{Z} $. 
 
 \begin{theorem}
-	$ \widehat{X}_\infty $ and $ \widehat{C} $ returned by \eqref{patch_until} would be the same as outputs resulting from $ \text{Win}_{\exists,\forall}^{T,\widehat{U}}(B\mathbf{\ U\ }\widehat{Z}). $\label{thm:interm}	
+	$ \widehat{X}_\infty $ and $ \widehat{C} $ returned by \eqref{patch_until} are the same as outputs resulting from $ \text{Win}_{\exists,\forall}^{T,\widehat{U}}(B\mathbf{\ U\ }\widehat{Z}). $\label{thm:interm}	
 \end{theorem}
 
 \begin{proof}
@@ -527,7 +527,7 @@ while\ \widehat{W}_{k+1}\not=\widehat{W}_k:\\
 \end{align}
 
 \begin{theorem}
-	$ \widehat{W}_\infty $ and $ \widehat{C} $ returned by \eqref{patch_until} would be the same as outputs resulting from $\text{Win}_{\exists,\forall}^{T,\widehat{U}}((B\mathbf{\ U\ }\widehat{Z})\vee \Square(B\wedge (\bigwedge_{i\in I} \Diamond R^i)) $. \label{thm:phi}	
+	$ \widehat{W}_\infty $ and $ \widehat{C} $ returned by \eqref{patch_until} are the same as outputs resulting from $\text{Win}_{\exists,\forall}^{T,\widehat{U}}((B\mathbf{\ U\ }\widehat{Z})\vee \Square(B\wedge (\bigwedge_{i\in I} \Diamond R^i)) $. \label{thm:phi}	
 \end{theorem}
 
 
@@ -581,7 +581,9 @@ The same as \eqref{patch_until}, the patching algorithm has two parts: one for m
 
 \begin{proof}
 	The correctness of $ \widehat{V}_{\text{inv}} $ is guaranteed by \eqref{patch_interm}.
-	For $ k\leq n $, the correctness of $ \widehat{V}_{k} $ is guaranteed by \eqref{patch_pre}, \eqref{patch_pg} and \eqref{patch_interm}. Assume that $ V^t_k $ and $ V_k $ are intermediate results in \eqref{win_phi} with action space $ U-U_d $ and $ U $ respectively. For $ k > n$, the correctness is guaranteed by  \eqref{patch_pre}, \eqref{patch_pg} and \eqref{patch_interm} as long as $ V^t_{k} \subseteq V_n $. We can prove it in the same way as the proof of \eqref{patch_until}. For simplicity, we can apply Theorem 1 instead:  Assume that $ V_k^t $ converges to $ V_{\infty}^t $ and $ V_k $ converges to $ V_{\infty} $. By Theorem \ref{thm: 1}, we have $ V^t_{\infty}\subseteq V_{\infty} = V_n $. Next, prove that $ \{V^t_k\} $ is a monotonic increasing sequence of sets by induction. $ \emptyset = V^t_0 \subseteq V^t_1 $. Assume that $ V^t_{k-1}\subseteq V^t_{k}$. Then it's not hard to see that $ Z^t_k \subseteq Z^t_{k+1} $, and $ V^t_k = \text{Win}_{\exists,\forall}^{T} ((B \mathbf{\ U\ }Z_{k}) \vee \Square (B\wedge ( \bigwedge_{i\in I}\Diamond R^i))\subseteq \text{Win}_{\exists,\forall}^{T} ((B \mathbf{\ U\ }Z_{k+1}) \vee \Square (B\wedge ( \bigwedge_{i\in I}\Diamond R^i))=V^t_{k+1} $ (this must be true otherwise \eqref{patch_interm} can't be correct). So $ V^t_k \subseteq V_n, \forall k $. 
+	For $ k\leq n $, the correctness of $ \widehat{V}_{k} $ is guaranteed by \eqref{patch_pre}, \eqref{patch_pg} and \eqref{patch_interm}. Assume that $ V^t_k $ and $ V_k $ are intermediate results in \eqref{win_phi} with action space $ U-U_d $ and $ U $ respectively. For $ k > n$, the correctness is guaranteed by  \eqref{patch_pre}, \eqref{patch_pg} and \eqref{patch_interm} as long as $ V^t_{k} \subseteq V_n $. We can prove it in the same way as the proof of \eqref{patch_until}.
+    {\color{blue}What is theorem 1?}
+    For simplicity, we can apply Theorem 1 instead:  Assume that $ V_k^t $ converges to $ V_{\infty}^t $ and $ V_k $ converges to $ V_{\infty} $. By Theorem \ref{thm: 1}, we have $ V^t_{\infty}\subseteq V_{\infty} = V_n $. Next, prove that $ \{V^t_k\} $ is a monotonic increasing sequence of sets by induction. $ \emptyset = V^t_0 \subseteq V^t_1 $. Assume that $ V^t_{k-1}\subseteq V^t_{k}$. Then it's not hard to see that $ Z^t_k \subseteq Z^t_{k+1} $, and $ V^t_k = \text{Win}_{\exists,\forall}^{T} ((B \mathbf{\ U\ }Z_{k}) \vee \Square (B\wedge ( \bigwedge_{i\in I}\Diamond R^i))\subseteq \text{Win}_{\exists,\forall}^{T} ((B \mathbf{\ U\ }Z_{k+1}) \vee \Square (B\wedge ( \bigwedge_{i\in I}\Diamond R^i))=V^t_{k+1} $ (this must be true otherwise \eqref{patch_interm} can't be correct). So $ V^t_k \subseteq V_n, \forall k $. 
 	
 \end{proof}
 
@@ -618,16 +620,17 @@ $ \widehat{\mathcal{C}}^{2,1}_3 = \{(s_1,\{a,b\}),(s_2,\{c,f\}),(s_3,\{g,h\})\} 
 
 Let the system start from $ s_1 $ and initialize internal variables as $ (1,1,1,1) $. Only one trajectory is available under control of $\widehat{\mathcal{C}} $, i.e. $ s_1,s_2,s_3,s_2,s_1,...$, where the sequence of actions is $ b,f,g,c,... $ according to the controller execution rules in Definition \ref{def:exec}. The trajectory doesn't visit $ s_4 $, for the system isn't able to jump to $ A $ from $ s_4 $ after action $ e $ is removed.
 
-\subsection{Case study: 1D Hopping Robot}
+\subsection{Case study: 1D Hopping {\color{purple} Walking} Robot}
 
 \begin{figure}
 	\centering
 	\includegraphics[width=0.8\linewidth]{pic/hop_rob}
-	\caption{Hopping robots with point foot on a ground with holes. {\color{purple} Remark: the linear-inverted pendulum model assumes that the center of mass remains }}
+	\caption{Hopping {\color{purple} Simple model of one-legged 1D} robots with point foot {\color{purple} walking} on a ground with holes. {\color{purple} Remark: the linear-inverted pendulum model assumes that the center of mass remains at a fixed height, so this figure can be a bit misleading. But so is the term "hopping", 
+    so maybe we should just call it "1D walking robot".}}
 	\label{fig:hoprob}
 \end{figure}
 
-
+{\color{purple} We consider a model of one-legged 1D walking robot moving on a straight line, called the Linear Inverted Pendulum Model (LIPM, see []). This is a very simplified model of dynamics of a walking robot, but it is used by many algorithms of bipedal walking control (e.g. []). It consists in a point-mass robot with a massless leg moving along a line at a constant height above the ground. We do not restrict the extension of the leg nor the velocity of the leg motion (the replacement of the foot is instantaneous). The dynamics of the model are: }
 Consider a hopping robot moving in a straight line. The robot model is approximated by  Linear Inverted Pendulum Model (LIPM) as follows:
 \begin{align}
 \begin{bmatrix}
@@ -643,7 +646,7 @@ v
 0\\-g/h_0
 \end{bmatrix} u \label{eqn: model}
 \end{align}
-where $x$ is the center of mass (CoM) of the robot; $v$ is the velocity of CoM and $ u $ is position that the robot foot will step on. 
+where $x$ is the {\color{purple} horizontal position of the} center of mass (CoM) of the robot; $v$ is the velocity of CoM and $ u $ is {\color{purple} the horizontal position of the foot.} that the robot foot will step on. 
 
 The state space $ Q = [-2.5,2.5]\times [-4,4] $ with action space $ U = [-3.5,3.5] $. Discretize $ Q $ and $ U $ uniformly with grid size $ 0.1 $ and $ 0.2 $, and compute the transitions between discretized grids over-approximately  using the method described in \cite{Liu2014,Sun2014}. Finally we get a AFTS with states indexed $ [1:4000] $, actions $ [1:35] $ and $ 187594 $ valid transitions, which is the abstraction of the hopping robot. 
 
