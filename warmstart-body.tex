@@ -131,14 +131,14 @@ For a given LTL specification, one can talk about the ``best'' control strategy 
 and the set of initial states for which such a strategy is defined.
 
 \begin{definition}
-	The \textbf{winning set} of the specification $ \phi $ over an AFTS $T = \{Q,U,\rightarrow_T,G,AP,h_Q\}$, written as $ W_{\phi} $, is the largest subset of $ Q $ such that if the system $ T $ is initially in $ W_{\phi} $, specification can be enforced.
+	The \textbf{winning set} of the specification $ \phi $ over an AFTS $T = \{Q,U,\rightarrow_T,G,AP,h_Q\}$, written as $ W_{\phi} $, is the largest subset of $ Q $ such that if the system $ T $ is initially in $ W_{\phi} $, the specification can be enforced.
 \end{definition}
 
 Note that a control strategy as in definition \ref{def:cs} can require infinite memory. However for LTL specifications, it is known that there exists a finite memory control strategy corresponding to the winning set. In particular, for the specifications of the form \eqref{phi}, we define a data structure, which we call \emph{controller}, to implement a control strategy in a specific way. This data structure will be crucial for the patching algorithms developed
 {\color{purple} in Section~\ref{sec:method}}.
 
 \begin{definition}
-	A \textbf{simple controller} for a winning set $ W $ over an AFTS $ T=\{Q,U,\rightarrow_T,G,AP,h_Q\} $ is a function $ \mathcal{C}: $ W $ \rightarrow 2^U $, i.e. a memoryless controller. A simple controller maps the current state to a set of actions under which the specification in the winning set remains guaranteed.
+	A \textbf{simple controller} for a winning set $ W $ over an AFTS $ T=\{Q,U,\rightarrow_T,G,AP,h_Q\} $ is a function $ \mathcal{C}: $ W $ \rightarrow 2^U $, i.e. a memoryless controller. A simple controller maps the current state to a set of actions under which the specification in the winning set remains guaranteed. {}
 	\label{def:simp}
 \end{definition}
 
