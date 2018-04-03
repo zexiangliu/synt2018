@@ -216,30 +216,35 @@ The winning sets {\color{purple} resulting from} \eqref{win_interm}, \eqref{win_
 %all the fixed points are ultimately defined in terms of $\text{Pre}_{\exists,\forall}^{T,U}$, so it is enough to extract control strategies during calls to this operator and map the results into higher-level fixed points together with internal variables that control a hierarchy of partial reachability objectives.}
 
 \begin{definition} \textbf{Execution of controllers}:
-	In the execution time, a controller $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ acts as a function that maps the current state to a set of feasible actions. Given the current state $ s(t) $. the output $ \mathcal{C}(s) $ is determined in two steps:
-	
-	(i) update the internal variable $ x $ of $ \mathcal{C} $: 
-
-	\quad If $ \mathcal{C} $ is returned by \eqref{win_phi},\eqref{win_until},\eqref{win_inv}:
-	\begin{displaymath}
-	x^+ =	\begin{cases}
-	\text{arg}\min_{y\leq x}\{s\in \mathcal{V}(y)\},\ \ if\ x\not=0\\
-	\text{arg}\min_{y}\{s\in \mathcal{V}(y)\},\ \ otherwise
-	\end{cases}
-	\end{displaymath}
-	\quad If $ \mathcal{C} $ is returned by \eqref{win_interm}:
-	\begin{displaymath}
-	x^+ = \begin{cases}
-	x+1 \mod\vert\mathcal{K}\vert,\ \ if\ s\in \mathcal{V}(x+1)\\
-	x,\ otherwise
-	\end{cases}
-	\end{displaymath}
+In the execution time, a controller $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ acts as a function that maps the current state in $ Q $ to a set of feasible actions in $ U $, for the AFTS $ T = (Q,U,\rightarrow_T, G,AP,h_Q)$. Given the current state $ s $, the output $ \mathcal{C}(s) $ is determined in two steps:
+\begin{itemize}
+	\item[(i)] update the internal variable $ x $ of $ \mathcal{C} $: 
+	\begin{itemize}
+		\item 	if $ \mathcal{C} $ is returned by \eqref{win_phi},\eqref{win_until},\eqref{win_inv}:
+		\begin{displaymath}
+		x^+ =	\begin{cases}
+		\text{arg}\min_{y\leq x}\{s\in \mathcal{V}(y)\},\ \ if\ x\not=0\\
+		\text{arg}\min_{y}\{s\in \mathcal{V}(y)\},\ \ otherwise
+		\end{cases}
+		\end{displaymath}
+		\item  if $ \mathcal{C} $ is returned by \eqref{win_interm}:
+		\begin{displaymath}
+		x^+ = \begin{cases}
+		x+1 \mod\vert\mathcal{K}\vert,\ \ if\ s\in \mathcal{V}(x+1)\\
+		x,\ otherwise
+		\end{cases}
+		\end{displaymath}
+	\end{itemize}
 	where $ x^+ $ refers to the value of internal variable $ x $ after update.
-	
-	(ii) Return the output of the $ x^+ $th sub-controller in $ \mathcal{K} $ with input $ s $, i.e.
+
+	\item[(ii)] Return the output of the $ x^+ $th sub-controller in $ \mathcal{K} $ with input $ s $, i.e.
 	\begin{displaymath}
 	\mathcal{C}(s) = \mathcal{K}(x^+)(s)
 	\end{displaymath}
+\end{itemize}
+
+	
+
 
 	If $ \mathcal{K} $ is a list of simple controllers, $ \mathcal{K}(x^+)(s) $ returns the set of feasible actions and this function call ends, otherwise above process repeats recursively until a simple controller is reached.
 	
