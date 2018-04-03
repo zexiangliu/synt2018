@@ -247,7 +247,7 @@ The winning sets {\color{purple} resulting from} \eqref{win_interm}, \eqref{win_
 	%Assume the current state is $ s_t $. Each time a controller is called with input $ s_t $, the controller updates its internal variable according to $ s_t $, the winning sets of sub-controllers and the current value of internal variable. Then, the sub-controller indexed by the new value of internal variable would be called with $ s_t $ as input. Repeat the above procedure inductively until a simple controller is reached, which returns the set of feasible actions for $ s_t $. \label{ref:cont}
 	\label{def:exec}
 \end{definition}
-{\color{purple} For me there is a problem of clarity with the definition of controllers, especially with the internal variable. I think we should explain in the definition roughly what happens when a call to the controller is made: if I understood well the memory variable changes according to some finite state automaton (we could say that and say that an example of how it works precisely is given below. But if the controller indeed needs the transition graph it is not just a tuple, we should add the transitions of the internal variables in the defintion. Or am I missing something? Also overall the way this transition graph is constructed from the fixed-point operators (at least an intuition of it) is missing.}
+{\color{purple} For me there is a problem of clarity with the definition of controllers, especially with the internal variable. I think we should explain in the definition roughly what happens when a call to the controller is made: if I understood well the memory variable changes according to some finite state automaton (we could say that and say that an example of how it works precisely is given below. But if the controller indeed needs the transition graph it is not just a tuple, we should add the transitions of the internal variables in the definition. Or am I missing something? Also overall the way this transition graph is constructed from the fixed-point operators (at least an intuition of it) is missing.}
 
 
 \begin{figure}
@@ -299,7 +299,7 @@ In this section, we formally define the problem of interest. {\color{blue}it is 
 {\color{purple} Somewhere we should give the main steps of the solution also. I think one thing that would be important is to state clearly what can and cannot change in the structure of the controller when $U$ is modified. I guess it is not only a change of the transitions, like in the example, since in some cases the number of steps to convergence can be modified. But then what exactly remains invariant? Only the "depth" of the controller? }
 
 \begin{problem}
-	Given an AFTS $ T = (Q,U,\rightarrow_T,G,AP,h_Q) $, a LTL specification $ \phi = \Square A \wedge \Diamond \Square B \wedge \left( \bigvee_{i\in I} \Square \Diamond G^i\right) $, the winning set $ W_{\phi} $ and controller $ \mathcal{C}_{\phi} $, if a set of actions $ U_d\subseteq U $ in $ T $ is unavailable, find the new winning set and a controller based on $ W_{\phi} $ and $ \mathcal{C}_{\phi} $.
+	Given an AFTS $ T = (Q,U,\rightarrow_T,G,AP,h_Q) $, a LTL specification $ \phi = \Square A \wedge \Diamond \Square B \wedge \left( \bigvee_{i\in I} \Square \Diamond R^i\right) $, the winning set $ W_{\phi} $ and controller $ \mathcal{C}_{\phi} $, if a set of actions $ U_d\subseteq U $ in $ T $ is unavailable, find the new winning set and a controller based on $ W_{\phi} $ and $ \mathcal{C}_{\phi} $.
 \end{problem}
 
 
