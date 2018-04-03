@@ -86,7 +86,7 @@ where $ p\in AP $, $ \phi_1 $ and $ \phi_2 $ are also LTL formulas. The other op
 
 An $\omega$-word $ w $ satisfies $ \phi $ if and only if $ (w,0)\models \phi $, written as $ w \models \phi $. 
 
-Given a trajectory of an AFTS $ y = \{y(n)\}_{n=0}^{\infty} $, the \textit{$\omega$-words} of y is $ h_Q(y) =  \{h_Q(y(n))\}_{n=0}^{\infty} $, where $ h_Q $ is the labeling function of the AFTS.  Given a LTL specification $ \phi $, we say that $ y\models \phi $ if and only if $ h_Q(y) \models \phi $.
+Given a trajectory of an AFTS $ s = \{s(n)\}_{n=0}^{\infty} $, the \textit{$\omega$-words} of y is $ h_Q(s) =  \{h_Q(s(n))\}_{n=0}^{\infty} $, where $ h_Q $ is the labeling function of the AFTS.  Given a LTL specification $ \phi $, we say that $ s\models \phi $ if and only if $ h_Q(s) \models \phi $.
 
 \subsection{Control Synthesis and Fixed-Point Operators}
 \label{sec: cont_syn}
@@ -231,7 +231,7 @@ In the execution time, a controller $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ 
 		\item  if $ \mathcal{C} $ is returned by \eqref{win_interm}:
 		\begin{displaymath}
 		x^+ = \begin{cases}
-		x+1 \mod\vert\mathcal{K}\vert,\ \ if\ s\in \mathcal{V}(x+1)\\
+		x\mod\vert\mathcal{K}\vert + 1,\ \ if\ s\in \mathcal{V}(x+1)\\
 		x,\ otherwise
 		\end{cases}
 		\end{displaymath}
@@ -244,7 +244,7 @@ In the execution time, a controller $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ 
 	\end{displaymath}
 \end{itemize}
 	
-	In the execution of $ \mathcal{K}(x^+)(s) $, the process above would be repeated and then a sub-controller of $ \mathcal{K}(x^+) $ would be executed. Thus it's a recursive algorithm which ends when a simple controller is reached.
+	In the execution of $ \mathcal{K}(x^+)(s) $, the process above would be repeated and then a sub-controller of $ \mathcal{K}(x^+) $ would be executed. Thus it's a recursive process that doesn't end until a simple controller is reached.
 	The set of feasible actions will be returned by that simple controller. For those sub-controllers not called in this execution, their internal variables keeps unchanged.
 	
 
@@ -262,34 +262,34 @@ In the execution time, a controller $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ 
 \end{figure}
 
 \begin{example}
-	For a simple transition system shown in Figure \ref{fig:eg1}, given the specification $ \phi = \Square \Diamond A \wedge \Square \Diamond B $, the outputs of \eqref{win_phi} are winning set $ W= \{s_1,s_2,s_3,s_4\}$, and controller $ \mathcal{C} = (W,\{\mathcal{C}^0_0\}, x = 0) $, where the sub-controllers are:
+	For a simple transition system shown in Figure \ref{fig:eg1}, given the specification $ \phi = \Square \Diamond A \wedge \Square \Diamond B $, the outputs of \eqref{win_phi} are winning set $ W= \{s_1,s_2,s_3,s_4\}$, and controller $ \mathcal{C} = (W,\{\mathcal{C}^0_1\}, x = 1) $, where the sub-controllers are:
 	
-	$ \mathcal{C}^0_0 = (\{W,\{s_1\},\{s_3,s_4\}\},\{\mathcal{C}^1_0, \mathcal{C}^1_1\}, x^0 ) $; 
+	$ \mathcal{C}^0_1 = (\{W,\{s_1\},\{s_3,s_4\}\},\{\mathcal{C}^1_1, \mathcal{C}^1_2\}, x^0_1 ) $; 
 	
-	$ \mathcal{C}^1_0 = (\{\{s_1,s_2\},W,W \},\{\mathcal{C}^{2,0}_i\}_{i=0}^2,x^1_0)$;
+	$ \mathcal{C}^1_1 = (\{\{s_1,s_2\},W,W \},\{\mathcal{C}^{2,0}_i\}_{i=1}^3,x^1_1)$;
 	
-	$ \mathcal{C}^1_1 = (\{\{s_2,s_3,s_4\},W,W \}\{\mathcal{C}^{2,1}_i\}_{i=0}^{2},x^1_1 )$, $ \mathcal{C}^{2,0}_0 = \{(s_1,\{a\}),(s_2,\{c\})\} $;
+	$ \mathcal{C}^1_2 = (\{\{s_2,s_3,s_4\},W,W \}\{\mathcal{C}^{2,1}_i\}_{i=1}^{3},x^1_2 )$, $ \mathcal{C}^{2,0}_1 = \{(s_1,\{a\}),(s_2,\{c\})\} $;
 	
-	$ \mathcal{C}^{2,0}_1 = \{(s_1,\{a,b\}),(s_2,\{c\}),(s_3,\{g\}),(s_4,\{e\})\} $;
+	$ \mathcal{C}^{2,0}_2 = \{(s_1,\{a,b\}),(s_2,\{c\}),(s_3,\{g\}),(s_4,\{e\})\} $;
 	
-	$ \mathcal{C}^{2,0}_2 = \{(s_1,\{a,b\}),(s_2,\{c,d,f\}),(s_3,\{g,h\}),(s_4,\{e,i\})\} $; 
+	$ \mathcal{C}^{2,0}_3 = \{(s_1,\{a,b\}),(s_2,\{c,d,f\}),(s_3,\{g,h\}),(s_4,\{e,i\})\} $; 
 	
-	$ \mathcal{C}^{2,1}_0 = \{(s_2,\{d,f\}),(s_3,\{h\}),(s_4,i)\} $; 
+	$ \mathcal{C}^{2,1}_1 = \{(s_2,\{d,f\}),(s_3,\{h\}),(s_4,i)\} $; 
 	
-	$ \mathcal{C}^{2,1}_1 = \{(s_1,\{b\}),(s_2,\{d,f\}), (s_3,\{g,h\}), (s_4,\{e,i\})\} $;
+	$ \mathcal{C}^{2,1}_2 = \{(s_1,\{b\}),(s_2,\{d,f\}), (s_3,\{g,h\}), (s_4,\{e,i\})\} $;
 	
-	$ \mathcal{C}^{2,1}_2 = \{(s_1,\{a,b\}),(s_2,\{c,d,f\}),(s_3,\{g,h\}),(s_4,\{e,i\})\} $.
+	$ \mathcal{C}^{2,1}_3 = \{(s_1,\{a,b\}),(s_2,\{c,d,f\}),(s_3,\{g,h\}),(s_4,\{e,i\})\} $.
 	
-	\begin{figure}
-		\centering
-		\includegraphics[width=0.7\linewidth]{pic/xupdate}
-		\caption{ Update $ x$ first, and then $ x^0 $, and lastly $ x_0^1 $ and $x^1_1 $. $ s $ is the current state. The transition condition is labeled on the edge. Self loop exists (ignored on the graph): one variable keeps unchanged if no condition satisfies.}
-		\label{fig:xupdate}
-	\end{figure}
+%	\begin{figure}
+%		\centering
+%		\includegraphics[width=0.7\linewidth]{pic/xupdate}
+%		\caption{ Update $ x$ first, and then $ x^0 $, and lastly $ x_0^1 $ and $x^1_1 $. $ s $ is the current state. The transition condition is labeled on the edge. Self loop exists (ignored on the graph): one variable keeps unchanged if no condition satisfies.}
+%		\label{fig:xupdate}
+%	\end{figure}
 	
-	$ \mathcal{C} $, $ \mathcal{C}_0^0 $ and $ \mathcal{C}_i^1 $ are returned by \eqref{win_phi}, \eqref{win_interm} and \eqref{win_until}, with internal variables $ x^j$ or $ x^j_i $. $ \mathcal{C}_i^{2,k} $ are simple controllers returned by \eqref{eqn:pre}. At each time interval, $ (x,x^0,x^1_0,x^1_1) $ will be updated according to the update rules in Figure \ref{fig:xupdate}, and then controllers $\mathcal{C}_{x}^0, \mathcal{C}^1_{x^0} $ and  $\mathcal{C}^{2,k}_{x^1_{k}} $ (if $ x^0 = k $) will be called to determine the control input. %is determined by $ \mathcal{C}^{2,k}_{x^1_{k}} (s)$ (if $ x^0 = k  $).
+	$ \mathcal{C} $, $ \mathcal{C}_1^0 $ and $ \mathcal{C}_i^1 $ are returned by \eqref{win_phi}, \eqref{win_interm} and \eqref{win_until}. $ \mathcal{C}_i^{2,k} $ are simple controllers returned by \eqref{eqn:pre}. Each time $ \mathcal{C} $ is called, $ (x,x^0_1,x^1_1,x^1_2) $ is updated according to Definition \ref{def:exec}, and one of the simple controllers is called to determine the set of feasible control inputs. %is determined by $ \mathcal{C}^{2,k}_{x^1_{k}} (s)$ (if $ x^0 = k  $).
 	
-	For example, take the initial value of internal variables as $ (0,0,0,0) $. For the initial state $ s_1 $, updating internal variables following Figure \ref{fig:xupdate} gives $ (0,1,0,1) $. The set of feasible control inputs is $\{b\}= \mathcal{C}^{2,1}_{1}(s_1) $. Following this procedure and always taking the first element in the set feasible inputs, the trajectory under control of $\mathcal{C} $ would be $ s_1,s_2,s_4,s_2,s_1,...$, where the sequence of actions is $ b,d,e,c,... $. The trajectory visits $ A $ and $ B $ in turn, satisfying the given specification.
+	For example, initialize the internal variables to be $ (1,1,1,1) $. Let's start from $ s_1 $ and run $ \mathcal{C}(s_1) $: The updated internal variables would be $ (1,2,1,2) $, after $ \mathcal{C}(s_1), \mathcal{C}^0_1(s_1)$, $ \mathcal{C}^1_2(s_1) $ and $ \mathcal{C}^{2,1}_2(s_1) $ are called recursively. The set of feasible actions is $ \{b\}= \mathcal{C}^{2,1}_2(s_1) $. Under action $ b $, the system in Figure \ref{fig:eg1} transits to $ s_2 $. Now run $ \mathcal{C}(s_2) $. The internal variable would be updated to $ (1,2,1,1) $. The set of feasible actions is$ \{d,f\}=\mathcal{C}^{2,1}_1(s_2) $. Let's keep doing this and always take the first action in the output of $ \mathcal{C} $ at each execution. The trajectory under control of $\mathcal{C} $ would be $ s_1,s_2,s_4,s_2,s_1,...$, where the sequence of actions is $ b,d,e,c,... $. The trajectory visits $ A $ and $ B $ in turn, satisfying the given specification.
 	
 	%\footnote{Define $ x_{total}: = (x,x^0,x^1_0,x^1_1) $. Each $ x_{total} $ locates a simple controller, i.g. $ x_{total}  = (0,1,0,5)$  gives that $ C_0^0\rightarrow C^1_1\rightarrow C^2_5 $. The evolution of $ x_{total} $ in the example above is $ (0,0,0,0), (0,1,0,5),(0,1,0,4), (0,0,1,4), (0,0,0,4)... $.}
 \end{example}
@@ -381,7 +381,7 @@ Now we are ready to modify simple controllers returned by \eqref{eqn:pre} and \e
 
 Assume that  $ W $ and $ \mathcal{C} $ are the winning set and controller returned by $ \text{Pre}_{\exists,\forall}^{T, U}(V) $. 
 
-Given $ \widehat{V}= V-\Delta V $ and $ \widehat{U} = U-U_d $, we want to modify $ W $ and $ \mathcal{C} $ to be the winning set and controller of $ \text{Pre}_{\exists,\forall}^{T,\widehat{U}}(\widehat{V}) $. The patching operator is:
+Given $ \widehat{V}= V-\Delta V $ and $ \widehat{U} = U-U_d $, we want to modify $ W $ and $ \mathcal{C} $ to be the winning set and controller of $ \text{Pre}_{\exists,\forall}^{T,\widehat{U}}(\widehat{V}) $.  The patching operator is:
 
 \begin{align}
 &[\widehat{W},\widehat{\mathcal{C}}]=\overline{\text{Pre}}_{\exists,\forall}^{T, U}(\mathcal{C},\Delta V,U_d)\\
@@ -560,34 +560,34 @@ The modified winning set $ \widehat{V}_{\infty} $ and controller $ \widehat{\mat
 \section{EXAMPLE}
 \label{sec:example}
 \subsection{Simple Transition System}
-For the transition system in Figure \ref{fig:eg1}, take the controller we get in Section \ref{sec: cont_syn} and  $ U_d= \{e\} $ as input of \eqref{patching_final}, the outputs are the modified winning set $ \widehat{W}=\{s_1,s_2,s_3\} $ and controller $ \widehat{\mathcal{C}} = (\{\widehat{W}\},\{\widehat{\mathcal{C}}_0^0\},x=0) $ , where the sub-controllers are: 
+For the transition system in Figure \ref{fig:eg1}, take the controller we get in Section \ref{sec: cont_syn} and  $ U_d= \{e\} $ as input of \eqref{patching_final}, the outputs are the modified winning set $ \widehat{W}=\{s_1,s_2,s_3\} $ and controller $ \widehat{\mathcal{C}} = (\{\widehat{W}\},\{\widehat{\mathcal{C}}_1^0\},x=1) $ , where the sub-controllers are: 
 
-$ \widehat{\mathcal{C}}^0_0 = (\{\widehat{W},\{s_1\},\{s_2,s_3\}\},\{\widehat{\mathcal{C}}^1_0, \widehat{\mathcal{C}}^1_1\},x^0) $;
+$ \widehat{\mathcal{C}}^0_1 = (\{\widehat{W},\{s_1\},\{s_2,s_3\}\},\{\widehat{\mathcal{C}}^1_1, \widehat{\mathcal{C}}^1_2\},x^0) $;
 
-$ \widehat{\mathcal{C}}^1_0 = (\{\{s_1,s_2\},W,W\},\{\widehat{\mathcal{C}}^{2,0}_i\}_{i=0}^2, x^1_0)$;
+$ \widehat{\mathcal{C}}^1_1 = (\{\{s_1,s_2\},W,W\},\{\widehat{\mathcal{C}}^{2,0}_i\}_{i=1}^3, x^1_0)$;
 
-$ \widehat{\mathcal{C}}^1_1 = (\{\{s_2,s_3\},W,W\},\{\widehat{\mathcal{C}}^{2,1}_i\}_{i=0}^{2}, x^1_1)$;
+$ \widehat{\mathcal{C}}^1_2 = (\{\{s_2,s_3\},W,W\},\{\widehat{\mathcal{C}}^{2,1}_i\}_{i=1}^{3}, x^1_1)$;
 
-$ \widehat{\mathcal{C}}^{2,0}_0 = \{(s_1,\{a\}),(s_2,\{c\})\} $;
+$ \widehat{\mathcal{C}}^{2,0}_1 = \{(s_1,\{a\}),(s_2,\{c\})\} $;
 
-$ \widehat{\mathcal{C}}^{2,0}_1 = \{(s_1,\{a,b\}),(s_2,\{c\}),(s_3,\{g\})\} $;
+$ \widehat{\mathcal{C}}^{2,0}_2 = \{(s_1,\{a,b\}),(s_2,\{c\}),(s_3,\{g\})\} $;
 
-$ \widehat{\mathcal{C}}^{2,0}_2 = \{(s_1,\{a,b\}),(s_2,\{c,f\}),(s_3,\{g,h\})\} $; 
+$ \widehat{\mathcal{C}}^{2,0}_3 = \{(s_1,\{a,b\}),(s_2,\{c,f\}),(s_3,\{g,h\})\} $; 
 
-$ \widehat{\mathcal{C}}^{2,1}_0 = \{(s_2,\{f\}),(s_3,\{h\})\} $;
+$ \widehat{\mathcal{C}}^{2,1}_1 = \{(s_2,\{f\}),(s_3,\{h\})\} $;
 
-$ \widehat{\mathcal{C}}^{2,1}_1 = \{(s_1,\{b\}),(s_2,\{f\}), (s_3,\{g,h\})\} $;
+$ \widehat{\mathcal{C}}^{2,1}_2 = \{(s_1,\{b\}),(s_2,\{f\}), (s_3,\{g,h\})\} $;
 
-$ \widehat{\mathcal{C}}^{2,1}_2 = \{(s_1,\{a,b\}),(s_2,\{c,f\}),(s_3,\{g,h\})\} $;
+$ \widehat{\mathcal{C}}^{2,1}_3 = \{(s_1,\{a,b\}),(s_2,\{c,f\}),(s_3,\{g,h\})\} $;
 
-\begin{figure}
-	\centering
-	\includegraphics[width=0.7\linewidth]{pic/xupdate2}
-	\caption{ Transition graph of internal variables. Compared to the graph in Figure \ref{fig:eg1}, transition conditions on most edges are different. {\color{purple} What is the difference between the update rule and the transition conditions? I think there is space to put both transition graphs (before and after) on this figure. It would make it easier to see what changed.}}
-	\label{fig:xupdate2}
-\end{figure}
+%\begin{figure}
+%	\centering
+%	\includegraphics[width=0.7\linewidth]{pic/xupdate2}
+%	\caption{ Transition graph of internal variables. Compared to the graph in Figure \ref{fig:eg1}, transition conditions on most edges are different. {\color{purple} What is the difference between the update rule and the transition conditions? I think there is space to put both transition graphs (before and after) on this figure. It would make it easier to see what changed.}}
+%	\label{fig:xupdate2}
+%\end{figure}
 
-For the initial state $ s_1 $ and initial internal variables $ (0,0,0,0) $, only one trajectory available under control of $\widehat{\mathcal{C}} $ is $ s_1,s_2,s_3,s_2,s_1,...$, where the sequence of actions is $ b,f,g,c,... $. The trajectory doesn't visit $ s_4 $, for the system isn't able to jump to $ A $ from $ s_4 $ after action $ e $ is removed.
+Let the system starts from $ s_1 $ and initialize internal variables as $ (1,1,1,1) $. Only one trajectory is available under control of $\widehat{\mathcal{C}} $, i.e. $ s_1,s_2,s_3,s_2,s_1,...$, where the sequence of actions is $ b,f,g,c,... $ according to the controller execution rules in Definition \ref{def:exec}. The trajectory doesn't visit $ s_4 $, for the system isn't able to jump to $ A $ from $ s_4 $ after action $ e $ is removed.
 
 \subsection{Case study: 1D Hopping Robot}
 
@@ -664,7 +664,7 @@ Now imagine that some holes on the ground are detected, as shown in Figure \ref{
 	%(or a blank line to force the subfigure onto a new line)
 	\begin{subfigure}[b]{0.235\textwidth}
 		\centering
-		\includegraphics[width=0.875\textwidth]{pic/traj}
+		\includegraphics[width=0.8\textwidth]{pic/traj}
 		\caption{trajectories}
 		\label{fig:traj}
 	\end{subfigure}
@@ -676,7 +676,7 @@ Now imagine that some holes on the ground are detected, as shown in Figure \ref{
 		\caption{inputs}
 		\label{fig:input}
 	\end{subfigure}
-	\caption{(a) Winning sets under action profiles $U_d = [1], [1:5],[1:10],...,[1:25]$, corresponding to region greater or equal to $1, 2,3, ...,6$ respectively. (b) Trajectories with initial state $ (0.85,-3.95) $ under $ U_d = \emptyset $ (blue) and $[1:10] $ (red). The region inside orange box is the target set $ B $ (c) Inputs over time under $ U_d = \emptyset $ (blue) and $ [1:10] $ (red) for trajectories in (b). The red dash point line indicates value corresponding to input $ u = 10 $.} {\color{purple} (a) is a bit hard to understand: we  see only disjoint regions on the image but the winning sets are decreasing in size. Maybe say that the winning set $i$ is the union of the $i$ first regions on the graph. (and redefine them accordingly)}
+	\caption{(a) Six regions with different colors are labeled as $ W_1,W_2,...,W6 $. The winning sets under action profiles $U_d = [1], [1:5],[1:10],...,[1:25]$ are represented by $ \bigcup_{i=1}^6 W_i,\ \bigcup_{i=2}^6 W_i,...,\ W_6 $ respectively. (b) Trajectories with initial state $ (0.85,-3.95) $ under $ U_d = \emptyset $ (blue) and $[1:10] $ (red). The region inside orange box is the target set $ B $ (c) Inputs over time under $ U_d = \emptyset $ (blue) and $ [1:10] $ (red) for trajectories in (b). The red dash point line indicates value corresponding to input $ u = 10 $.} %{\color{purple} (a) is a bit hard to understand: we  see only disjoint regions on the image but the winning sets are decreasing in size. Maybe say that the winning set $i$ is the union of the $i$ first regions on the graph. (and redefine them accordingly)}
 \end{figure}
 
 The experiment environment is MATLAB R2017a with CPU Intel Core  i7-6820 HQ.
