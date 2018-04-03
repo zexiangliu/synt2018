@@ -257,7 +257,7 @@ In the execution time, a controller $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ 
 	%Assume the current state is $ s_t $. Each time a controller is called with input $ s_t $, the controller updates its internal variable according to $ s_t $, the winning sets of sub-controllers and the current value of internal variable. Then, the sub-controller indexed by the new value of internal variable would be called with $ s_t $ as input. Repeat the above procedure inductively until a simple controller is reached, which returns the set of feasible actions for $ s_t $. \label{ref:cont}
 	\label{def:exec}
 \end{definition}
-{\color{purple} For me there is a problem of clarity with the definition of controllers, especially with the internal variable. I think we should explain in the definition roughly what happens when a call to the controller is made: if I understood well the memory variable changes according to some finite state automaton (we could say that and say that an example of how it works precisely is given below. But if the controller indeed needs the transition graph it is not just a tuple, we should add the transitions of the internal variables in the definition. Or am I missing something? Also overall the way this transition graph is constructed from the fixed-point operators (at least an intuition of it) is missing.}
+%{\color{purple} For me there is a problem of clarity with the definition of controllers, especially with the internal variable. I think we should explain in the definition roughly what happens when a call to the controller is made: if I understood well the memory variable changes according to some finite state automaton (we could say that and say that an example of how it works precisely is given below. But if the controller indeed needs the transition graph it is not just a tuple, we should add the transitions of the internal variables in the definition. Or am I missing something? Also overall the way this transition graph is constructed from the fixed-point operators (at least an intuition of it) is missing.}
 
 
 \begin{figure}
@@ -300,7 +300,7 @@ In the execution time, a controller $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ 
 	%\footnote{Define $ x_{total}: = (x,x^0,x^1_0,x^1_1) $. Each $ x_{total} $ locates a simple controller, i.g. $ x_{total}  = (0,1,0,5)$  gives that $ C_0^0\rightarrow C^1_1\rightarrow C^2_5 $. The evolution of $ x_{total} $ in the example above is $ (0,0,0,0), (0,1,0,5),(0,1,0,4), (0,0,1,4), (0,0,0,4)... $.}
 \end{example}
 
-{\color{blue} don't use b.w., s,t, use between, such that. in general, it is better writing practice to avoid abbreviations as much as possible}
+%{\color{blue} don't use b.w., s,t, use between, such that. in general, it is better writing practice to avoid abbreviations as much as possible}
 
 \subsection{Problem Statement}
 
@@ -387,7 +387,7 @@ Now we are ready to modify simple controllers returned by \eqref{eqn:pre} and \e
 
 Assume that  $ W $ and $ \mathcal{C} $ are the winning set and controller returned by $ \text{Pre}_{\exists,\forall}^{T, U}(V) $. 
 
-Given $ \widehat{V}= V-\Delta V $ and $ \widehat{U} = U-U_d $, we want to modify $ W $ and $ \mathcal{C} $ to be the winning set and controller of $ \text{Pre}_{\exists,\forall}^{T,\widehat{U}}(\widehat{V}) $.  The patching operator is:
+Given $ \widehat{V}= V-\Delta V $ and $ \widehat{U} = U-U_d $, we want to modify $ W $ and $ \mathcal{C} $ to be the winning set and controller for $ \text{Pre}_{\exists,\forall}^{T,\widehat{U}}(\widehat{V}) $. Intuitively if we can find all the invalid transitions $ (s_1,u,s_2) $ in $ T(\mathcal{C}) $ due to $ u\in U_d $ or $ s_2\in\Delta V $, and remove them from $ T(\mathcal{C}) $, that would result in a controller that works for the modified problem setting. Motivated by this idea, the patching operator for \eqref{eqn:pre} is:
 
 \begin{align}
 &[\widehat{W},\widehat{\mathcal{C}}]=\overline{\text{Pre}}_{\exists,\forall}^{T, U}(\mathcal{C},\Delta V,U_d)\\
@@ -399,6 +399,10 @@ T(\widehat{\mathcal{C}}) = T_{0}\backslash E\\
 \end{cases}\label{patch_pre}
 \end{align}
 where $ \widehat{\mathcal{C}} $ is converted from $ T(\widehat{\mathcal{C}}) $. $ \widehat{W} $ and $ \widehat{\mathcal{C}} $ will be equal to the outputs of $ \text{Pre}_{\exists,\forall}^{T,\widehat{U}}(\widehat{V}) $.
+
+\begin{theorem}
+	$ \widehat{W} $ and $ \widehat{C} $ returned by \ref{patch_pre} would be the same as outputs resulting from $ \text{Pre}_{\exists,\forall}^{T,\widehat{U}}(\widehat{V})$.	
+\end{theorem}
 
 \begin{proof}
 	Let's assume that $ \text{Pre}_{\exists,\forall}^{T,\widehat{U}}(\widehat{V}) $ returns $ W_t $ and $ \mathcal{C}_t $. It's enough to show that $ T(\widehat{\mathcal{C}})= T(\mathcal{C}_t)$, i.e. $ \rightarrow_{T(\widehat{\mathcal{C}})} = \rightarrow_{T(\mathcal{C}_t)} $. 
@@ -423,7 +427,11 @@ while \ Y_{k+1}\not= Y_k:\\
 \widehat{Y}=Y_k,\ T(\widehat{C}) = T_{k}
 \end{cases}\label{patch_inv}
 \end{align}
-where $ \Delta Z = Z - \widehat{Z} $, and $ E_0 = \{(s_1,a,s_2)\in \rightarrow_{T}: s_1\in Y_0, a\in D, s_2 \in Q\} $. $ \widehat{Y} $ is the modified winning set, and controller $ \widehat{\mathcal{C}} $ can be recovered from $ T(\widehat{\mathcal{C}}) $, which will be the same as outputs from $ \text{Inv}_{\exists}^{D,G}(\widehat{Z},B) $.
+where $ \Delta Z = Z - \widehat{Z} $, $ E_0 = \{(s_1,a,s_2)\in \rightarrow_{T}: s_1\in Y_0, a\in D, s_2 \in Q\} $, $ \text{Pre}_{\forall,\exists}^{T_k,D}(\Delta Y_k) = \{q_1: \forall u\in D, \exists q_2\in \Delta Y_k, s.t.\ (q_1, u, q_2) \in \rightarrow_{T_k} \} $. $ \widehat{Y} $ is the modified winning set, and the controller $ \widehat{\mathcal{C}} $ can be recovered from $ T(\widehat{\mathcal{C}}) $.
+
+\begin{theorem}
+$ \widehat{W} $ and $ \widehat{C} $ returned by \eqref{patch_inv} would be the same as outputs resulting from $ \text{Inv}_{\exists}^{D,G}(\widehat{Z},B) $.	
+\end{theorem}
 
 {\color{red} Requires careful reading}
 
@@ -693,7 +701,7 @@ Furthermore, to show the time efficiency, we randomly choose $ U_d $ with size $
 
 Finally, to show that formal guarantees are satisfied after patching, simulation are run for controllers before and after patching for $ U_d =[1:10]$. The initial state is $ s_0=34 $. Figure \ref{fig:traj} and \ref{fig:input} show the trajectories and the inputs used within $ 60 $ time steps. Both trajectories goes into our target region $ B $, indicated by the orange box. The outputs from patched controller is always above the dash line where $ u=10 $, due to the unavailability of actions $[1:10] $.
 
-For practical applications in robot control, if we have the controller for the case that no constraints exists and know all the possible profiles of actions (all the possible constraints on the surface) for a known environment, the patching algorithm can generate the corresponding controllers for those action profiles very quickly. This is actually the motivation of this work.
+For practical applications in robot control, if we have the controller for the case that no constraints exists and know all the possible profiles of actions (all the possible constraints on the surface) for a known environment, the patching algorithm can generate the corresponding controllers for those action profiles very quickly. 
 
 \section{CONCLUSION}
 In this paper, we proposed a method to do fixed-point based control synthesis by patching the existing controller with a larger action space. The correctness of this method relied on the fact that "nested" structure between fixed-point based controllers with "nested" action profiles, so we could do the control synthesis by simply finding out the redundant part of the existing controller for the new profile and then removing them. It gives us a way to avoid the expensive computation cost of synthesis from scratch. 
