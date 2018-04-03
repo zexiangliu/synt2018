@@ -648,7 +648,7 @@ v
 \end{align}
 where $x$ is the {\color{purple} horizontal position of the} center of mass (CoM) of the robot, $v$ is the velocity of CoM and $ u $ is {\color{purple} the horizontal position of the foot.} that the robot foot will step on. 
 
-{\color{purple} We consider } The state space $ Q = [-2.5,2.5]\times [-4,4] $ with action space $ U = [-3.5,3.5] $. Discretize $ Q $ and $ U $ uniformly with grid size $ 0.1 $ and $ 0.2 $, and compute the transitions between discretized grids over-approximately  using the method described in \cite{Liu2014,Sun2014}. Finally we get a AFTS with states indexed $ [1:4000] $, actions $ [1:35] $ and $ 187594 $ valid transitions, which is the abstraction of the hopping robot. 
+{\color{purple} We consider } The state space $ Q = [-2.5,2.5]\times [-4,4] $ with action space $ U = [-3.5,3.5] $. Discretize $ Q $ and $ U $ uniformly with grid size $ 0.1 $ and $ 0.2 $, and compute the transitions between discretized grids over-approximately  using the method described in \cite{Liu2014,Sun2014}. Finally we get a AFTS with states indexed $ [1:4000] $, actions $ [1:35] $ and $ 187594 $ valid transitions, which is the abstraction of the hopping {\color{purple} walking} robot. 
 
 The specification for the control synthesis is 
 \begin{align}
