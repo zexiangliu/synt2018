@@ -236,12 +236,12 @@ The winning sets {\color{purple} resulting from} \eqref{win_interm}, \eqref{win_
 	\end{displaymath}
 	where $ x^+ $ refers to the value of internal variable $ x $ after update.
 	
-	(ii) Return the output of the $ x^+ $th sub-controller in $ \mathcal{K} $ with input $ s(t) $, i.e.
+	(ii) Return the output of the $ x^+ $th sub-controller in $ \mathcal{K} $ with input $ s $, i.e.
 	\begin{displaymath}
 	\mathcal{C}(s) = \mathcal{K}(x^+)(s)
 	\end{displaymath}
 
-	If $ \mathcal{K} $ is a list of simple controllers, $ \mathcal{K}(x)(s(t)) $ returns the set of feasible actions and ends this function call, otherwise above process repeats recursively until a simple controller is reached.
+	If $ \mathcal{K} $ is a list of simple controllers, $ \mathcal{K}(x^+)(s) $ returns the set of feasible actions and this function call ends, otherwise above process repeats recursively until a simple controller is reached.
 	
 
 	%Assume the current state is $ s_t $. Each time a controller is called with input $ s_t $, the controller updates its internal variable according to $ s_t $, the winning sets of sub-controllers and the current value of internal variable. Then, the sub-controller indexed by the new value of internal variable would be called with $ s_t $ as input. Repeat the above procedure inductively until a simple controller is reached, which returns the set of feasible actions for $ s_t $. \label{ref:cont}
@@ -344,13 +344,12 @@ Assume the AFTS $ T = (Q,U,\rightarrow_T, G, AP, h_Q) $ is the abstraction of th
 
 Firstly let's define several operation to manipulate the FTS $ T(\mathcal{C}) $:
 
-\emph{transitions removing}: remove all transitions in $ E $ from $ T(\mathcal{C}) $
+\emph{transitions removing}: remove all transitions in $ E $ from $ T(\mathcal{C}) $ i.e. replace $ \rightarrow_{T(\mathcal{C})} $ with $\rightarrow_{T(\mathcal{C})} - E$, where $ E = \{(s_1,a,s_2): s_1,s_2\in Q_{\mathcal{C}}, a\in U_{\mathcal{C}}\} $. This operation is written as 
 \begin{displaymath}
-\rightarrow_{T(\mathcal{C})} - E
+	T(\mathcal{C})\backslash E 
 \end{displaymath}
-where $ E = \{(s_1,a,s_2): s_1,s_2\in Q_{\mathcal{C}}, a\in U_{\mathcal{C}}\} $. It's a set difference between $ \rightarrow_{T(\mathcal{C})} $ and $ E $. For simplicity, it is also denoted by $ T(\mathcal{C})\backslash E $, written as
 
-There are three convenient variations of this operator:
+There are three variations of this operation:
 \begin{itemize}
 	\item $ T(\mathcal{C}) \backslash (E,*) \equiv T(\mathcal{C})\backslash \{(s_1,a,s_2)\in \rightarrow_{T(\mathcal{C})}: (s_1,a)\in E)\}$, where $ E \subseteq Q_{\mathcal{C}}\times U_{\mathcal{C}} $.
 	\item $ T(\mathcal{C}) \backslash (*,U_d,*) \equiv T(\mathcal{C})\backslash \{(s_1,a,s_2)\in \rightarrow_{T(\mathcal{C})}: a\in U_d \}$, where $ U_d\subseteq U_{\mathcal{C}} $.
