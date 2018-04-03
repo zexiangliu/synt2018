@@ -176,8 +176,8 @@ while\ X_{k+1}\not= X_k\\
 \text{Pre}_{\exists,\forall}^{T,U}(X_k)\\
 \ \ \ \  [V^2_k,C^2_k]=\text{PGPre}_{\exists,\forall}^{T,U}(Z\cup(B\cap V^1_k),B)\\
 \ \ \ \ X_{k+1} =Z\cup (B\cap V^1_k)\cup V^2_k\\
-\ \ \ \ \mathcal{V}(2k-1)=V^1_k, \mathcal{V}(2k)=V^2_k\\
-\ \ \ \ \mathcal{K}(2k-1)=C^1_k,\ \mathcal{K}(2k)=C^2_k\\
+\ \ \ \ \mathcal{V}(2k+1)=V^1_k, \mathcal{V}(2k+2)=V^2_k\\
+\ \ \ \ \mathcal{K}(2k+1)=C^1_k,\ \mathcal{K}(2k+2)=C^2_k\\
 X_{\infty}=X_k,\ \mathcal{C} = (\mathcal{V},\mathcal{K},x)
 \end{cases}\label{win_until}
 \end{align}
@@ -470,17 +470,17 @@ Assume that $ X_\infty $ and $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ are the
 &[\widehat{X}_\infty, \widehat{\mathcal{C}}]=\overline{\text{Win}}^{T, U}_{\exists,\forall, (B\mathbf{\ U\ }Z)}(\mathcal{C},Z,\widehat{Z}, U_d)\\
 =&\begin{cases}
 X_0 = \emptyset, \widehat{X}_0 = \emptyset, \Delta X = \emptyset, \ \widehat{\mathcal{V}}=\{\},\ \widehat{\mathcal{K}}=\{\}\\
-For ~ k\in \{0,2,...,n-1\}\ and\ \widehat{X}_{k+1}\not=\widehat{X}_k:\\
+for ~ k\in \{0,2,...,n-1\}\ and\ \widehat{X}_{k+1}\not=\widehat{X}_k:\\
 \ \ \ \ [\widehat{\mathcal{V}}(2k+1),\widehat{\mathcal{K}}(2k+1)] = \overline{\text{Pre}}_{\exists,\forall}^{T,U}(\mathcal{K}(2k+1),X_{k}-\widehat{X}_{k}, U_d)\\
 \ \ \ \ E_k = Z\cup (B\cap \mathcal{V}(2k+1)),\ \widehat{E}_k =  Z\cup (B\cap \widehat{\mathcal{V}}(2k+1))\\
 \ \ \ \ [\widehat{\mathcal{V}}(2k+2),\widehat{\mathcal{K}}(2k+2)] = \overline{\text{PGPre}}_{\exists,\forall}^{T,U}(\mathcal{K}(2k+2),E_k, \widehat{E}_k,U_d)\\ 
 \ \ \ \ X_{k+1} = Z\cup (B\cap \mathcal{V}(2k+1)) \cup \mathcal{V}(2k+2)\\
 \ \ \ \ \widehat{X}_{k+1} =\widehat{Z}\cup (B\cap \widehat{\mathcal{V}}(2k+1)) \cup \widehat{\mathcal{V}}(2k+2)\\
-For~k\geq n\ and\ \widehat{X}_{k+1}\not=\widehat{X}_k:	\\
+for~k\geq n\ and\ \widehat{X}_{k+1}\not=\widehat{X}_k:	\\
 \ \ \ \ [\widehat{\mathcal{V}}(2k+1),\widehat{\mathcal{K}}(2k+1)] = \overline{\text{Pre}}_{\exists,\forall}^{T,U}(\mathcal{K}(2n-1),X_{n}-\widehat{X}_{k}, U_d)\\
 \ \ \ \ \widehat{E}_k =  Z\cup (B\cap \widehat{\mathcal{V}}(2k+1))\\
 \ \ \ \ [\widehat{\mathcal{V}}(2k+2),\widehat{\mathcal{K}}(2k+2)] = \overline{\text{PGPre}}_{\exists,\forall}^{T,U}(\mathcal{K}(2n),E_n, \widehat{E}_k,U_d)\\
-\ \ \ \ \widehat{X}_{k+1} =\widehat{Z}\cup (B\cap \widehat{\mathcal{V}}(2k-1)) \cup \widehat{\mathcal{V}}(2k)\\
+\ \ \ \ \widehat{X}_{k+1} =\widehat{Z}\cup (B\cap \widehat{\mathcal{V}}(2k+1)) \cup \widehat{\mathcal{V}}(2k+2)\\
 \widehat{X}_\infty = \widehat{X}_k,\ \widehat{\mathcal{C}} = (\widehat{\mathcal{V}},\widehat{\mathcal{K}},x)
 \end{cases} \label{patch_until}
 \end{align}
