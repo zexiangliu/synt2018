@@ -8,7 +8,7 @@ In this appendix, we present algorithms from \cite{Nilsson2017} to compute the w
 \text{Restrict~ synthesis~ to~ }V_{\text{inv}}\\
 V_0 = \emptyset,\ \mathcal{V}=\{\},\ \mathcal{K} = \{\}\\
 {\color{purple} k=0}\\
-{\color{purple} remove:} while\ V_{k+1} \not= V_k:\\
+%{\color{purple} remove:} while\ V_{k+1} \not= V_k:\\
 {\color{purple} repeat:}\\
 \ \ \ \ Z_{k+1} = \text{Pre}_{\exists,\forall}^{T,U} (V_k) \bigcup \text{PGPre}_{\exists,\forall}^{T,U} (V_k, Q)\\
 \ \ \ \ [V_{k+1}, \mathcal{C}_{k+1}]=\text{Win}_{\exists,\forall}^{T} ((B \mathbf{\ U\ }Z_{k+1}) \vee \Square (B\wedge ( \bigwedge_{i\in I}\Diamond R^i))\\
@@ -28,7 +28,7 @@ The building blocks of the above algorithm are the following fixed-point operato
 =&\begin{cases}
 W_0 = Q,\ \mathcal{V}=\{\},\ \mathcal{K}=\{\}\\
 {\color{purple} k=0}\\
-{\color{purple} remove:} while\ W_{k+1}\not= W_k:\\
+%{\color{purple} remove:} while\ W_{k+1}\not= W_k:\\
 {\color{purple} repeat:}\\
 \ \ \ \ Z_{k+1}^i = Z\cup (B\cap R^i\cap \text{Pre}_{\exists, \forall}^{T,U}(W_k))\\
 \ \ \ \ [X^i, \mathcal{C}^i]= \text{Win}_{\exists,\forall}^{T,U} (B\mathbf{\ U\ }Z_{k+1}^i), \forall i \in I\\
@@ -45,7 +45,7 @@ W_{\infty} = W_k,\ \mathcal{C} = (\mathcal{V},\mathcal{K},x)
 =&\begin{cases}
 X_0 = \emptyset,\ \mathcal{V}=\{\},\ \mathcal{K}=\{\}\\
 {\color{purple} k=0}\\
-{\color{purple} remove:} while\ X_{k+1}\not= X_k\\
+%{\color{purple} remove:} while\ X_{k+1}\not= X_k\\
 {\color{purple} repeat:}\\
 \ \ \ \ [V^1_k,C^1_k]=
 \text{Pre}_{\exists,\forall}^{T,U}(X_k)\\
