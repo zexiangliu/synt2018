@@ -1,0 +1,78 @@
+\section{Fixed-point Operators}
+
+In this appendix, we present algorithms from \cite{Nilsson2017} to compute the winning set for a specification in the form \eqref{phi}. In addition to the winning set, these algorithms provide an explicit construction of the control implementation as defined in Definition \ref{def:cont}. The most general algorithm is given as follows: 
+
+\begin{align}
+& [V_{\infty},\mathcal{C}] =\  \text{Win}_{\exists, \forall}^{T,U}\left(\Square A \wedge \Diamond \Square B \wedge \left( \bigwedge_{i\in I} \Square \Diamond R^i\right)\right)\\
+=&\begin{cases}V_{\text{inv}} = \text{\text{Win}}^{T,U}_{\exists, \forall} ((A\mathbf{U}\emptyset)\vee \Square (A\wedge \Diamond Q))\\
+\text{Restrict~ synthesis~ to~ }V_{\text{inv}}\\
+V_0 = \emptyset,\ \mathcal{V}=\{\},\ \mathcal{K} = \{\}\\
+while\ V_{k+1} \not= V_k:\\
+\ \ \ \ Z_{k+1} = \text{Pre}_{\exists,\forall}^{T,U} (V_k) \bigcup \text{PGPre}_{\exists,\forall}^{T,U} (V_k, Q)\\
+\ \ \ \ [V_{k+1}, \mathcal{C}_{k+1}]=\text{Win}_{\exists,\forall}^{T} ((B \mathbf{\ U\ }Z_{k+1}) \vee \Square (B\wedge ( \bigwedge_{i\in I}\Diamond R^i))\\
+\ \ \ \ \mathcal{V}(k+1)=V_{k+1},\ \mathcal{K}(k+1) = \mathcal{C}_{k+1}\\
+V_{\infty} = V_k,\ \mathcal{C}=(\mathcal{V},\mathcal{K},x)
+\end{cases}\label{win_phi}
+\end{align}
+
+The winning set {\color{purple} that results from} \eqref{win_phi} is {\color{purple} equal to} $ V_{\infty} $, i.e. {\color{purple} the limit of the expanding sequence $V_k$}. $ \mathcal{C} $ is the controller corresponding to the winning set $ V_{\infty} $. 
+
+The building blocks of the above algorithm are the following fixed-point operators. Each operator corresponds to a type of LTL formula used in \eqref{win_phi}. Note that when a fixed-point operator appears as part of a formula, it only refers to its first output, i.e. the winning set.
+
+\begin{align}
+&[W_{\infty},\mathcal{C}]= \ \text{Win}_{\exists,\forall}^{T,U}((B\mathbf{\ U\ }Z)\vee \Square (B\wedge(\bigwedge_{i\in I}\Diamond R^i)) )\\
+=&\begin{cases}
+W_0 = Q,\ \mathcal{V}=\{\},\ \mathcal{K}=\{\}\\
+while\ W_{k+1}\not= W_k:\\
+\ \ \ \ Z_{k+1}^i = Z\cup (B\cap R^i\cap \text{Pre}_{\exists, \forall}^{T,U}(W_k))\\
+\ \ \ \ [X^i, \mathcal{C}^i]= \text{Win}_{\exists,\forall}^{T,U} (B\mathbf{\ U\ }Z_{k+1}^i), \forall i \in I\\
+\ \ \ \ W_{k+1} = \bigcap_{i\in I} X^i\\
+\mathcal{V}(1)=W_k,\ \mathcal{V}(i+1) = B\cap R^i,\ 
+\mathcal{K}(i) = \mathcal{C}^i, \forall i\in I\\
+W_{\infty} = W_k,\ \mathcal{C} = (\mathcal{V},\mathcal{K},x)
+\end{cases}\label{win_interm}
+\end{align}
+\begin{align}
+&[X_{\infty},\mathcal{C}]= \text{Win}_{\exists,\forall}^{T,U} (B\mathbf{\ U\ }Z)\\
+=&\begin{cases}
+X_0 = \emptyset,\ \mathcal{V}=\{\},\ \mathcal{K}=\{\}\\
+while\ X_{k+1}\not= X_k\\
+\ \ \ \ [V^1_k,C^1_k]=
+\text{Pre}_{\exists,\forall}^{T,U}(X_k)\\
+\ \ \ \  [V^2_k,C^2_k]=\text{PGPre}_{\exists,\forall}^{T,U}(Z\cup(B\cap V^1_k),B)\\
+\ \ \ \ X_{k+1} =Z\cup (B\cap V^1_k)\cup V^2_k\\
+\ \ \ \ \mathcal{V}(2k+1)=V^1_k, \mathcal{V}(2k+2)=V^2_k\\
+\ \ \ \ \mathcal{K}(2k+1)=C^1_k,\ \mathcal{K}(2k+2)=C^2_k\\
+X_{\infty}=X_k,\ \mathcal{C} = (\mathcal{V},\mathcal{K},x)
+\end{cases}\label{win_until}
+\end{align}
+\begin{align}
+&[Z_{\infty},\mathcal{C}]=\text{PGPre}_{\exists,\forall}^{T,U} (Z,B)\\
+=&\begin{cases}
+Z_{\infty} = Z,\ \mathcal{V} = \{\},\ \mathcal{K}=\{\}, k = 1\\
+for\ U\in 2^U:\\
+\ \ for\ G\in G(U):\\
+\ \ \ \ \ \  [V_k,\mathcal{C}_k]=Inv_{\exists}^{U,G}(Z_{\infty},B)\\
+\ \ \ \ \ \ Z_{\infty} = Z_{\infty} \cup V_k\\
+\ \ \ \ \ \ \mathcal{V}(k)=V_k,\ \mathcal{K}(k)=\mathcal{C}_k,\ k++\\
+\mathcal{C} = (\mathcal{V},\mathcal{K},x)
+\end{cases}\label{win_pgpre}
+\end{align}
+\begin{align}
+&[W,\mathcal{C}]=\text{Pre}_{\exists,\forall}^{T,U}(V)\\
+=&\begin{cases}
+W = \{q_1\in Q: \exists (u\in U) \forall (q_2\ s.t.\ (q_1, u, q_2) \in \rightarrow_T), q_2\in V\}\\
+D(q)=\{u\in U: \forall (q_2\ s.t.\ (q,u,q_2)),\ q_2\in V\}\\
+\mathcal{C}=\{(q,D(q)):q\in Q, D(q)\not=\emptyset\}
+\end{cases}\label{eqn:pre}\\
+&[Y_{\infty},\mathcal{C}]=\text{Inv}_{\exists}^{D,G}(Z,B)\\
+=&\begin{cases}Y_0 = (G\cap B) - Z\\
+while\ Y_{k+1}\not=Y_k:\\
+\ \ \ \ Y_{k+1} = Y_k\cap \text{Pre}_{\exists,\forall}^{T,D}(Y_k\cup Z)\\
+[-,\mathcal{C}] = Pre^{T,D}_{\exists,\forall}(Y_k\cup Z)\\
+Y_{\infty} = Y_k,\ \mathcal{C}\ restricted\ to\ Y_{\infty}
+\end{cases} \label{win_inv}
+\end{align}
+
+The winning sets {\color{purple} resulting from} \eqref{win_interm}, \eqref{win_until}, \eqref{win_inv} are $ W_{\infty} $, $ X_{\infty} $ and $ Y_{\infty} $. {\color{purple} $\text{Pre}_{\exists,\forall}^{T,U}$ is a one-step reachability operator, and $\text{Inv}_{\exists}^{U,G}(Z,B)$ computes $Y_\infty \subseteq (G\cap B) - Z$ from where the state can be controlled (with actions in $U$) to either remain inside $Y_\infty$ or reach $Z$, but because $G$ is a progress group under $U$, remaining indefinitely in $G$ is impossible and therefore $Z$ is
+	eventually reached, which is why $Y_\infty$ is a winning set for $B\mathbf{\ U\ }Z$.}
