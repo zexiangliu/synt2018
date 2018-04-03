@@ -292,7 +292,7 @@ In the execution time, a controller $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ 
 	\begin{figure}
 		\centering
 		\includegraphics[width=0.7\linewidth]{pic/xupdate}
-		\caption{ The transition graph of internal variables according to Definition \ref{def:exec}. Update $ x$ first, and then $ x^0 $, and lastly $ x_0^1 $ and $x^1_1 $. $ s $ is the current state. The transition condition is labeled on the edge. Self loop exists (ignored on the graph): one variable keeps unchanged if no condition satisfies.}
+		\caption{ The transition graph of internal variables according to Definition \ref{def:exec}. Update $ x$ first, and then $ x^0 $, and lastly $ x_0^1 $ and $x^1_1 $. $ s $ is the current state. The transition condition is labeled on the edge. Self loop exists (omitted on the graph): the corresponding internal variable remains unchanged if no condition is satisfied.}
 		\label{fig:xupdate}
 	\end{figure}
 	
@@ -377,10 +377,10 @@ T(\mathcal{C})\cup E
 
 Note that since $ E \subseteq Q\times U\times Q $, $ E $ may contain states and actions which do not exists in $ Q_{\mathcal{C}}\subseteq Q $ and $ U_{\mathcal{C}}\subseteq U $. Then just assume that $ Q_{\mathcal{C}} $ and $ U_{\mathcal{C}} $ will enlarge automatically, which is easy to implement in code.
 
-\emph{null node seeking}: return the set $\{s_1\in Q_{T(\mathcal{C})}: \exists (s_1,a,s_2)\in \rightarrow_{T(\mathcal{C})},\forall a\in U_{T(\mathcal{C})}, \forall s_2 \in Q_{T(\mathcal{C})}\} $, i.e. all the nodes whose out-degree is zero, written as
-\begin{displaymath}
-Vac(T(\mathcal{C}))
-\end{displaymath}
+%\emph{null node seeking}: return the set $\{s_1\in Q_{T(\mathcal{C})}: \not\exists (s_1,a,s_2)\in \rightarrow_{T(\mathcal{C})},\forall a\in U_{T(\mathcal{C})}, \forall s_2 \in Q_{T(\mathcal{C})}\} $, i.e. all the nodes whose out-degree is zero, written as
+%\begin{displaymath}
+%Vac(T(\mathcal{C}))
+%\end{displaymath}
 
 \emph{state-action pre}: return the set $ \{(s_1,a): (s_1,a,s_2)\in \rightarrow_{T(\mathcal{C})}, s_2\in S_2\} $, i.e. all the edges pointing into nodes in $ S_2 $, written as
 \begin{displaymath}
@@ -405,7 +405,7 @@ T(\widehat{\mathcal{C}}) = T_{0}\backslash E\\
 where $ \widehat{\mathcal{C}} $ is converted from $ T(\widehat{\mathcal{C}}) $. $ \widehat{W} $ and $ \widehat{\mathcal{C}} $ are the modified winning set and controller.
 
 \begin{theorem}
-	$ \widehat{W} $ and $ \widehat{C} $ returned by \eqref{patch_pre} would be the same as outputs resulting from $ \text{Pre}_{\exists,\forall}^{T,\widehat{U}}(\widehat{V})$.	\label{thm:pre}
+	$ \widehat{W} $ and $ \widehat{C} $ returned by \eqref{patch_pre} are the same as the outputs resulting from $ \text{Pre}_{\exists,\forall}^{T,\widehat{U}}(\widehat{V})$.	\label{thm:pre}
 \end{theorem}
 
 \begin{proof}
@@ -416,7 +416,7 @@ where $ \widehat{\mathcal{C}} $ is converted from $ T(\widehat{\mathcal{C}}) $. 
 	By \eqref{patch_pre}, transitions in $ T(\widehat{\mathcal{C}}) $ can only take actions in $ \widehat{U} $ and transit to states in $ \widehat{V} $, which implies that $ \rightarrow_{T(\widehat{\mathcal{C}})}\subseteq \rightarrow_{T(\mathcal{C}_t)} $.  
 \end{proof}
 
-Next, assume that $ Y $ and $ \mathcal{C} $ are the winning set and controller resulting from $ \text{Inv}_{\exists}^{D,G}(Z,B) $. Denote the set of unavailable actions with $ U_d $. If $ D\cap U_d \not= \emptyset$, the winning set would be empty by definition of progress group (see\cite{Nilsson2017}). Given that $ \widehat{Z} \subseteq Z $ and $ D\cap U_d=\emptyset $, we want to modify $ W $ and $ \mathcal{C} $ to be the winning set and controller for $ \text{Inv}_{\exists}^{D,G}(\widehat{Z}, B) $. It'll be proven later that the modified winning set is contained by $ Y\cup (\Delta Z\cap G\cap B) $. Also, \eqref{win_inv} is a contraction algorithm in the sense that $ \{Y_k\}_{k=1}^{\infty} $ is a monotonic decreasing sequence whose limit is the winning set. Combined these two facts, we can warm-start the contraction algorithm in \eqref{win_inv} with $ Y_0=Y\cup (\Delta Z\cap G\cap B)$ instead of $ Q $. Motivated by that idea, the patching operator is
+Next, assume that $ Y $ and $ \mathcal{C} $ are the winning set and controller resulting from $ \text{Inv}_{\exists}^{D,G}(Z,B) $. Denote the set of unavailable actions with $ U_d $. If $ D\cap U_d \not= \emptyset$, the winning set would be empty by definition of progress group (see\cite{Nilsson2017}). Given $ \widehat{Z} \subseteq Z $ and $U_d$ such that $ D\cap U_d=\emptyset $, we want to modify $ Y $ and $ \mathcal{C} $ to be the winning set and controller for $ \text{Inv}_{\exists}^{D,G}(\widehat{Z}, B) $. As proven later that the modified winning set $\widehat{Y}$ is contained by $ Y\cup (\Delta Z\cap G\cap B) $. Also, $ \text{Inv}_{\exists}^{D,G}(Z,B) $ computation in \eqref{win_inv} is a contraction algorithm in the sense that $ \{Y_k\}_{k=1}^{\infty} $ is a monotonic decreasing sequence whose limit is the winning set. Combining these two facts, we can warm-start the contraction algorithm in \eqref{win_inv} with $ Y_0=Y\cup (\Delta Z\cap G\cap B)$ instead of $ Q $. Motivated by that idea, the patching operator is
 
 \begin{align}
 &[\widehat{Y},\widehat{\mathcal{C}}]=\overline{Inv}_{\exists}^{D,G}(Y,\mathcal{C},Z,\widehat{Z}) \\
@@ -433,23 +433,12 @@ while \ Y_{k+1}\not= Y_k:\\
 \end{align}
 where $ \Delta Z = Z - \widehat{Z} $, $ E_0 = \{(s_1,a,s_2)\in \rightarrow_{T}: s_1\in Y_0, a\in D, s_2 \in Q\} $, $ \text{Pre}_{\forall,\exists}^{T_k,D}(\Delta Y_k) = \{q_1: \forall u\in D, \exists q_2\in \Delta Y_k, s.t.\ (q_1, u, q_2) \in \rightarrow_{T_k} \} $. $ \widehat{Y} $ is the modified winning set, and the controller $ \widehat{\mathcal{C}} $ can be recovered from $ T(\widehat{\mathcal{C}}) $.
 
+In regards to the patching operator in \eqref{patch_inv}, we have the following result, proof of which is given in Appendix \ref{app:pr_31}:
+
 \begin{theorem}
-$ \widehat{Y} $ and $ \widehat{C} $ returned by \eqref{patch_inv} would be the same as outputs resulting from $ \text{Inv}_{\exists}^{D,G}(\widehat{Z},B) $.	\label{thm:inv}
+$ \widehat{Y} $ and $ \widehat{C} $ returned by \eqref{patch_inv} are the same as the outputs resulting from $ \text{Inv}_{\exists}^{D,G}(\widehat{Z},B) $.	\label{thm:inv}
 \end{theorem}
 
-{\color{red} Requires careful reading}
-
-\begin{proof}
-	Assume that $ Y_t $ and $ \mathcal{C}_t $ are the winning set and controller resulting from $ \text{Inv}_{\exists}^{D,G} (\widehat{Z}) $. Here we're going to prove that $ Y_t=\widehat{Y}$. Once we have $ Y_t=\widehat{Y}$, it's easy to check that $ T(\mathcal{C}_t) = T(\widehat{C}) $.
-	
-	By \eqref{win_inv}, the winning set $ Y $ of $ \text{Inv}_{\exists}^{D,G} (Z) $ is the largest subset of $ (G\cap B) - Z  $ satisfying the convergence condition w.r.t $ Z $, i.e. $ Y \subseteq Pre^{T,D}_{\exists, \forall}(Y\cup Z) $, so is $ Y_t $ w.r.t. $ \widehat{Z} $.
-	
-	First, prove that $ Y_t \subseteq Y_0 $ for $ Y_0 $ in \eqref{patch_inv}: Check that $ V= Y_t \cap (G\cap B -Z) $ is a subset of $ G\cap B -Z $ satisfying the convergence condition over $ Z $. For $ V_1, V_2 \subseteq G\cap B-Z $ satisfying convergence condition, $ V_1\cup V_2 $ satisfies convergence condition too, which implies $ V \subseteq Y $ (otherwise, $ Y\subseteq Y\cup V $ is a larger subset of $ G\cap B-Z $ satisfying the convergence condition than $ Y $. Contradiction!) So $ Y_t = V\cup (Y_t\cap \Delta Z) \subseteq Y\cup (\Delta Z \cap G\cap B) = Y_0$. 
-	
-	Second, prove $ Y_t \subseteq \widehat{Y} $: Since $ Y_t\subseteq Y_0 $ and $ Y_k = Y_0 - \bigcup_{i\leq k} \Delta Y_i$, it's enough to show $ \Delta Y_k\cap Y_t = \emptyset,\forall k $. Prove by induction: $ \Delta Y_0\cap (Y_t\cup \widehat{Z}) = \emptyset $. Assume that $ \Delta Y_k \cap (Y_t\cup \widehat{Z}) = \emptyset $, then $\text{Pre}_{\forall, \exists}^{T_k,D}(\Delta Y_k) \cap  \text{Pre}_{\exists,\forall}^{T,D} (Y_t\cup \widehat{Z}) = \emptyset$ by \eqref{eqn:pre} and the fact that $ \rightarrow_{T_k}\subseteq \rightarrow_{T} $. For $ Y_t \subseteq \text{Pre}_{\exists,\forall}^{T,D} (Y_t\cup \widehat{Z}) $ and $ \Delta Y_{k+1} = \text{Pre}_{\forall, \exists}^{T_k,D}(\Delta Y_k) $, $ Y_t\cap \Delta Y_{k+1} = \emptyset $. Hence by induction argument, $ Y_t \cap \Delta Y_k = \emptyset, \forall k $, i.e. $ Y_t\subseteq \widehat{Y} $. 
-	
-	Finally, prove $ \widehat{Y}\subseteq Y_t $: It's enough to show that $ \widehat{Y} $ satisfies the convergence condition over $ \widehat{Z} $. By definitions of $ T_k $, $ \Delta Y_{k+1}= Y_k \cap \text{Pre}_{\forall,\exists}^{T, D}(\Delta Y_k)$. Then by the additivity of $ \text{Pre}^{T,D}_{\forall,\exists} $ (i.e. for any $ X_1 $ and $ X_2 $, $ \text{Pre}_{\forall,\exists}^{T,D} (X_1\cup X_2)=\text{Pre}_{\forall,\exists}^{T,D} (X_1)\cup \text{Pre}_{\forall,\exists}^{T,D} (X_2) $), it's easy to check that redefining fifth line in \eqref{patch_inv} by $ \Delta Y_{k+1} = \Delta Y_k \cup (Y_k \cap \text{Pre}_{\forall,\exists}^{T, D}(\Delta Y_k)) $ doesn't change $ Y_{k+1} $.  By the new definition of $ \Delta Y_k $ and $ Y_k \cap \widehat{Z} = \emptyset $, we have $ \Delta Y_k = Q-(Y_k\cup \widehat{Z}) $. The limit of redefined $ \Delta Y_k $ exists, for it is increasing and contained by a finite set $ Q $. Once $ \Delta Y_k $ converges, $ Y_k \cap \text{Pre}_{\forall,\exists}^{T, D}(\Delta Y_k)\subseteq \Delta Y_k $. Since $ Y_k=\widehat{Y} $ and $ \Delta Y_k $ are disjoint, $ \widehat{Y} \cap \text{Pre}_{\forall,\exists}^{T, D}(\Delta Y_k) = \emptyset $, i.e.  $ \widehat{Y} \cap \text{Pre}_{\forall,\exists}^{T, D}(Q-(\widehat{Y}\cup \widehat{Z})) = \emptyset $. It says that $ \forall s_1 \in \widehat{Y}$, not $\forall u\in D, \exists s_2\in Q, (s1,u,s2)\in \rightarrow_{T} $ and $s_2\in (Q-(\widehat{Y}\cup \widehat{Z}))$, i.e. $ \forall s_1 \in \widehat{Y}, \exists u\in D, \forall s_2 \in Q,  (s_1,u,s_2)\not\in \rightarrow_{T}$ or $ s_2\in (\widehat{Y}\cup \widehat{Z})$. That implies that $ \widehat{Y}\subseteq \text{Pre}_{\exists,\forall}^{T,D}(\widehat{Y}\cup \widehat{Z}) $, i.e. $ \widehat{Y} $ satisfies the convergence condition over $ \widehat{Z} $.
-\end{proof}
 
 Given a simple controller $ \mathcal{C} $ and new synthesis settings, both \eqref{patch_pre} and \eqref{patch_inv} try to find $ T(\widehat{\mathcal{C}}) $ inside $ T(\mathcal{C}) $. However, if we re-synthesize the new simple controller from scratch, \eqref{eqn:pre} and \eqref{win_inv} would try to find $ T(\mathcal{C}) $ in the whole AFTS $ T $, which roughly needs more computation cost.
 
@@ -461,7 +450,8 @@ Given a simple controller $ \mathcal{C} $ and new synthesis settings, both \eqre
 
 Based on the patching operators defined in the previous section, we are able to modify the winning sets and controllers resulting from \eqref{win_phi}, \eqref{win_interm}, \eqref{win_until}, \eqref{win_pgpre}.
 
-{\color{teal}The intuition behind the  patching algorithms for those controllers are similar: All the fixed-point operators considered in this section are either expanding algorithms  (\eqref{win_phi}, \eqref{win_until},\eqref{win_pgpre}) or contraction algorithm (\eqref{win_interm}) in the sense that $ \{W_k\}_{k=0}^\infty $ (or $ Z_k, X_k,V_k $ depending on  which fixed-point operator is considered) is a monotonic sequence in $ 2^Q $ whose limit is the winning set. Also, it's easy to see that the modified winning set would be contained by the original one. Motivated by those facts, we can warm-start the expanding or contraction process from the existing winning sets instead of $ \emptyset $ for expansion or the set of full state $ Q $ for contraction.}
+The intuition behind the  patching algorithms for existing controllers are similar: All the fixed-point operators considered in this section are either expanding algorithms  (\eqref{win_phi}, \eqref{win_until},\eqref{win_pgpre}) or contraction algorithm \eqref{win_interm} in the sense that $ \{W_k\}_{k=0}^\infty $ (or $ Z_k, X_k,V_k $ depending on  which fixed-point operator we consider) is a monotonic sequence in $ 2^Q $ whose limit is the winning set. Also, it is easy to see that the modified winning set would be contained by the original one. Motivated by those facts, our patching algorithm warm-starts the expanding or contraction process in the original algorithm based on patching the existing winning sets and controllers.
+
 
 Assume that $ Z $ and $ \mathcal{C} = (\mathcal{V},\mathcal{K},x) $ are the winning set and controller resulting from  $ \text{PGPre}_{\exists,\forall}^{T} (Z,B)$. Given $ \widehat{Z}\subseteq Z $,  $ \widehat{U}\subseteq U $, we want to modify $ Z $ and $ \mathcal{C} $ to be the winning set and controller for $ \text{PGPre}_{\exists, \forall}^{T,\widehat{U}}(\widehat{Z},B)$. The patching operator is:
 \begin{align}
@@ -484,7 +474,7 @@ Remove\ all\ \emptyset\ in\ \widehat{\mathcal{V}}\ and \ \widehat{\mathcal{K}},\
 \end{theorem}
 
 \begin{proof}
-	As long as \eqref{patch_inv} works well, $ \widehat{Z}_\infty $ and $ \mathcal{V}(k) $ will be equal to those in $ \text{PGPre}^{T,\widehat{U}}_{\exists,\forall}(\widehat{Z},B) $ for all $ k $. The soundness and completeness of \eqref{patch_inv} have been proven, so \eqref{patch_pg} is sound and complete.
+	Guaranteed by Theorem \ref{thm:inv}, $ \widehat{Z}_\infty $ and $ \widehat{\mathcal{V}}(k) $ in \eqref{patch_pg} will be equal to $ Z_{\infty} $ and $ \mathcal{V}(k) $ in \eqref{win_pgpre} when $ \text{PGPre}^{T,\widehat{U}}_{\exists,\forall}(\widehat{Z},B) $ is called, for all $ k $. 
 \end{proof}
 
 Assume that $ X_\infty $ and $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ are the winning set and controller resulting from $ \text{Win}_{\exists,\forall}^{T,U}(B\mathbf{\ U\ }Z) $. Assume $ \vert \mathcal{K}\vert = 2n $, i.e. \eqref{win_until} converges in $ n $ steps. Then, given $ \widehat{Z}\subseteq Z $ and $ \widehat{U}= U-U_d $, to get the winning set and controller for $ \text{Win}_{\exists,\forall}^{T,\widehat{U}}(B\mathbf{\ U\ }\widehat{Z}) $, the patching operator is
@@ -634,7 +624,7 @@ Let the system start from $ s_1 $ and initialize internal variables as $ (1,1,1,
 \begin{figure}
 	\centering
 	\includegraphics[width=0.8\linewidth]{pic/hop_rob}
-	\caption{Hopping robots with point foot on a ground with holes.}
+	\caption{Hopping robots with point foot on a ground with holes. {\color{purple} Remark: the linear-inverted pendulum model assumes that the center of mass remains }}
 	\label{fig:hoprob}
 \end{figure}
 
