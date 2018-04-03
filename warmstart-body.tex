@@ -722,7 +722,7 @@ Finally, to show that formal guarantees are satisfied after patching, simulation
 For practical applications in robot control, if we have the controller for the case that no constraints exists and know all the possible profiles of actions (all the possible constraints on the surface) for a known environment, the patching algorithm can generate the corresponding controllers for those action profiles very quickly. 
 
 \section{CONCLUSION}
-In this paper, we proposed a method to do fixed-point based control synthesis by patching the existing controller with a larger action space. The correctness of this method relied on the fact that "nested" structure between fixed-point based controllers with "nested" action profiles, so we could do the control synthesis by simply finding out the redundant part of the existing controller for the new profile and then removing them. It gives us a way to avoid the expensive computation cost of synthesis from scratch. 
+In this paper, we proposed a method to modify the existing controller when some actions become unavailable. The correctness of this method relied on the fact that the winning set for , so we could do the control synthesis by simply finding out the redundant part of the existing controller for the new profile and then removing them. It gives us a way to avoid the expensive computation cost of synthesis from scratch. 
 
 We illustrated the efficiency of our method on the example of hopping { \color{purple} walking} robot. Given the same specification, the time for patching was only $ 1.4\%-7\% $ of the time for synthesis from scratch. 
 
