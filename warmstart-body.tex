@@ -305,7 +305,9 @@ In the execution time, a controller $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ 
 	\begin{figure}
 		\centering
 		\includegraphics[width=0.7\linewidth]{pic/xupdate}
-		\caption{ {\color{purple} Same comment as on the previous version: it would be nice to see both transition graphs (before/after) side by side.}{\color{teal} the only change on the graph comes from changes in $ \mathcal{V} $ in each sub-controller.} The transition graph is used to illustrate the update rules of $ x $ in Definition \ref{def:exec}. $ s $ is the current state of the system in Figure \ref{fig:eg1}. At each execution time, each internal variable transits from its current node to one of the neighbor node once the transition condition on the edge is satisfied. If no transition condition is satisfied, internal variable remains unchanged. Update $ x$ first, and then $ x^0 $, and lastly $ x_0^1 $ and $x^1_1 $.} 
+		\caption{ {\color{purple} Same comment as on the previous version: it would be nice to see both transition graphs (before/after) side by side.}{\color{teal} the only change on the graph comes from changes in $ \mathcal{V} $ in each sub-controller. Also: why do you show $x_1^0$ in the two bottom 
+        transitions; it could make the reader think that the transitions depend on the values of other internal variables, but it's not the case. The transition to children controllers is relatively clear to me, so I would simpy remove the value of other internal variables in each subgraph. However, shouldn't the transitions be complete?  } 
+        The transition graph is used to illustrate the update rules of $ x $ in Definition \ref{def:exec}. $ s $ is the current state of the system in Figure \ref{fig:eg1}. At each execution time, each internal variable transits from its current node to one of the neighbor node once the transition condition on the edge is satisfied. If no transition condition is satisfied, internal variable remains unchanged. Update $ x$ first, and then $ x^0 $, and lastly $ x_0^1 $ and $x^1_1 $.} 
 		\label{fig:xupdate}
 	\end{figure}
 	
