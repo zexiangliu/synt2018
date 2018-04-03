@@ -42,7 +42,7 @@ The paper is organized as follows: In Section \ref{sec:pre}, we give the problem
 \label{sec:pre}
 \subsection{Notation}
 
-For two sets $ A $ and $ B $, the set difference is denoted by $ A-B $. A function or a map $ F: C\rightarrow D $ {\color{purple} corresponds to  the set} $ \{(c,F(c)):c\in C, F(c)\in D \} $. A list is a totally ordered set. For list $ \mathcal{V} $, $ \mathcal{V}(i) $ refers to its $ i^{th} $ element. To assign an object $ X $ to be the $ i^{th} $ element in	 $ \mathcal{V} $ is denoted by $ \mathcal{V}(i) = X $. {\color{purple} Not sure it is really useful to define functions or maps here, the terms are barely used in the rest of the document (function x4, map x1)} 
+For two sets $ A $ and $ B $, the set difference is denoted by $ A-B $. A function or a map $ F: C\rightarrow D $ {\color{purple} corresponds to  the set} $ \{(c,F(c)):c\in C, F(c)\in D \} $. {\color{teal}A list $ \mathcal{V}=[x_1,...,x_n] $ is a totally ordered set, where $ \mathcal{V}(i) $ refers to its $ i $th-order element. To assign $ x_i $ to be the $ i $th element in	 $ \mathcal{V} $ is written as $ \mathcal{V}(i) = x_i $.} {\color{purple} Not sure it is really useful to define functions or maps here, the terms are barely used in the rest of the document (function x4, map x1)} 
 
 \subsection{Augmented Finite Transition Systems}
 
@@ -479,7 +479,7 @@ For~k\geq n\ and\ \widehat{X}_{k+1}\not=\widehat{X}_k:	\\
 \widehat{X}_\infty = \widehat{X}_k,\ \widehat{\mathcal{C}} = (\widehat{\mathcal{V}},\widehat{\mathcal{K}},x)
 \end{cases} \label{patch_until}
 \end{align}
-The above patch algorithm has two parts: part one modifies the existing sub-controllers for $ k\leq n $; part two adds new sub-controllers by modifying the $ n^{th} $ existing sub-controller until convergence. The winning set $ \widehat{X}_{\infty} $, and controller $ \widehat{\mathcal{C}} $ would be equal to the outputs of \eqref{win_until} with input parameters $ \widehat{U},B,\widehat{Z} $. 
+The above patch algorithm has two parts: part one modifies the existing sub-controllers for $ k\leq n $; part two adds new sub-controllers by modifying the $ n $th existing sub-controller until convergence. The winning set $ \widehat{X}_{\infty} $, and controller $ \widehat{\mathcal{C}} $ would be equal to the outputs of \eqref{win_until} with input parameters $ \widehat{U},B,\widehat{Z} $. 
 
 \begin{proof}
 	Let's denote $ X_k $ in \eqref{win_until} with inputs $ \widehat{U},B,\widehat{Z} $ as $ X_k^t $. 	To show the soundness and completeness of \eqref{patch_until}, it's enough to show that $ \widehat{X}_k $ in \eqref{patch_until} is equal to $ X_k^t $, for all $ k $. 
