@@ -534,7 +534,7 @@ while\ \widehat{W}_{k+1}\not=\widehat{W}_k:\\
 \end{align}
 
 \begin{theorem}
-	$ \widehat{W}_\infty $ and $ \widehat{C} $ returned by \eqref{patch_until} would be the same as outputs resulting from $\text{Win}_{\exists,\forall}^{T,U}((B\mathbf{\ U\ }\widehat{Z})\vee \Square(B\wedge (\bigwedge_{i\in I} \Diamond R^i)) $. \label{thm:phi}	
+	$ \widehat{W}_\infty $ and $ \widehat{C} $ returned by \eqref{patch_until} would be the same as outputs resulting from $\text{Win}_{\exists,\forall}^{T,\widehat{U}}((B\mathbf{\ U\ }\widehat{Z})\vee \Square(B\wedge (\bigwedge_{i\in I} \Diamond R^i)) $. \label{thm:phi}	
 \end{theorem}
 
 
@@ -712,7 +712,7 @@ Now imagine that some holes on the ground are detected, as shown in Figure \ref{
 		\caption{inputs}
 		\label{fig:input}
 	\end{subfigure}
-	\caption{(a) Six regions with different colors are labeled as $ W_1,W_2,...,W6 $. The winning sets under action profiles $U_d = [1], [1:5],[1:10],...,[1:25]$ are represented by $ \bigcup_{i=1}^6 W_i,\ \bigcup_{i=2}^6 W_i,...,\ W_6 $ respectively. (b) Trajectories with initial state $ (0.85,-3.95) $ under $ U_d = \emptyset $ (blue) and $[1:10] $ (red). The region inside orange box is the target set $ B $ (c) Inputs over time under $ U_d = \emptyset $ (blue) and $ [1:10] $ (red) for trajectories in (b). The red dash point line indicates value corresponding to input $ u = 10 $.} %{\color{purple} (a) is a bit hard to understand: we  see only disjoint regions on the image but the winning sets are decreasing in size. Maybe say that the winning set $i$ is the union of the $i$ first regions on the graph. (and redefine them accordingly)}
+	\caption{(a) Six regions with different colors are labeled as $ W_1,W_2,...,W6 $. The winning sets under action profiles $U_d = [1], [1:5],[1:10],...,[1:25]$ are the regions corresponding to $ \bigcup_{i=1}^6 W_i,\ \bigcup_{i=2}^6 W_i,\bigcup_{i=3}^6 W_i,...,\ W_6 $ respectively. (b) Trajectories with initial state $ (0.85,-3.95) $ under $ U_d = \emptyset $ (blue) and $[1:10] $ (red). The region inside orange box is the target set $ B $. (c) Inputs over time under $ U_d = \emptyset $ (blue) and $ [1:10] $ (red) for trajectories in (b). The red dash point line indicates value corresponding to input $ u = 10 $.} %{\color{purple} (a) is a bit hard to understand: we  see only disjoint regions on the image but the winning sets are decreasing in size. Maybe say that the winning set $i$ is the union of the $i$ first regions on the graph. (and redefine them accordingly)}
 \end{figure}
 
 The experiment environment is MATLAB R2017a with CPU Intel Core  i7-6820 HQ.
