@@ -246,10 +246,10 @@ In the execution time, a controller $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ 
 		\text{arg}\min_{y}\{s\in \mathcal{V}(y)\},\ \ \text{otherwise}
 		\end{cases}
 		\end{displaymath}
-		\item  if $ \mathcal{C} $ is returned by \eqref{win_interm} {\color{purple} just $x \mod ..$? It seems that $x$ may remain constant with this definition, are you sure that this is correct?}{\color{teal} there's $ +1 $ after mod}:
+		\item  if $ \mathcal{C} $ is returned by \eqref{win_interm}: %{\color{purple} just $x \mod ..$? It seems that $x$ may remain constant with this definition, are you sure that this is correct?}{\color{teal} there's $ +1 $ after mod}
 		\begin{displaymath}
 		x^+ = \begin{cases}
-		x\mod\vert\mathcal{K}\vert + 1,\ \ \text{if}\ s\in \mathcal{V}(x+1)\\
+		(x\mod\vert\mathcal{K}\vert + 1),\ \ \text{if}\ s\in \mathcal{V}(x+1)\\
 		x,\ \text{otherwise}
 		\end{cases}
 		\end{displaymath}
@@ -336,7 +336,7 @@ In this section, we formally define the problem of interest. {\color{blue}it is 
 Before presenting the patching methods, we state a property of controller implementations that roughly shows that the controllers contain all the relevant information needed for patching. We start with a definition of strategy containment.
 
 \begin{definition}
-	For two control strategies $ \mu_1 $ and $ \mu_2 $ with winning set $ W_1 $ and $ W_2 $ {\color{purple} over sets $D_1$ and $D_2$ ? (to avoid mentioning winning sets here)}, we say that $ \mu_2 $ contains $ \mu_1$, denoted by $ \mu_{1} \subseteq \mu_{2}$, if $ \mu_{1} (\{(s_i,a_i)\}_{i=1}^{n-1}, s_n) $ is a subset of $ \mu_{2}(\{(s_i,a_i)\}_{i=1}^{n-1}, s_n) $, for all feasible $ n $ and all transition trajectories $ q =(s_1,a_1),(s_2,a_2),...,(s_{n-1},a_{n-1}) $ satisfying $ s_1\in W_{1} $, $ a_k \in \mu_{1} (\{(s_i,a_i)\}_{i=1}^{k-1}, s_k) $.
+	For two control strategies $ \mu_1 $ and $ \mu_2 $ corresponding to winning set $ W_1 $ and $ W_2 $ {\color{purple} over sets $D_1$ and $D_2$ ? (to avoid mentioning winning sets here)} ({\color{teal}a control strategy only takes inputs in the winning set, how to deal with this problem}), we say that $ \mu_2 $ contains $ \mu_1$, denoted by $ \mu_{1} \subseteq \mu_{2}$, if $ \mu_{1} (\{(s_i,a_i)\}_{i=1}^{n-1}, s_n) $ is a subset of $ \mu_{2}(\{(s_i,a_i)\}_{i=1}^{n-1}, s_n) $, for all feasible $ n $ and all transition trajectories $ q =(s_1,a_1),(s_2,a_2),...,(s_{n-1},a_{n-1}) $ satisfying $ s_1\in W_{1} $, $ a_k \in \mu_{1} (\{(s_i,a_i)\}_{i=1}^{k-1}, s_k) $.
 \end{definition}
 
 Consider an AFTS $ T = (Q,U,\rightarrow_T,G,AP,h_Q) $ and {\color{blue} an} LTL specification $ \phi = \Square A \wedge \Diamond \Square B \wedge \left( \bigwedge_{i\in I} \Square \Diamond R^i\right) $. Compute its winning set \eqref{win_phi} and the winning control strategy $ \mu_{\phi} $ (or controller $ \mathcal{C}_{\phi} $) via fixed-point operators. Now disable some actions $ U_d \subseteq U$, i.e. getting a new AFTS $ \widehat{T} = (Q,U-U_d,\rightarrow_T,G,AP,h_Q) $, and re-compute the winning set and control strategy, denoted by $ \widehat{W}_{\phi} $ and $ \widehat{\mu}_{\phi} $ (or controller $ \widehat{\mathcal{C}}_{\phi} $), via the same fixed-point operator. Then, we have the following.
