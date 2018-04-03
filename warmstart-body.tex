@@ -105,7 +105,7 @@ The specification considered in this work is of the form:
 \begin{align}
 \phi = \Square A \wedge \Diamond \Square B \wedge \left( \bigwedge_{i\in I} \Square \Diamond R^i\right)\label{phi}
 \end{align}
-{\color{purple} for subsets $A$, $B$, $R^i \subseteq Q$ defining atomic propositions. Such specifications can express properties of \emph{invariance} ($\Square A$), \emph{persistence} ($\Diamond \Square B$) and \emph{reccurence} 
+{\color{purple} for subsets $A$, $B$, $R^i \subseteq Q$ defining atomic propositions. Such specifications can express properties of \emph{invariance} ($\Square A$), \emph{persistence} ($\Diamond \Square B$) and \emph{reccurence}} 
 
 {\color{blue}Maybe we should say a few words on how this fragment differs from GR(1) and others}
 
@@ -216,21 +216,21 @@ The winning sets {\color{purple} resulting from} \eqref{win_interm}, \eqref{win_
 %all the fixed points are ultimately defined in terms of $\text{Pre}_{\exists,\forall}^{T,U}$, so it is enough to extract control strategies during calls to this operator and map the results into higher-level fixed points together with internal variables that control a hierarchy of partial reachability objectives.}
 
 \begin{definition} \textbf{Execution of controllers}:
-	In the execution time, a controller $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ acts as a function that maps the current state to a set of feasible actions. Given the current state $ s(t) $. the output $ \mathcal{C}(s(t)) $ is determined in two steps:
+	In the execution time, a controller $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ acts as a function that maps the current state to a set of feasible actions. Given the current state $ s(t) $. the output $ \mathcal{C}(s) $ is determined in two steps:
 	
 	(i) update the internal variable $ x $ of $ \mathcal{C} $: 
 
 	\quad If $ \mathcal{C} $ is returned by \eqref{win_phi},\eqref{win_until},\eqref{win_inv}:
 	\begin{displaymath}
 	x^+ =	\begin{cases}
-	\text{arg}\min_{y\leq x}\{u(t)\in \mathcal{V}(y)\},\ \ if\ x\not=0\\
-	\text{arg}\min_{y}\{u(t)\in \mathcal{V}(y)\},\ \ otherwise
+	\text{arg}\min_{y\leq x}\{s\in \mathcal{V}(y)\},\ \ if\ x\not=0\\
+	\text{arg}\min_{y}\{s\in \mathcal{V}(y)\},\ \ otherwise
 	\end{cases}
 	\end{displaymath}
 	\quad If $ \mathcal{C} $ is returned by \eqref{win_interm}:
 	\begin{displaymath}
 	x^+ = \begin{cases}
-	x+1 \mod\vert\mathcal{K}\vert,\ \ if\ u(t)\in \mathcal{V}(x+1)\\
+	x+1 \mod\vert\mathcal{K}\vert,\ \ if\ s\in \mathcal{V}(x+1)\\
 	x,\ otherwise
 	\end{cases}
 	\end{displaymath}
@@ -238,7 +238,7 @@ The winning sets {\color{purple} resulting from} \eqref{win_interm}, \eqref{win_
 	
 	(ii) Return the outputs of the $ x^+ $th sub-controller in $ \mathcal{K} $ with input $ s(t) $, i.e.
 	\begin{displaymath}
-	\mathcal{C}(s(t)) = \mathcal{K}(x^+)(s(t))
+	\mathcal{C}(s) = \mathcal{K}(x^+)(s)
 	\end{displaymath}
 
 	If $ \mathcal{K} $ is a list of simple controllers, $ \mathcal{K}(x)(s(t)) $ returns the set of feasible actions and ends this function call, otherwise above process repeats recursively until a simple controller is reached.
