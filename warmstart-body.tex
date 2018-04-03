@@ -60,7 +60,7 @@ For two sets $ A $ and $ B $, the set difference is denoted by $ A-B $. A functi
 
 Linear Temporal Logic (LTL) can be utilized to describe the desired behaviors of an AFTS system. It has logic operators (negation $ \neg $, conjunction $ \wedge $, disjunction $ \vee $), and temporal operators (next $ \bigcirc $, always $ \Square $, eventually $ \Diamond $ and until $ \mathbf{\ U\ }$).
 
-{\color{blue} use grammar to define LTL, cite Baier and Katoen}
+%{\color{blue} use grammar to define LTL, cite Baier and Katoen}
 %The LTL formula over a finite set of atomic propositions $ AP $ can be either: 
 %\begin{itemize}
 %	\item $ True $
@@ -72,7 +72,8 @@ Linear Temporal Logic (LTL) can be utilized to describe the desired behaviors of
 \begin{displaymath}
 	\phi := True\ \vert\ p\ \vert\ \phi_1 \vee \phi_2\ \vert\ \neg \phi\ \vert\ \bigcirc \phi\ \vert\ \phi_1 \mathbf{U}\phi_2
 \end{displaymath}
-{\color{blue}what is the numbering vi, v, etc. below?} where $ p\in AP $, $ \phi_1 $ and $ \phi_2 $ are also LTL formulas. The other operators can be derived as follows: $ \phi_1 \wedge \phi_2 = \neg (\neg \phi_1 \vee \neg \phi_2) $, $ \phi_1 \implies \phi_2 = \neg \phi_1 \vee \phi_2 $, $ \Diamond \phi = True \mathbf{\ U\ } \phi $, $ \Square \phi = \neg \Diamond \neg \phi $.
+%{\color{blue}what is the numbering vi, v, etc. below?} 
+where $ p\in AP $, $ \phi_1 $ and $ \phi_2 $ are also LTL formulas. The other operators can be derived as follows: $ \phi_1 \wedge \phi_2 = \neg (\neg \phi_1 \vee \neg \phi_2) $, $ \phi_1 \implies \phi_2 = \neg \phi_1 \vee \phi_2 $, $ \Diamond \phi = True \mathbf{\ U\ } \phi $, $ \Square \phi = \neg \Diamond \neg \phi $.
 
 {\color{teal}\emph{Semantics of LTL} \cite{Nilsson2017}:} An $\omega$-word is an infinite sequence in $ 2^{AP}$.  The satisfaction of an LTL specification $ \phi $ by an $\omega$-word $ w = w(0)w(1)w(2)\dots $, written as $ (w,i) \models \phi $, is defined inductively as follows:
 \begin{itemize}
@@ -99,7 +100,7 @@ The procedure of abstraction-based control synthesis is as follows:
 \end{itemize}
 \fi
 
-{\color{blue}I just noticed G is used for progress group. Maybe we can use R (for recurrence) if it is not used for something else}
+%{\color{blue}I just noticed G is used for progress group. Maybe we can use R (for recurrence) if it is not used for something else}
 
 The specification considered in this work is of the form:
 \begin{align}
