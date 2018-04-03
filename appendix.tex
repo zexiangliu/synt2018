@@ -44,13 +44,17 @@ W_{\infty} = W_k,\ \mathcal{C} = (\mathcal{V},\mathcal{K},x)
 &[X_{\infty},\mathcal{C}]= \text{Win}_{\exists,\forall}^{T,U} (B\mathbf{\ U\ }Z)\\
 =&\begin{cases}
 X_0 = \emptyset,\ \mathcal{V}=\{\},\ \mathcal{K}=\{\}\\
-while\ X_{k+1}\not= X_k\\
+{\color{purple} k=0}\\
+{\color{purple} remove:} while\ X_{k+1}\not= X_k\\
+{\color{purple} repeat:}\\
 \ \ \ \ [V^1_k,C^1_k]=
 \text{Pre}_{\exists,\forall}^{T,U}(X_k)\\
 \ \ \ \  [V^2_k,C^2_k]=\text{PGPre}_{\exists,\forall}^{T,U}(Z\cup(B\cap V^1_k),B)\\
 \ \ \ \ X_{k+1} =Z\cup (B\cap V^1_k)\cup V^2_k\\
 \ \ \ \ \mathcal{V}(2k+1)=V^1_k, \mathcal{V}(2k+2)=V^2_k\\
 \ \ \ \ \mathcal{K}(2k+1)=C^1_k,\ \mathcal{K}(2k+2)=C^2_k\\
+\ \ \ \ {\color{purple} k=k+1}\\
+{\color{purple} until \ X_{k}= X_{k-1} }\\
 X_{\infty}=X_k,\ \mathcal{C} = (\mathcal{V},\mathcal{K},x)
 \end{cases}\label{win_until}
 \end{align}
@@ -62,7 +66,8 @@ for\ U\in 2^U:\\
 \ \ for\ G\in G(U):\\
 \ \ \ \ \ \  [V_k,\mathcal{C}_k]=Inv_{\exists}^{U,G}(Z_{\infty},B)\\
 \ \ \ \ \ \ Z_{\infty} = Z_{\infty} \cup V_k\\
-\ \ \ \ \ \ \mathcal{V}(k)=V_k,\ \mathcal{K}(k)=\mathcal{C}_k,\ k++\\
+\ \ \ \ \ \ \mathcal{V}(k)=V_k,\ \mathcal{K}(k)=\mathcal{C}_k\\
+\ \ \ \ \ \ {\color{purple} k = k+1}\\
 \mathcal{C} = (\mathcal{V},\mathcal{K},x)
 \end{cases}\label{win_pgpre}
 \end{align}
