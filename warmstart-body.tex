@@ -146,9 +146,7 @@ Note that a control strategy as in definition \ref{def:cs} can require infinite 
 Given $\widehat{D} \subseteq D$, a simple controller $ \mathcal{C} $ \textbf{restricted to} $ \widehat{D} $ means that the domain of $ \mathcal{C} $ is restricted to $\widehat{D}$.
 
 \begin{definition}
-	For the AFTS $ T=\{Q,U,\rightarrow_T,G,AP,h_Q\} $, a \textbf{controller} $ \mathcal{C} $ is a tuple $ (\mathcal{V},\mathcal{K},x) $, where $ \mathcal{V} $ is a list of subsets of $ Q $, $ \mathcal{K} $ is a list of controllers or simple controllers, {\color{purple} which we refer to as} sub-controllers of $ \mathcal{C} $, and $ x $ is an internal variable that indicates the index of sub-controllers executed last time. {\color{teal} The execution of controller and update rules of $ x $ refers to Definition \ref{def:exec}}. {\color{purple} Same remark as with the simple controllers: no need for a connection to winning sets here. Also, I still believe that the transition graph is lacking in this definition: without it, we don't know how to update $x$.} {\color{teal} the transition graph of $ x $ is totally equivalent to  Definition \ref{def:exec}+$ \mathcal{V} $ in $ \mathcal{C} $ and its sub-controllers.}
-	\label{def:cont}
-\end{definition}
+	For the AFTS $ T=\{Q,U,\rightarrow_T,G,AP,h_Q\} $, a \textbf{controller} $ \mathcal{C} $ is a tuple $ (\mathcal{V},\mathcal{K},x) $, where $ \mathcal{V} $ is a list of subsets of $ Q $, $ \mathcal{K} $ is a list of controllers or simple controllers, {\color{purple} which we refer to as} sub-controllers of $ \mathcal{C} $, and $ x $ is an internal variable that indicates the index of sub-controllers executed last time. {\color{teal} The execution of controller and update rules of $ x $ refers to Definition \ref{def:exec}}. {\color{purple} Same remark as with the simple controllers: no need for a connection to winning sets here.} {\color{teal} the transition graph of $ x $ is totally equivalent to  Definition \ref{def:exec}+$ \mathcal{V} $ in $ \mathcal{C} $ and its sub-controllers.}
  
  Overall, a controller is a tree structure with controllers at each node and simple controllers at the leaf nodes. The list $\mathcal{K}$ for each controller (each non-leaf node in the tree) denotes the children of that controller in the tree. Winning sets and controllers for specifications in the form of \eqref{phi} are computed iteratively via fixed-point based algorithms given in Appendix \ref{app:basic_alg}.
 
@@ -243,15 +241,15 @@ In the execution time, a controller $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ 
 		\item 	if $ \mathcal{C} $ is returned by \eqref{win_phi},\eqref{win_until},\eqref{win_inv}:
 		\begin{displaymath}
 		x^+ =	\begin{cases}
-		\text{arg}\min_{y\leq x}\{s\in \mathcal{V}(y)\},\ \ if\ x\not=0\\
-		\text{arg}\min_{y}\{s\in \mathcal{V}(y)\},\ \ otherwise
+		\text{arg}\min_{y\leq x}\{s\in \mathcal{V}(y)\},\ \ \text{if}\ x\not=0\\
+		\text{arg}\min_{y}\{s\in \mathcal{V}(y)\},\ \ \text{otherwise}
 		\end{cases}
 		\end{displaymath}
-		\item  if $ \mathcal{C} $ is returned by \eqref{win_interm}:
+		\item  if $ \mathcal{C} $ is returned by \eqref{win_interm} {\color{purple} just $x \mod ..$? It seems that $x$ may remain constant with this definition, are you sure that this is correct?}:
 		\begin{displaymath}
 		x^+ = \begin{cases}
-		x\mod\vert\mathcal{K}\vert + 1,\ \ if\ s\in \mathcal{V}(x+1)\\
-		x,\ otherwise
+		x\mod\vert\mathcal{K}\vert + 1,\ \ \text{if}\ s\in \mathcal{V}(x+1)\\
+		x,\ \text{otherwise}
 		\end{cases}
 		\end{displaymath}
 	\end{itemize}
@@ -264,7 +262,7 @@ In the execution time, a controller $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ 
 \end{itemize}
 	
 	In the execution of $ \mathcal{K}(x^+)(s) $, the process above would be repeated and then a sub-controller of $ \mathcal{K}(x^+) $ would be executed. Thus it is a recursive process that does not end until a simple controller is reached.
-	The set of feasible actions are returned by that simple controller. For those sub-controllers not called in this execution, their internal variables are kept unchanged.
+	The set of feasible actions are returned by that simple controller. For the sub-controllers not called in this execution, their internal variables are kept unchanged.
 	
 
 	%Assume the current state is $ s_t $. Each time a controller is called with input $ s_t $, the controller updates its internal variable according to $ s_t $, the winning sets of sub-controllers and the current value of internal variable. Then, the sub-controller indexed by the new value of internal variable would be called with $ s_t $ as input. Repeat the above procedure inductively until a simple controller is reached, which returns the set of feasible actions for $ s_t $. \label{ref:cont}
@@ -281,13 +279,16 @@ In the execution time, a controller $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ 
 \end{figure}
 
 \begin{example}
-	For a simple transition system shown in Figure \ref{fig:eg1}, given the specification $ \phi = \Square \Diamond A \wedge \Square \Diamond B $, the outputs of \eqref{win_phi} are winning set $ W= \{s_1,s_2,s_3,s_4\}$, and controller $ \mathcal{C} = (W,\{\mathcal{C}^0_1\}, x = 1) $, where the sub-controllers are:
+\label{ex:exec}
+	For a simple transition system shown in Figure \ref{fig:eg1}, given the specification $ \phi = \Square \Diamond A \wedge \Square \Diamond B $, the outputs of \eqref{win_phi} are the winning set $ W= \{s_1,s_2,s_3,s_4\}$, and the controller $ \mathcal{C} = (W,\{\mathcal{C}^0_1\}, x = 1) $, where the sub-controllers are:
 	
 	$ \mathcal{C}^0_1 = (\{W,\{s_1\},\{s_3,s_4\}\},\{\mathcal{C}^1_1, \mathcal{C}^1_2\}, x^0_1 ) $; 
 	
 	$ \mathcal{C}^1_1 = (\{\{s_1,s_2\},W,W \},\{\mathcal{C}^{2,0}_i\}_{i=1}^3,x^1_1)$;
 	
-	$ \mathcal{C}^1_2 = (\{\{s_2,s_3,s_4\},W,W \}\{\mathcal{C}^{2,1}_i\}_{i=1}^{3},x^1_2 )$, $ \mathcal{C}^{2,0}_1 = \{(s_1,\{a\}),(s_2,\{c\})\} $;
+	$ \mathcal{C}^1_2 = (\{\{s_2,s_3,s_4\},W,W \},\{\mathcal{C}^{2,1}_i\}_{i=1}^{3},x^1_2 )$;
+    
+    $ \mathcal{C}^{2,0}_1 = \{(s_1,\{a\}),(s_2,\{c\})\} $;
 	
 	$ \mathcal{C}^{2,0}_2 = \{(s_1,\{a,b\}),(s_2,\{c\}),(s_3,\{g\}),(s_4,\{e\})\} $;
 	
@@ -306,9 +307,9 @@ In the execution time, a controller $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ 
 		\label{fig:xupdate}
 	\end{figure}
 	
-	$ \mathcal{C} $, $ \mathcal{C}_1^0 $ and $ \mathcal{C}_i^1 $ are returned by \eqref{win_phi}, \eqref{win_interm} and \eqref{win_until}. $ \mathcal{C}_i^{2,k} $ are simple controllers returned by \eqref{eqn:pre}. Each time $ \mathcal{C} $ is called, $ (x,x^0_1,x^1_1,x^1_2) $ is updated according to Definition \ref{def:exec}, and one of the simple controllers in $ \mathcal{C} $ would be reached, which determines the set of feasible control inputs. The update of rules for internal variables in this example \ref{def:exec} can be illustrated by the transition graph in Figure \ref{fig:xupdate}, which is consistent with Definition \ref{def:exec}. %is determined by $ \mathcal{C}^{2,k}_{x^1_{k}} (s)$ (if $ x^0 = k  $).
+	$ \mathcal{C} $, $ \mathcal{C}_1^0 $ and $ \mathcal{C}_i^1 $ are returned by \eqref{win_phi}, \eqref{win_interm} and \eqref{win_until}. $ \mathcal{C}_i^{2,k} $ are simple controllers returned by \eqref{eqn:pre}. Each time $ \mathcal{C} $ is called, $ (x,x^0_1,x^1_1,x^1_2) $ is updated according to Definition \ref{def:exec}, and one of the simple controllers in $ \mathcal{C} $ is reached, which determines the set of feasible control inputs. The update rules for internal variables in this example \ref{def:exec} {\color{purple} example \ref{ex:exec}} can be illustrated by the transition graph in Figure \ref{fig:xupdate}, which is consistent with Definition \ref{def:exec}. %is determined by $ \mathcal{C}^{2,k}_{x^1_{k}} (s)$ (if $ x^0 = k  $).
 	
-	For example, initialize the internal variables to be $ (1,1,1,1) $. Let's start from $ s_1 $ and run $ \mathcal{C}(s_1) $: The updated internal variables would be $ (1,2,1,2) $, after $ \mathcal{C}(s_1), \mathcal{C}^0_1(s_1)$, $ \mathcal{C}^1_2(s_1) $ and $ \mathcal{C}^{2,1}_2(s_1) $ are called recursively. The set of feasible actions is $ \{b\}= \mathcal{C}^{2,1}_2(s_1) $. Under action $ b $, the system in Figure \ref{fig:eg1} transits to $ s_2 $. Now run $ \mathcal{C}(s_2) $. The internal variable would be updated to $ (1,2,1,1) $. The set of feasible actions is$ \{d,f\}=\mathcal{C}^{2,1}_1(s_2) $. Let's keep doing this and always take the first action in the output of $ \mathcal{C} $ at each execution. The trajectory under control of $\mathcal{C} $ would be $ s_1,s_2,s_4,s_2,s_1,...$, where the sequence of actions is $ b,d,e,c,... $. The trajectory visits $ A $ and $ B $ in turn, satisfying the given specification.
+	For example, initialize the internal variables to be $ (1,1,1,1) $ {\color{purple} Is this initialization just an example, or is it compulsory to initialize the variables with these values?}. Let's start from $ s_1 $ and run $ \mathcal{C}(s_1) $: The updated internal variables would be $ (1,2,1,2) $, after $ \mathcal{C}(s_1), \mathcal{C}^0_1(s_1)$, $ \mathcal{C}^1_2(s_1) $ and $ \mathcal{C}^{2,1}_2(s_1) $ are called recursively. The set of feasible actions is $ \{b\}= \mathcal{C}^{2,1}_2(s_1) $. Under action $ b $, the system in Figure \ref{fig:eg1} transits to $ s_2 $. Now run $ \mathcal{C}(s_2) $. The internal variable would be updated to $ (1,2,1,1) $. The set of feasible actions is$ \{d,f\}=\mathcal{C}^{2,1}_1(s_2) $. Let's keep doing this and always take the first action in the output of $ \mathcal{C} $ at each execution. The trajectory under control of $\mathcal{C} $ would be $ s_1,s_2,s_4,s_2,s_1,...$, where the sequence of actions is $ b,d,e,c,... $. The trajectory visits $ A $ and $ B $ in turn, satisfying the given specification.
 	
 	%\footnote{Define $ x_{total}: = (x,x^0,x^1_0,x^1_1) $. Each $ x_{total} $ locates a simple controller, i.g. $ x_{total}  = (0,1,0,5)$  gives that $ C_0^0\rightarrow C^1_1\rightarrow C^2_5 $. The evolution of $ x_{total} $ in the example above is $ (0,0,0,0), (0,1,0,5),(0,1,0,4), (0,0,1,4), (0,0,0,4)... $.}
 \end{example}
