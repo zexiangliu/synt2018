@@ -243,11 +243,9 @@ In the execution time, a controller $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ 
 	\mathcal{C}(s) = \mathcal{K}(x^+)(s)
 	\end{displaymath}
 \end{itemize}
-
 	
-
-
-	If $ \mathcal{K} $ is a list of simple controllers, $ \mathcal{K}(x^+)(s) $ returns the set of feasible actions and this function call ends, otherwise above process repeats recursively until a simple controller is reached.
+	In the execution of $ \mathcal{K}(x^+)(s) $, the process above would be repeated and then a sub-controller of $ \mathcal{K}(x^+) $ would be executed. So obviously it's recursive algorithm which ends when a simple controller is reached.
+	The set of feasible actions will be returned by that simple controller. For those sub-controllers not called in this execution, their internal variables keeps unchanged.
 	
 
 	%Assume the current state is $ s_t $. Each time a controller is called with input $ s_t $, the controller updates its internal variable according to $ s_t $, the winning sets of sub-controllers and the current value of internal variable. Then, the sub-controller indexed by the new value of internal variable would be called with $ s_t $ as input. Repeat the above procedure inductively until a simple controller is reached, which returns the set of feasible actions for $ s_t $. \label{ref:cont}
