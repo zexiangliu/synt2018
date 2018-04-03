@@ -510,7 +510,7 @@ X_0 = \emptyset, \widehat{X}_0 = \emptyset, \Delta X = \emptyset, \ \widehat{\ma
 \ \ \ \ X_{k+1} = Z\cup (B\cap \mathcal{V}(2k+1)) \cup \mathcal{V}(2k+2)\\
 \ \ \ \ \widehat{X}_{k+1} =\widehat{Z}\cup (B\cap \widehat{\mathcal{V}}(2k+1)) \cup \widehat{\mathcal{V}}(2k+2)\\
 \ \ \ \ {\color{purple} k = k +1}\\
-{\color{purple} until \ k = n \ or \ \widehat{X}_{k}\not=\widehat{X}_{k-1}}\\
+{\color{purple} until \ k = n \ or \ \widehat{X}_{k}=\widehat{X}_{k-1}}\\
 {\color{purple} remove: }for~k\geq n\ and\ \widehat{X}_{k+1}\not=\widehat{X}_k:	\\
 {\color{purple} while \ \widehat{X}_{k}\not=\widehat{X}_{k-1}:}\\
 \ \ \ \ [\widehat{\mathcal{V}}(2k+1),\widehat{\mathcal{K}}(2k+1)] = \overline{\text{Pre}}_{\exists,\forall}^{T,U}(\mathcal{K}(2n-1),X_{n}-\widehat{X}_{k}, U_d)\\
@@ -544,10 +544,14 @@ Z_{\infty}^i = Z\cup (B\cap R^i\cap \text{Pre}_{\exists, \forall}^{T,U}(W_0))\\
 \widehat{Z}_{0}^i = \widehat{Z}\cup (B\cap R^i\cap \text{Pre}_{\exists, \forall}^{T,U-U_d}(W_0))\\
 [X^i_0,\widehat{\mathcal{K}}(i)] = \overline{\text{Win}}^{T,U}_{\exists,\forall, (B\mathbf{U}Z)}(\widehat{\mathcal{K}}(i),Z_\infty^i,\widehat{Z}_0^i, U_d)\\
 \widehat{W}_{0} = \bigcap_{i\in I} X^i_0\\
-while\ \widehat{W}_{k+1}\not=\widehat{W}_k:\\
+{\color{purple} k=0}\\
+{\color{purple} remove:} while\ \widehat{W}_{k+1}\not=\widehat{W}_k:\\
+{\color{purple} repeat:}\\
 \ \ \ \ \widehat{Z}_{k+1}^i = \widehat{Z} \cup (B\cap R^i\cap \text{Pre}_{\exists, \forall}^{T,U-U_d}(\widehat{W}_k))\\
 \ \ \ \ [X^i_{k+1},\widehat{\mathcal{K}}(i)]=\overline{\text{Win}}^{T,U}_{\exists,\forall,(B\mathbf{U}Z)}(\widehat{\mathcal{K}}(i),\widehat{Z}_k^i,\widehat{Z}_{k+1}^i, U_d)\\
 \ \ \ \ \widehat{W}_{k+1} = \bigcap_{i\in I} X^i_{k+1}\\
+\ \ \ \ {\color{purple} k = k+1}\\
+{\color{purple} until \ \widehat{W}_{k}=\widehat{W}_{k-1}}\\
 \widehat{W}_\infty = \widehat{W}_k,\ \widehat{\mathcal{C}}=(\widehat{\mathcal{V}},\widehat{\mathcal{K}},x)
 \end{cases}\label{patch_interm}
 \end{align}
@@ -580,18 +584,24 @@ Assuming that $ \vert \mathcal{K}\vert = n $. For patching purpose, we need some
 =&\begin{cases}\widehat{V}_{\text{inv}} = \overline{\text{Win}}^{T,U}_{\exists, \forall,(\psi)} (\mathcal{C}_{Inv},\emptyset,\emptyset,U_d)\\
 Restrict~ synthesis~ to~ \widehat{V}_{\text{inv}}\\
 \widehat{V}_0 = \emptyset,\ \mathcal{V}(0)=\emptyset,\ \widehat{\mathcal{V}}=\{\},\ \widehat{\mathcal{K}}=\{\}\\
-for~k\in \{0,1,2,...,n-1\}\ and\ \widehat{V}_{k+1}\not=\widehat{V}_k:\\
+{\color{purple} k=0}\\
+{\color{purple} remove:} for~k\in \{0,1,2,...,n-1\}\ and\ \widehat{V}_{k+1}\not=\widehat{V}_k:\\
+{\color{purple} repeat:}
 \ \ \ \ \widehat{Z}_{k+1}^1 =  \overline{\text{Pre}}_{\exists,\forall}^{T,U}(\mathcal{K}_1(k+1),\mathcal{V}(k)-\widehat{V}_k,U_d)\\
 \ \ \ \ \widehat{Z}_{k+1}^2 = \overline{\text{PGPre}}_{\exists,\forall}^{T,U} ( \mathcal{K}_2(k+1),\mathcal{V}(k), \widehat{V}_k,U_d)\\
 \ \ \ \ Z_{k+1}=\mathcal{V}_1(k+1)\cup\mathcal{V}_2(k+1),\  \widehat{Z}_{k+1} = \widehat{Z}_{k+1}^1\bigcup\widehat{Z}_{k+1}^2  \\
 \ \ \ \ [\widehat{V}_{k+1},\widehat{\mathcal{K}}(k+1)]=\overline{\text{Win}}_{\exists,\forall,(\psi)}^{T, U}(\mathcal{K}(k+1),Z_{k+1},\widehat{Z}_{k+1},U_d)\\
 \ \ \ \ \widehat{\mathcal{V}}(k+1)=\widehat{V}_{k+1}\\
-for~ k\geq n\ and\ \widehat{V}_{k+1}\not=\widehat{V}_k:\\
+\ \ \ \ {\color{purple} k = k+1}\\
+{\color{purple} until \ k=n \ or \ \widehat{V}_{k}=\widehat{V}_{k-1} }\\
+{\color{purple} remove:} for~ k\geq n\ and\ \widehat{V}_{k+1}\not=\widehat{V}_k:\\
+{\color{purple} while \ \widehat{V}_{k}\not=\widehat{V}_{k-1}:}\\
 \ \ \ \ \widehat{Z}_{k+1}^1 =  \overline{\text{Pre}}_{\exists,\forall}^{T,U}(\mathcal{K}_1(n),\mathcal{V}(n-1)-\widehat{V}_k,U_d)\\
 \ \ \ \ \widehat{Z}_{k+1}^2 = \overline{\text{PGPre}}_{\exists,\forall}^{T,U} ( \mathcal{K}_2(n),\mathcal{V}(n-1), \widehat{V}_k,U_d)\\
 \ \ \ \ \widehat{Z}_{k+1} = \widehat{Z}_{k+1}^1\bigcup\widehat{Z}_{k+1}^2  \\
 \ \ \ \ [\widehat{V}_{k+1},\widehat{\mathcal{K}}(k+1)]=\overline{\text{Win}}_{\exists,\forall,(\psi)}^{T, U}(\mathcal{K}(n),Z_{n},\widehat{Z}_{k+1},U_d)\\
 \ \ \ \ \widehat{\mathcal{V}}(k+1)=\widehat{V}_{k+1}\\
+\ \ \ \ {\color{purple} k = k+1}\\
 \widehat{V}_\infty = \widehat{V}_k, \widehat{\mathcal{C}} = (\widehat{\mathcal{V}},\widehat{\mathcal{K}},x) 
 \end{cases}\label{patching_final}
 \end{align}

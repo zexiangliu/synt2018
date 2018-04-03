@@ -7,10 +7,14 @@ In this appendix, we present algorithms from \cite{Nilsson2017} to compute the w
 =&\begin{cases}V_{\text{inv}} = \text{\text{Win}}^{T,U}_{\exists, \forall} ((A\mathbf{U}\emptyset)\vee \Square (A\wedge \Diamond Q))\\
 \text{Restrict~ synthesis~ to~ }V_{\text{inv}}\\
 V_0 = \emptyset,\ \mathcal{V}=\{\},\ \mathcal{K} = \{\}\\
-while\ V_{k+1} \not= V_k:\\
+{\color{purple} k=0}\\
+{\color{purple} remove:} while\ V_{k+1} \not= V_k:\\
+{\color{purple} repeat:}\\
 \ \ \ \ Z_{k+1} = \text{Pre}_{\exists,\forall}^{T,U} (V_k) \bigcup \text{PGPre}_{\exists,\forall}^{T,U} (V_k, Q)\\
 \ \ \ \ [V_{k+1}, \mathcal{C}_{k+1}]=\text{Win}_{\exists,\forall}^{T} ((B \mathbf{\ U\ }Z_{k+1}) \vee \Square (B\wedge ( \bigwedge_{i\in I}\Diamond R^i))\\
 \ \ \ \ \mathcal{V}(k+1)=V_{k+1},\ \mathcal{K}(k+1) = \mathcal{C}_{k+1}\\
+\ \ \ \ {\color{purple} k=k+1}\\
+{\color{purple} until \ V_{k} = V_{k-1}\\
 V_{\infty} = V_k,\ \mathcal{C}=(\mathcal{V},\mathcal{K},x)
 \end{cases}\label{win_phi}
 \end{align}
