@@ -390,7 +390,7 @@ There are three variations of this operation:
 T(\mathcal{C})\cup E
 \end{displaymath}
 
-Note that since $ E \subseteq Q\times U\times Q $, $ E $ may contain states and actions which do not exists in $ Q_{\mathcal{C}}\subseteq Q $ and $ U_{\mathcal{C}}\subseteq U $. Then just assume that $ Q_{\mathcal{C}} $ and $ U_{\mathcal{C}} $ will enlarge automatically, which is easy to implement in code.
+Note that since $ E \subseteq Q\times U\times Q $, $ E $ may contain states and actions which do not exists in $ Q_{\mathcal{C}}\subseteq Q $ and $ U_{\mathcal{C}}\subseteq U $. Then just assume that $ Q_{\mathcal{C}} $ and $ U_{\mathcal{C}} $ will enlarge automatically, which is easy to implement in the code.
 
 %\emph{null node seeking}: return the set $\{s_1\in Q_{T(\mathcal{C})}: \not\exists (s_1,a,s_2)\in \rightarrow_{T(\mathcal{C})},\forall a\in U_{T(\mathcal{C})}, \forall s_2 \in Q_{T(\mathcal{C})}\} $, i.e. all the nodes whose out-degree is zero, written as
 %\begin{displaymath}
@@ -480,10 +480,10 @@ Z_{\infty} = Z,\ \widehat{Z}_{\infty}=\widehat{Z},\ \widehat{\mathcal{V}}=\{\},\
 for\ U\in 2^U:\\
 \ \ for\ G\in G(U):\\
 \ \ \ \ \ \ if\ U_d\cap U = \emptyset:\\
-\ \ \ \ \ \ \ \  [\widehat{\mathcal{V}}(k),\widehat{\mathcal{K}}(k)]=\overline{Inv}_{\exists}^{U,G}(\mathcal{V}(k),\mathcal{K}(k),Z_\infty, \widehat{Z}_\infty)\\
+\ \ \ \ \ \ \ \ \  [\widehat{\mathcal{V}}(k),\widehat{\mathcal{K}}(k)]=\overline{Inv}_{\exists}^{U,G}(\mathcal{V}(k),\mathcal{K}(k),Z_\infty, \widehat{Z}_\infty)\\
 \ \ \ \ \ \ else:\ \widehat{\mathcal{V}}(k)=\emptyset, \widehat{\mathcal{K}}(k) = \emptyset\\
-\ \ \ \ \ \  Z_\infty = Z_\infty\cup \mathcal{V}(k),\ \widehat{Z}_{\infty} = \widehat{Z}_{\infty} \cup \widehat{\mathcal{V}}(k),\ k++\\
-\ \ \ \ \ \ {\color{purple} k = k+1}
+\ \ \ \ \ \  Z_\infty = Z_\infty\cup \mathcal{V}(k),\ \widehat{Z}_{\infty} = \widehat{Z}_{\infty} \cup \widehat{\mathcal{V}}(k)\\
+\ \ \ \ \ \ {\color{purple} k = k+1}\\
 Remove\ all\ \emptyset\ in\ \widehat{\mathcal{V}}\ and \ \widehat{\mathcal{K}},\ \ 
 \widehat{\mathcal{C}} = (\widehat{\mathcal{V}},\widehat{\mathcal{K}},x)
 \end{cases}\label{patch_pg}
