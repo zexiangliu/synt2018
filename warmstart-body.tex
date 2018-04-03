@@ -51,7 +51,7 @@ We consider plants modeled as augmented finite transition systems, a discrete st
 \begin{definition}
 	An \textbf{augmented finite transition system} (AFTS) is a tuple $ T = (Q,U,\rightarrow_T, G,AP,h_Q) $, where $ Q $ is a set of states, $U$ is a set of actions (control inputs), $ \rightarrow_T\in Q\times U \times Q $ is a transition relation between states under specific actions, $ G: 2^U\rightarrow 2^{2^Q} $ maps a set of actions to a set of progress groups\footnotemark under that action set, $ AP $ is a finite set of atomic propositions, and $ h_Q: Q\rightarrow 2^{AP} $ is a labeling function, which maps each state to the set of atomic propositions that evaluate to true at that state. \footnotetext{ 
 	A set $G \in G(D)$ is called a \emph{progress group under the action set $D$} , and it is related to the following semantic notion: the system cannot remain indefinitely within
-		$G$ by exclusively choosing actions from $U$. This restricts the behaviors allowed by the transition relation. Moreover, it is assumed that the $G$ is not invariant under the actions $U$ for the well-formedness of the definition (see \cite{Nilsson2017,Sun2014,Liu2014}).}
+		$G$ by exclusively choosing actions from $U$. This restricts the behaviors allowed by the transition relation. Moreover, it is assumed that $G$ is not invariant under the actions $U$ for the well-formedness of the definition (see \cite{Nilsson2017,Sun2014,Liu2014}).}
 \end{definition}
 
 A \emph{trajectory} of an AFTS $T$ is an infinite sequence $ s = \{s(n)\}_{n=0}^{\infty} $ of its states such that for any two consecutive states $s(n), s(n+1)$ in the sequence, there is an action $a\in U$, such that $(s(n),a,s(n+1))\in \rightarrow_T$. 
@@ -70,7 +70,7 @@ Linear Temporal Logic (LTL) can be utilized to describe the desired behaviors of
 
 {\color{teal}\emph{ Syntax of LTL} \cite{baier2008principles}: The LTL formula over a finite set of atomic propositions $ AP $ can be formed according to the grammar:}
 \begin{displaymath}
-	\phi := True\ \vert\ p\ \vert\ \phi_1 \vee \phi_2\ \vert\ \neg \phi\ \vert\ \bigcirc \phi\ \vert\ \phi_1 \mathbf{U}\phi_2
+	\phi := True\ \vert\ p\ \vert\ \phi_1 \vee \phi_2\ \vert\ \neg \phi\ \vert\ \bigcirc \phi\ \vert\ \phi_1 \mathbf{\ U\ }\phi_2
 \end{displaymath}
 %{\color{blue}what is the numbering vi, v, etc. below?} 
 where $ p\in AP $, $ \phi_1 $ and $ \phi_2 $ are also LTL formulas. The other operators can be derived as follows: $ \phi_1 \wedge \phi_2 = \neg (\neg \phi_1 \vee \neg \phi_2) $, $ \phi_1 \implies \phi_2 = \neg \phi_1 \vee \phi_2 $, $ \Diamond \phi = True \mathbf{\ U\ } \phi $, $ \Square \phi = \neg \Diamond \neg \phi $.
@@ -292,7 +292,7 @@ In the execution time, a controller $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ 
 	\begin{figure}
 		\centering
 		\includegraphics[width=0.7\linewidth]{pic/xupdate}
-		\caption{ The transition graph of internal variables according to Definition \ref{def:exec}. Update $ x$ first, and then $ x^0 $, and lastly $ x_0^1 $ and $x^1_1 $. $ s $ is the current state. The transition condition is labeled on the edge. Self loop exists (omitted on the graph): the corresponding internal variable remains unchanged if no condition is satisfied.}
+		\caption{ {\color{purple} Same comment as on the previous version: it would be nice to see both transition graphs (before/after) side by side.} The transition graph of internal variables according to Definition \ref{def:exec}. Update $ x$ first, and then $ x^0 $, and lastly $ x_0^1 $ and $x^1_1 $. $ s $ is the current state. The transition condition is labeled on the edge. Self loop exists (omitted on the graph): the corresponding internal variable remains unchanged if no condition is satisfied.}
 		\label{fig:xupdate}
 	\end{figure}
 	
@@ -724,7 +724,7 @@ For practical applications in robot control, if we have the controller for the c
 \section{CONCLUSION}
 In this paper, we proposed a method to do fixed-point based control synthesis by patching the existing controller with a larger action space. The correctness of this method relied on the fact that "nested" structure between fixed-point based controllers with "nested" action profiles, so we could do the control synthesis by simply finding out the redundant part of the existing controller for the new profile and then removing them. It gives us a way to avoid the expensive computation cost of synthesis from scratch. 
 
-We illustrated the efficiency of our method on the example of hopping robot. Given the same specification, the time for patching was only $ 1.4\%-7\% $ of the time for synthesis from scratch. 
+We illustrated the efficiency of our method on the example of hopping { \color{purple} walking} robot. Given the same specification, the time for patching was only $ 1.4\%-7\% $ of the time for synthesis from scratch. 
 
 {\color{purple} Maybe mention that since in some cases a small change of the action set results in a completely different strategy, we expect that in the worst case, our warm-start method does not bring any speed-up. This is similar to classical warm-up techniques in control: there is no guarantee on the speed-up. And then mention that in future work, although we know that getting formal guarantees on a speed-up in average would be hard (since it highly depends on the type of problem), we wish to conduct a finer study of how much speed-up we can expect to achieve with the proposed warm-up, for instance by studying its effect on "random systems and random specifications}
 
