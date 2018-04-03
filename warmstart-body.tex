@@ -89,9 +89,8 @@ where $ p\in AP $, $ \phi_1 $ and $ \phi_2 $ are also LTL formulas. The other op
 An $\omega$-word $ w $ satisfies $ \phi $ if and only if $ (w,0)\models \phi $, written as $ w \models \phi $. 
 
 
-Given a trajectory $ s = \{s(n)\}_{n=0}^{\infty} $ 
 {\color{purple} Given a trajectory $\{s(n)\}_{n=0}^{\infty} $ }
-of an AFTS, the \textit{$\omega$-word} corresponding to $ s $ {\color{purple} $\{s(n)\}_{n=0}^{\infty} $} is $ h_Q(s) =  \{h_Q(s(n))\}_{n=0}^{\infty} $ {\color{purple} $\{h_Q(s(n))\}_{n=0}^{\infty}$}, where $ h_Q $ is the labeling function of the AFTS.  Given a LTL specification $ \phi $, we say that $ s\models \phi $ {\color{purple} $\{s(n)\}_{n=0}^{\infty} \models \phi $} if and only if $ h_Q(s) \models \phi $ {\color{purple} $\{h_Q(s(n))\}_{n=0}^{\infty} \models \phi $}.
+of an AFTS, the \textit{$\omega$-word} corresponding to {\color{purple} $\{s(n)\}_{n=0}^{\infty} $} is {\color{purple} $\{h_Q(s(n))\}_{n=0}^{\infty}$}, where $ h_Q $ is the labeling function of the AFTS.  Given a LTL specification $ \phi $, we say that {\color{purple} $\{s(n)\}_{n=0}^{\infty} \models \phi $} if and only if {\color{purple} $\{h_Q(s(n))\}_{n=0}^{\infty} \models \phi $}.
 
 \subsection{Control Synthesis and Fixed-Point Operators}
 \label{sec: cont_syn}
@@ -305,8 +304,8 @@ In the execution time, a controller $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ 
 	\begin{figure}
 		\centering
 		\includegraphics[width=0.7\linewidth]{pic/xupdate}
-		\caption{ {\color{purple} Same comment as on the previous version: it would be nice to see both transition graphs (before/after) side by side.}{\color{teal} the only change on the graph comes from changes in $ \mathcal{V} $ in each sub-controller. Also: why do you show $x_1^0$ in the two bottom 
-        transitions; it could make the reader think that the transitions depend on the values of other internal variables, but it's not the case. The transition to children controllers is relatively clear to me, so I would simpy remove the value of other internal variables in each subgraph. However, shouldn't the transitions be complete?  } 
+		\caption{ {\color{purple} Same comment as on the previous version: it would be nice to see both transition graphs (before/after) side by side. Also: why do you show $x_1^0$ in the two bottom 
+        transitions; it could make the reader think that the transitions depend on the values of other internal variables, but it's not the case. The transition to children controllers is relatively clear to me, so I would simpy remove the value of other internal variables in each subgraph.}{\color{teal} the only change on the graph comes from changes in $ \mathcal{V} $ in each sub-controller. } 
         The transition graph is used to illustrate the update rules of $ x $ in Definition \ref{def:exec}. $ s $ is the current state of the system in Figure \ref{fig:eg1}. At each execution time, each internal variable transits from its current node to one of the neighbor node once the transition condition on the edge is satisfied. If no transition condition is satisfied, internal variable remains unchanged. Update $ x$ first, and then $ x^0 $, and lastly $ x_0^1 $ and $x^1_1 $.} 
 		\label{fig:xupdate}
 	\end{figure}
@@ -327,8 +326,7 @@ In this section, we formally define the problem of interest. {\color{blue}it is 
 {\color{purple} Somewhere we should give the main steps of the solution also. I think one thing that would be important is to state clearly what can and cannot change in the structure of the controller when $U$ is modified. I guess it is not only a change of the transitions, like in the example, since in some cases the number of steps to convergence can be modified. But then what exactly remains invariant? Only the "depth" of the controller? } {\color{teal} I think basically everything could be changed in the patching operator.} {\color{purple} OK}
 
 \begin{problem}
-	Given an AFTS $ T = (Q,U,\rightarrow_T,G,AP,h_Q) $, a LTL specification $ \phi = \Square A \wedge \Diamond \Square B \wedge \left( \bigvee_{i\in I} \Square \Diamond R^i\right) $, the winning set $ W_{\phi} $ and controller $ \mathcal{C}_{\phi} $, if a set of actions $ U_d\subseteq U $ in $ T $ is unavailable, find the new winning set and a controller based on $ W_{\phi} $ and $ \mathcal{C}_{\phi} $.
-	\label{prob}
+	Given an AFTS $ T = (Q,U,\rightarrow_T,G,AP,h_Q) $, an LTL specification $ \phi = \Square A \wedge \Diamond \Square B \wedge \left( \bigwedge{i\in I} \Square \Diamond R^i\right) $, the winning set $ W_{\phi} $ and controller $ \mathcal{C}_{\phi} $, if a set of actions $ U_d\subseteq U $ in $ T $ is unavailable, find the new winning set and a controller {\color{purple} } based on $ W_{\phi} $ and $ \mathcal{C}_{\phi} $.	\label{prob}
 \end{problem}
 
 
@@ -338,10 +336,10 @@ In this section, we formally define the problem of interest. {\color{blue}it is 
 Before presenting the patching methods, we state a property of controller implementations that roughly shows that the controllers contain all the relevant information needed for patching. We start with a definition of strategy containment.
 
 \begin{definition}
-	For two control strategies $ \mu_1 $ and $ \mu_2 $ with winning set $ W_1 $ and $ W_2 $, we say $ \mu_2 $ contains $ \mu_1$, denoted with $ \mu_{1} \subseteq \mu_{2}$, if $ \mu_{1} (\{(s_i,a_i)\}_{i=1}^{n-1}, s_n) $ is a subset of $ \mu_{2}(\{(s_i,a_i)\}_{i=1}^{n-1}, s_n) $, for all feasible $ n $ and all transition trajectories $ q =(s_1,a_1),(s_2,a_2),...,(s_{n-1},a_{n-1}) $ satisfying $ s_1\in W_{1} $, $ a_k \in \mu_{1} (\{(s_i,a_i)\}_{i=1}^{k-1}, s_k) $.
+	For two control strategies $ \mu_1 $ and $ \mu_2 $ with winning set $ W_1 $ and $ W_2 $ {\color{purple} over sets $D_1$ and $D_2$ ? (to avoid mentioning winning sets here)}, we say that $ \mu_2 $ contains $ \mu_1$, denoted by $ \mu_{1} \subseteq \mu_{2}$, if $ \mu_{1} (\{(s_i,a_i)\}_{i=1}^{n-1}, s_n) $ is a subset of $ \mu_{2}(\{(s_i,a_i)\}_{i=1}^{n-1}, s_n) $, for all feasible $ n $ and all transition trajectories $ q =(s_1,a_1),(s_2,a_2),...,(s_{n-1},a_{n-1}) $ satisfying $ s_1\in W_{1} $, $ a_k \in \mu_{1} (\{(s_i,a_i)\}_{i=1}^{k-1}, s_k) $.
 \end{definition}
 
-Consider an AFTS $ T = (Q,U,\rightarrow_T,G,AP,h_Q) $ and {\color{blue} an} LTL specification $ \phi = \Square A \wedge \Diamond \Square B \wedge \left( \bigvee_{i\in I} \Square \Diamond G^i\right) $. Compute its winning set \eqref{win_phi} and the winning control strategy $ \mu_{\phi} $ (or controller $ \mathcal{C}_{\phi} $) via fixed-point operators. Now disable some actions $ U_d \subseteq U$, i.e. getting a new AFTS $ \widehat{T} = (Q,U-U_d,\rightarrow_T,G,AP,h_Q) $ and re-compute the winning set and control strategy, denoted by $ \widehat{W}_{\phi} $ and $ \widehat{\mu}_{\phi} $ (or controller $ \widehat{\mathcal{C}}_{\phi} $), via the same fixed-point operator. Then, we have the following.
+Consider an AFTS $ T = (Q,U,\rightarrow_T,G,AP,h_Q) $ and {\color{blue} an} LTL specification $ \phi = \Square A \wedge \Diamond \Square B \wedge \left( \bigwedge_{i\in I} \Square \Diamond R^i\right) $. Compute its winning set \eqref{win_phi} and the winning control strategy $ \mu_{\phi} $ (or controller $ \mathcal{C}_{\phi} $) via fixed-point operators. Now disable some actions $ U_d \subseteq U$, i.e. getting a new AFTS $ \widehat{T} = (Q,U-U_d,\rightarrow_T,G,AP,h_Q) $, and re-compute the winning set and control strategy, denoted by $ \widehat{W}_{\phi} $ and $ \widehat{\mu}_{\phi} $ (or controller $ \widehat{\mathcal{C}}_{\phi} $), via the same fixed-point operator. Then, we have the following.
 
 
 
