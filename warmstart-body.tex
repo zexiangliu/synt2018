@@ -42,7 +42,7 @@ The paper is organized as follows: In Section \ref{sec:pre}, we give the problem
 \label{sec:pre}
 \subsection{Notation}
 
-For two sets $ A $ and $ B $, the set difference is denoted by $ A-B $. A function or a map $ F: C\rightarrow D $ {\color{purple} corresponds to  the set} $ \{(c,F(c)):c\in C, F(c)\in D \} $. {\color{teal}A list $ \mathcal{V}=[x_1,...,x_n] $ is a totally ordered set, where $ \mathcal{V}(i) $ refers to its $ i $th-order element. To assign $ x_i $ to be the $ i $th element in	 $ \mathcal{V} $ is written as $ \mathcal{V}(i) = x_i $.} {\color{purple} Not sure it is really useful to define functions or maps here, the terms are barely used in the rest of the document (function x4, map x1)} 
+For two sets $ A $ and $ B $, the set difference is denoted by $ A-B $. A function or a map $ F: C\rightarrow D $ {\color{purple} corresponds to  the set} $ \{(c,F(c)):c\in C, F(c)\in D \} $.{\color{teal}A list $ \mathcal{V}=[x_1,...,x_n] $ is a totally ordered set, where $ \mathcal{V}(i) $ refers to its $ i $th-order element. To assign $ x_i $ to be the $ i $th element in	 $ \mathcal{V} $ is written as $ \mathcal{V}(i) = x_i $.} {\color{purple} Not sure it is really useful to define functions or maps here, the terms are barely used in the rest of the document (function x4, map x1)} 
 
 \subsection{Augmented Finite Transition Systems}
 
@@ -58,7 +58,7 @@ For two sets $ A $ and $ B $, the set difference is denoted by $ A-B $. A functi
 
 \subsection{Linear Temporal Logic}
 
-Linear Temporal Logic (LTL) can be utilized to describe the desired behaviors of an AFTS system. It has logic operators (negation $ \neg $, conjunction $ \wedge $, disjunction $ \vee $ and material implication $ \implies $ {\color{purple} $\implies$ is not used in the paper, do we need to mention it ?}), and temporal operators (next $ \bigcirc $, always $ \Square $, eventually $ \Diamond $ and until $ \mathbf{\ U\ }$).
+Linear Temporal Logic (LTL) can be utilized to describe the desired behaviors of an AFTS system. It has logic operators (negation $ \neg $, conjunction $ \wedge $, disjunction $ \vee $), and temporal operators (next $ \bigcirc $, always $ \Square $, eventually $ \Diamond $ and until $ \mathbf{\ U\ }$).
 
 {\color{blue} use grammar to define LTL, cite Baier and Katoen}
 %The LTL formula over a finite set of atomic propositions $ AP $ can be either: 
@@ -105,7 +105,7 @@ The specification considered in this work is of the form:
 \begin{align}
 \phi = \Square A \wedge \Diamond \Square B \wedge \left( \bigwedge_{i\in I} \Square \Diamond R^i\right)\label{phi}
 \end{align}
-{\color{purple} for subsets $A$, $B$, $R^i \subseteq Q$ defining atomic propositions. Such specifications can express properties of \emph{safety} ($\Square A$), \emph{stability} ($\Diamond \Square B$) and \emph{progress} ($\Square \Diamond R^i$). (In the original AFTS paper: "invariance, persistence and reccurence")}
+{\color{purple} for subsets $A$, $B$, $R^i \subseteq Q$ defining atomic propositions. Such specifications can express properties of \emph{invariance} ($\Square A$), \emph{persistence} ($\Diamond \Square B$) and \emph{reccurence} 
 
 {\color{blue}Maybe we should say a few words on how this fragment differs from GR(1) and others}
 
