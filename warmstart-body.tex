@@ -42,13 +42,14 @@ The paper is organized as follows: In Section \ref{sec:pre}, we give the problem
 \label{sec:pre}
 \subsection{Notation}
 
-For two sets $ A $ and $ B $, the set difference is denoted by $ A-B = A\cap \neg B $, where $ \neg B $ represents the complement of set $ B $. A function or a map $ F: C\rightarrow D $ {\color{purple} corresponds to  the set} $ \{(c,F(c)):c\in C, F(c)\in D \} $. A list is a totally ordered set. For list $ \mathcal{V} $, $ \mathcal{V}(i) $ refers to its $ i^{th} $ element. To assign an object $ X $ to be the $ i^{th} $ element in $ \mathcal{V} $ is denoted by $ \mathcal{V}(i) = X $. {\color{purple} Not sure it is really useful to define functions or maps here, the terms are barely used in the rest of the document (function x4, map x1)} 
+For two sets $ A $ and $ B $, the set difference is denoted by $ A-B $. A function or a map $ F: C\rightarrow D $ {\color{purple} corresponds to  the set} $ \{(c,F(c)):c\in C, F(c)\in D \} $. A list is a totally ordered set. For list $ \mathcal{V} $, $ \mathcal{V}(i) $ refers to its $ i^{th} $ element. To assign an object $ X $ to be the $ i^{th} $ element in	 $ \mathcal{V} $ is denoted by $ \mathcal{V}(i) = X $. {\color{purple} Not sure it is really useful to define functions or maps here, the terms are barely used in the rest of the document (function x4, map x1)} 
 
 \subsection{Augmented Finite Transition Systems}
 
 \begin{definition}
-	An \textbf{augmented finite transition system} (AFTS) \cite{Nilsson2017} is a tuple $ T = (Q,U,\rightarrow_T, G,AP,h_Q) $, where $ Q $ is a set of states, $U$ is a set of actions (control inputs), $ \rightarrow_T\in Q\times U \times Q $ is {\color{purple} is a transition relation} between states under specific actions, $ G: 2^U\rightarrow 2^{2^Q} $ is a progress group map, $ AP $ is a finite set of atomic propositions, and $ h_Q: Q\rightarrow 2^{AP} $ is a labeling function, which maps states to the set of atomic propositions they preserve {\color{purple} verify}. {\color{purple} Maybe a few words on the progress group maps, which is a non-standard notion: A set $G \in G(U)$ is called a \emph{progress group under the action set $U$}, and it is related to the following semantic notion: the system cannot remain indefinitely within
-		$G$ by exclusively choosing actions from $U$. This restricts the behaviors allowed by the transition relation.}
+	An \textbf{augmented finite transition system} (AFTS) \cite{Nilsson2017} is a tuple $ T = (Q,U,\rightarrow_T, G,AP,h_Q) $, where $ Q $ is a set of states, $U$ is a set of actions (control inputs), $ \rightarrow_T\in Q\times U \times Q $ is {\color{purple} is a transition relation} between states under specific actions, $ G: 2^U\rightarrow 2^{2^Q} $ {\color{teal}maps a set of actions to a set of progress groups\footnotemark under that action set }, $ AP $ is a finite set of atomic propositions, and $ h_Q: Q\rightarrow 2^{AP} $ is a labeling function, which maps states to the set of atomic propositions they preserve {\color{purple} verify}. \footnotetext{\color{purple} %Maybe a few words on the progress group maps, which is a non-standard notion:	
+	A set $G \in G(D)$ is called a \emph{progress group under the action set $D$} , and it is related to the following semantic notion: the system cannot remain indefinitely within
+		$G$ by exclusively choosing actions from $U$. This restricts the behaviors allowed by the transition relation. (see \cite{Nilsson2017,Sun2014,Liu2014})}
 \end{definition}
 
 \begin{definition}
@@ -60,23 +61,26 @@ For two sets $ A $ and $ B $, the set difference is denoted by $ A-B = A\cap \ne
 Linear Temporal Logic (LTL) can be utilized to describe the desired behaviors of an AFTS system. It has logic operators (negation $ \neg $, conjunction $ \wedge $, disjunction $ \vee $ and material implication $ \implies $ {\color{purple} $\implies$ is not used in the paper, do we need to mention it ?}), and temporal operators (next $ \bigcirc $, always $ \Square $, eventually $ \Diamond $ and until $ \mathbf{\ U\ }$).
 
 {\color{blue} use grammar to define LTL, cite Baier and Katoen}
-The LTL formula over a finite set of atomic propositions $ AP $ can be either: 
-\begin{itemize}
-	\item $ True $
-	\item $ p\in AP $ 
-	\item $ \neg \phi , \phi \vee \psi, \bigcirc \phi $ and $ \phi \mathbf{\ U\ } \psi $ for LTL formulas $ \phi $ and $ \psi $. 
-\end{itemize}
+%The LTL formula over a finite set of atomic propositions $ AP $ can be either: 
+%\begin{itemize}
+%	\item $ True $
+%	\item $ p\in AP $ 
+%	\item $ \neg \phi , \phi \vee \psi, \bigcirc \phi $ and $ \phi \mathbf{\ U\ } \psi $ for LTL formulas $ \phi $ and $ \psi $. 
+%\end{itemize}
 
-{\color{blue}what is the numbering vi, v, etc. below?}
-The other operators can be derived as follows: (vi) $ \phi \wedge \psi = \neg (\neg \phi \vee \psi) $, (v) $ \phi \implies \psi = \neg \phi \wedge \psi $, (vi) $ \Diamond \phi = True \mathbf{\ U\ } \psi $, (vii) $ \Square \phi = \neg \Diamond \neg \phi $.
+{\color{teal}\emph{ Syntax of LTL} \cite{baier2008principles}: The LTL formula over a finite set of atomic propositions $ AP $ can be formed according to the grammar:}
+\begin{displaymath}
+	\phi := True\ \vert\ p\ \vert\ \phi_1 \vee \phi_2\ \vert\ \neg \phi\ \vert\ \bigcirc \phi\ \vert\ \phi_1 \mathbf{U}\phi_2
+\end{displaymath}
+{\color{blue}what is the numbering vi, v, etc. below?} where $ p\in AP $, $ \phi_1 $ and $ \phi_2 $ are also LTL formulas. The other operators can be derived as follows: $ \phi_1 \wedge \phi_2 = \neg (\neg \phi_1 \vee \neg \phi_2) $, $ \phi_1 \implies \phi_2 = \neg \phi_1 \vee \phi_2 $, $ \Diamond \phi = True \mathbf{\ U\ } \phi $, $ \Square \phi = \neg \Diamond \neg \phi $.
 
-An $\omega$-word is an infinite sequence in $ 2^{AP}$.  The satisfaction of an LTL specification $ \phi $ by an $\omega$-word $ w = w(0)w(1)w(2)\dots $, written as $ (w,i) \models \phi $, is defined inductively as follows:
+{\color{teal}\emph{Semantics of LTL} \cite{Nilsson2017}:} An $\omega$-word is an infinite sequence in $ 2^{AP}$.  The satisfaction of an LTL specification $ \phi $ by an $\omega$-word $ w = w(0)w(1)w(2)\dots $, written as $ (w,i) \models \phi $, is defined inductively as follows:
 \begin{itemize}
-	\item if $ \phi \in AP $, $ (w,i)\models p $ iff $ p\in w(i) $ 
+	\item For $ \phi = p \in AP $, $ (w,i)\models p $ iff $ p\in w(i) $ 
 	\item $ (w,i)\models \neg \phi $ iff $ (w,i)\not\models \phi $
-	\item $ (w,i)\models  \phi \vee \psi $ iff $ (w,i)\models \phi $ or $ (w,i)\models \psi $
+	\item $ (w,i)\models  \phi_1 \vee \phi_2 $ iff $ (w,i)\models \phi_1 $ or $ (w,i)\models \phi_2 $
 	\item $ (w,i) \models \bigcirc \phi $ iff $ (w,i+1) \models \phi $
-	\item $ (w,i)\models \phi \mathbf{\ U\ } \psi $ iff $\exists j\geq i  $ s.t. $ (w,j)\models \psi $ and $ (w,k)\models \phi, \forall k\in [i,j) $
+	\item $ (w,i)\models \phi_1 \mathbf{\ U\ } \phi_2 $ iff $\exists j\geq i  $ s.t. $ (w,j)\models \phi_2 $ and $ (w,k)\models \phi_1, \forall k\in [i,j) $
 \end{itemize} 
 
 An $\omega$-word $ w $ satisfies $ \phi $ if and only if $ (w,0)\models \phi $, written as $ w \models \phi $. 
@@ -105,7 +109,7 @@ The specification considered in this work is of the form:
 
 {\color{blue}Maybe we should say a few words on how this fragment differs from GR(1) and others}
 
-{\color{blue} Maybe we should say "the winning set" since it is unique when defined to be the largest.} {\color{purple} Yes, when it is stated that we consider the largest, we should use "the" I agree (but in the previous version it wasn't mentioned I think).}
+%{\color{blue} Maybe we should say "the winning set" since it is unique when defined to be the largest.} {\color{purple} Yes, when it is stated that we consider the largest, we should use "the" I agree (but in the previous version it wasn't mentioned I think).}
 \begin{definition}
 	The \textbf{winning set} of the specification $ \phi $ over an AFTS $ T = (Q, U, \rightarrow_T, G, AP, h_Q) $, written as $ W_{\phi} $, is the largest subset of $ Q $ such that if the system $ T $ is initially in $ W_{\phi} $, specification can be enforced.
 \end{definition}
@@ -118,18 +122,19 @@ The specification considered in this work is of the form:
 Given $\widehat{W} \subseteq W $, a simple controller $ \mathcal{C} $ \textbf{restricted to} $ \widehat{W} $ means that the domain of $ \mathcal{C} $ is restricted to $\widehat{W}$.
 
 \begin{definition}
-	For the AFTS $ T=\{Q,U,\rightarrow_T,G,AP,h_Q\} $, a \textbf{controller} $ \mathcal{C} $ for a winning set $ \text{Win}^T(\phi) $ is a tuple $ (\mathcal{V},\mathcal{K},x) $, where $ \mathcal{V} $ is a list of subsets of $ Q $, $ \mathcal{K} $ is a list of controllers or simple controllers, i.e. so-called sub-controllers of $ \mathcal{C} $, and $ x $ is an internal variable that saves the index of sub-controllers called last time. 
+	For the AFTS $ T=\{Q,U,\rightarrow_T,G,AP,h_Q\} $, a \textbf{controller} $ \mathcal{C} $ for a winning set $ \text{Win}^T(\phi) $ is a tuple $ (\mathcal{V},\mathcal{K},x) $, where $ \mathcal{V} $ is a list of subsets of $ Q $, $ \mathcal{K} $ is a list of controllers or simple controllers, i.e. so-called sub-controllers of $ \mathcal{C} $, and $ x $ is an internal variable that saves the index of sub-controllers called last time.
 	\label{def:cont}
 \end{definition}
+ 
+ Overall, a controller is a tree structure with controllers at each node and simple controllers at the leaf nodes. The list $\mathcal{K}$ for each controller (node) denotes the children of that controller in the tree.
 
-Overall, a controller is a tree structure with controllers at each node and simple controllers at the leaf nodes. The list $\mathcal{K}$ for each controller (node) denotes the children of that controller in the tree.
 
 
-{\color{purple} Winning sets and controllers} for specifications in the form of \eqref{phi} are computed iteratively via the following fixed-point based algorithm {\color{purple} (see \cite{Nilsson2017})}. Each fixed-point operator has two outputs: the winning set (1st) and controller (2nd). When a fixed-point operator appear in set calculation, it refers to its first output, i.e. the winning set.
+{\color{purple} Winning sets and controllers} for specifications in the form of \eqref{phi} are computed iteratively via the following fixed-point based algorithm {\color{purple} (see \cite{Nilsson2017})}.
 
-\begin{remark}
-	The definition of controller defines the implementation of a control strategy obtained by fixed-point operators discussed in the following. For \eqref{win_phi}, \eqref{win_interm}, \eqref{win_until} and \eqref{win_inv}, the number of sub-controllers in each controller is proportional to the number of iterations when the corresponding fixed-point operator converges. Simple controllers are smallest elements in a controller, i.e. the ones given by \eqref{eqn:pre} and \eqref{win_inv}. 
-\end{remark}
+%\begin{remark}
+%	The definition of controller defines the implementation of a control strategy obtained by fixed-point operators discussed in the following. For \eqref{win_phi}, \eqref{win_interm}, \eqref{win_until} and \eqref{win_inv}, the number of sub-controllers in each controller is proportional to the number of iterations when the corresponding fixed-point operator converges. Simple controllers are smallest elements in a controller, i.e. the ones given by \eqref{eqn:pre} and \eqref{win_inv}. 
+%\end{remark}
 
 \begin{align}
 & [V_{\infty},\mathcal{C}] =\  \text{Win}_{\exists, \forall}^{T,U}\left(\Square A \wedge \Diamond \Square B \wedge \left( \bigwedge_{i\in I} \Square \Diamond R^i\right)\right)\\
@@ -144,7 +149,10 @@ V_{\infty} = V_k,\ \mathcal{C}=(\mathcal{V},\mathcal{K},x)
 \end{cases}\label{win_phi}
 \end{align}
 
-The winning set {\color{purple} that results from} \eqref{win_phi} is {\color{purple} equal to} $ V_{\infty} $, i.e. {\color{purple} the limit of the expanding sequence $V_k$}. $ \mathcal{C} $ is the controller corresponding to the winning set $ V_{\infty} $. The building blocks of the above algorithm are as follows:
+The winning set {\color{purple} that results from} \eqref{win_phi} is {\color{purple} equal to} $ V_{\infty} $, i.e. {\color{purple} the limit of the expanding sequence $V_k$}. $ \mathcal{C} $ is the controller corresponding to the winning set $ V_{\infty} $. 
+
+The building blocks of the above algorithm are the following fixed-point operators. Each operator corresponds to a type of LTL formula used in \eqref{win_phi}. (Note that when a fixed-point operator appears as part of a formula, it only refers to its first output, i.e. the winning set.)
+
 \begin{align}
 &[W_{\infty},\mathcal{C}]= \ \text{Win}_{\exists,\forall}^{T,U}((B\mathbf{\ U\ }Z)\vee \Square (B\wedge(\bigwedge_{i\in I}\Diamond R^i)) )\\
 =&\begin{cases}
@@ -207,20 +215,19 @@ The winning sets {\color{purple} resulting from} \eqref{win_interm}, \eqref{win_
 %{\color{purple} The control strategy enforcing the specification in $ W_{\phi} $  can be extracted while computing the limits $ V_{\infty} $, $ W_{\infty} $, $ X_{\infty} $ and $ Y_{\infty} $. As stated in \cite{Nilsson2017}, 
 %all the fixed points are ultimately defined in terms of $\text{Pre}_{\exists,\forall}^{T,U}$, so it is enough to extract control strategies during calls to this operator and map the results into higher-level fixed points together with internal variables that control a hierarchy of partial reachability objectives.}
 
-
 \begin{definition} \textbf{Execution of controllers}:
-	In the execution time, a controller $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ acts as a function that maps the current state to a set of feasible actions according to the following rules: Assume that the current state is $ s(t) $. Denote the outputs of controller as $ \mathcal{C}(s(t)) $.
+	In the execution time, a controller $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ acts as a function that maps the current state to a set of feasible actions. Given the current state $ s(t) $. the output $ \mathcal{C}(s(t)) $ is determined in two steps:
 	
-	(i) update internal variable $ x $: 
-	
-	\quad For controllers returned by \eqref{win_phi},\eqref{win_until},\eqref{win_inv}:
+	(i) update the internal variable $ x $ of $ \mathcal{C} $: 
+
+	\quad If $ \mathcal{C} $ is returned by \eqref{win_phi},\eqref{win_until},\eqref{win_inv}:
 	\begin{displaymath}
 	x^+ =	\begin{cases}
 	\text{arg}\min_{y\leq x}\{u(t)\in \mathcal{V}(y)\},\ \ if\ x\not=0\\
 	\text{arg}\min_{y}\{u(t)\in \mathcal{V}(y)\},\ \ otherwise
 	\end{cases}
 	\end{displaymath}
-	\quad For controllers returned by \eqref{win_interm}:
+	\quad If $ \mathcal{C} $ is returned by \eqref{win_interm}:
 	\begin{displaymath}
 	x^+ = \begin{cases}
 	x+1 \mod\vert\mathcal{K}\vert,\ \ if\ u(t)\in \mathcal{V}(x+1)\\
@@ -229,14 +236,16 @@ The winning sets {\color{purple} resulting from} \eqref{win_interm}, \eqref{win_
 	\end{displaymath}
 	where $ x^+ $ refers to the value of internal variable $ x $ after update.
 	
-	(ii) Take the outputs of the $ x^{th} $ sub-controllers in $ \mathcal{K} $ given the input $ s(t) $ as the output action set of controller $ \mathcal{C} $:
+	(ii) Return the outputs of the $ x^+ $th sub-controller in $ \mathcal{K} $ with input $ s(t) $, i.e.
 	\begin{displaymath}
-	\mathcal{C}(s(t)) = \mathcal{K}(x)(s(t))
+	\mathcal{C}(s(t)) = \mathcal{K}(x^+)(s(t))
 	\end{displaymath}
-	If $ \mathcal{K} $ is a list of simple controllers, $ \mathcal{K}(x)(s(t)) $ returns the set of feasible actions and ends the current call, otherwise above process repeats recursively until a simple controller is reached.
+
+	If $ \mathcal{K} $ is a list of simple controllers, $ \mathcal{K}(x)(s(t)) $ returns the set of feasible actions and ends this function call, otherwise above process repeats recursively until a simple controller is reached.
 	
 
 	%Assume the current state is $ s_t $. Each time a controller is called with input $ s_t $, the controller updates its internal variable according to $ s_t $, the winning sets of sub-controllers and the current value of internal variable. Then, the sub-controller indexed by the new value of internal variable would be called with $ s_t $ as input. Repeat the above procedure inductively until a simple controller is reached, which returns the set of feasible actions for $ s_t $. \label{ref:cont}
+	\label{def:exec}
 \end{definition}
 {\color{purple} For me there is a problem of clarity with the definition of controllers, especially with the internal variable. I think we should explain in the definition roughly what happens when a call to the controller is made: if I understood well the memory variable changes according to some finite state automaton (we could say that and say that an example of how it works precisely is given below. But if the controller indeed needs the transition graph it is not just a tuple, we should add the transitions of the internal variables in the defintion. Or am I missing something? Also overall the way this transition graph is constructed from the fixed-point operators (at least an intuition of it) is missing.}
 
