@@ -476,7 +476,7 @@ Remove\ all\ \emptyset\ in\ \widehat{\mathcal{V}}\ and \ \widehat{\mathcal{K}},\
 \end{align}
 
 \begin{theorem}
-	$ \widehat{Z}_\infty $ and $ \widehat{C} $ returned by \eqref{patch_until} would be the same as outputs resulting from $ \text{PGPre}_{\exists, \forall}^{T,\widehat{U}}(\widehat{Z},B)$.	
+	$ \widehat{Z}_\infty $ and $ \widehat{C} $ returned by \eqref{patch_pg} would be the same as outputs resulting from $ \text{PGPre}_{\exists, \forall}^{T,\widehat{U}}(\widehat{Z},B)$.	
 \end{theorem}
 
 \begin{proof}
@@ -504,6 +504,10 @@ for~k\geq n\ and\ \widehat{X}_{k+1}\not=\widehat{X}_k:	\\
 \end{align}
 The above patch algorithm has two parts: part one modifies the existing sub-controllers for $ k\leq n $; part two adds new sub-controllers by modifying the $ n $th existing sub-controller until convergence. The winning set $ \widehat{X}_{\infty} $, and controller $ \widehat{\mathcal{C}} $ would be equal to the outputs of \eqref{win_until} with input parameters $ \widehat{U},B,\widehat{Z} $. 
 
+\begin{theorem}
+	$ \widehat{X}_\infty $ and $ \widehat{C} $ returned by \eqref{patch_until} would be the same as outputs resulting from $ \text{Win}_{\exists,\forall}^{T,\widehat{U}}(B\mathbf{\ U\ }\widehat{Z}). $\label{thm:interm}	
+\end{theorem}
+
 \begin{proof}
 	Let's denote $ X_k $ in \eqref{win_until} with inputs $ \widehat{U},B,\widehat{Z} $ as $ X_k^t $. 	To show the soundness and completeness of \eqref{patch_until}, it's enough to show that $ \widehat{X}_k $ in \eqref{patch_until} is equal to $ X_k^t $, for all $ k $. 
 	
@@ -529,6 +533,11 @@ while\ \widehat{W}_{k+1}\not=\widehat{W}_k:\\
 \end{cases}\label{patch_interm}
 \end{align}
 
+\begin{theorem}
+	$ \widehat{W}_\infty $ and $ \widehat{C} $ returned by \eqref{patch_until} would be the same as outputs resulting from $\text{Win}_{\exists,\forall}^{T,U}((B\mathbf{\ U\ }\widehat{Z})\vee \Square(B\wedge (\bigwedge_{i\in I} \Diamond R^i)) $. \label{thm:phi}	
+\end{theorem}
+
+
 \begin{proof}
 	Assume that $ W_t $ is the winning set of \eqref{win_interm} with input parameters $ U-U_d $, $ B $, $ C_i $ and $ \widehat{Z} $. To show that $ W_t=\widehat{W}_\infty $, it's enough to show that $ W_t\subseteq \widehat{W}_\infty $, i.e. $ \widehat{W}_\infty $ is a larger winning set than $ W_t $. Then by the completeness of \eqref{win_interm}, $ W_t=\widehat{W}_\infty $. 
 	
@@ -543,7 +552,7 @@ Now we are ready to modify controller in \eqref{win_phi}, since we have all the 
 
 Assume that $ W $ and $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ are the winning set and controller resulting from 
 \begin{displaymath}
-\text{Win}_{\exists, \forall}^T\left(\Square A \wedge \Diamond \Square B \wedge \left( \bigwedge_{i\in I} \Square \Diamond R^i\right)\right)
+\text{Win}_{\exists, \forall}^{T,U}\left(\Square A \wedge \Diamond \Square B \wedge \left( \bigwedge_{i\in I} \Square \Diamond R^i\right)\right)
 \end{displaymath}
 
 Assuming that $ \vert \mathcal{K}\vert = n $. For patching purpose, we need some extra information: the lists of winning sets and controllers returned by $\text{Pre}_{\exists,\forall}^{T,U}(V_k)$ in \eqref{win_phi}, i.e. $ [\mathcal{V}_1(k),\mathcal{K}_1(k)]=\text{Pre}_{\exists,\forall}^{T,U}(V_k)$;  the lists of winning sets and controllers returned by $ \text{PGPre}_{\exists,\forall}^{T}(V_k, B) $ in \eqref{win_phi}, i.e. $ [\mathcal{V}_2(k), \mathcal{K}_2(k)]= \text{PGPre}_{\exists,\forall}^{T}(V_k, B)$ ($ k=1,..., n $) ; the controller $ \mathcal{C}_{Inv} $ returned by $ \text{\text{Win}}^{T,U}_{\exists, \forall} ((A\mathbf{U}\emptyset)\vee \Square (A\wedge \Diamond Q)) $ in the first line of \eqref{win_phi}. To restrict action space to $ \widehat{U} = U-U_d $, the patching operator for \eqref{win_phi} is 
@@ -568,7 +577,14 @@ for~ k\geq n\ and\ \widehat{V}_{k+1}\not=\widehat{V}_k:\\
 \end{cases}\label{patching_final}
 \end{align}
 
-The modified winning set $ \widehat{V}_{\infty} $ and controller $ \widehat{\mathcal{C}} $ will be equal to outputs resulting from $ \text{Win}_{\exists, \forall}^{T,U-U_d}\left(\Square A \wedge \Diamond \Square B \wedge \left( \bigwedge_{i\in I} \Square \Diamond R^i\right)\right) $. The same as \eqref{patch_until}, the patching algorithm has two parts: one for modifying existing sub-controllers; one for adding new ones until convergence.
+The modified winning set $ \widehat{V}_{\infty} $ and controller $ \widehat{\mathcal{C}} $ will be equal to outputs resulting from $ \text{Win}_{\exists, \forall}^{T,U-U_d}\left(\Square A \wedge \Diamond \Square B \wedge \left( \bigwedge_{i\in I} \Square \Diamond R^i\right)\right) $. 
+The same as \eqref{patch_until}, the patching algorithm has two parts: one for modifying existing sub-controllers; one for adding new ones until convergence.
+
+\begin{theorem}
+	$ \widehat{V}_\infty $ and $ \widehat{C} $ returned by \eqref{patching_final} would be the same as outputs resulting from $\text{Win}_{\exists, \forall}^{T,U-U_d}\left(\Square A \wedge \Diamond \Square B \wedge \left( \bigwedge_{i\in I} \Square \Diamond R^i\right)\right) $. \label{thm:interm}	
+\end{theorem}
+
+
 
 \begin{proof}
 	The correctness of $ \widehat{V}_{\text{inv}} $ is guaranteed by \eqref{patch_interm}.
