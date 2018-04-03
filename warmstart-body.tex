@@ -137,10 +137,11 @@ Note that a control strategy as in definition \ref{def:cs} can require infinite 
 {\color{purple} in Section~\ref{sec:method}}.
 
 \begin{definition}
-	A \textbf{simple controller} for a set $ D\subseteq Q $ over an AFTS $ T=\{Q,U,\rightarrow_T,G,AP,h_Q\} $ is a function $ \mathcal{C}: $ $ D\rightarrow 2^U $, i.e. a memoryless controller that maps states in $ D $ to a set of actions. %under which the specification in the winning set remains guaranteed.
+	A \textbf{simple controller}\footnotemark for a set $ D\subseteq Q $ over an AFTS $ T=\{Q,U,\rightarrow_T,G,AP,h_Q\} $ is a function $ \mathcal{C}: $ $ D\rightarrow 2^U $, i.e. a memoryless controller that maps states in $ D $ to a set of actions. %under which the specification in the winning set remains guaranteed.
 	% {\color{purple} The problem here is that a simple controller is not always enough to enforce a specitifcation; here I wouldn't make the link between the simple controller and specifications or winning sets; it is just the definition of what a simple controller is, not necessarily a simple controller that has been constructed to enforce a specification; so I would say "a simple controller for a subset $D \subset Q$ over an .."}
 	\label{def:simp}
 \end{definition}
+\footnotetext{In the following context, a simple controller $ \mathcal{C} $ is sometimes denoted by the set $ \{(s,\mathcal{C}(s)): s\in D\} $ for simplicity.}
 
 Given $\widehat{D} \subseteq D$, a simple controller $ \mathcal{C} $ \textbf{restricted to} $ \widehat{D} $ means that the domain of $ \mathcal{C} $ is restricted to $\widehat{D}$.
 
@@ -363,10 +364,10 @@ If $ C_{\phi} $ is implemented to contain all the possible control strategies, T
 \end{definition}
 
 \begin{remark}
-	By Definition \ref{def:T_C}, $ T(\mathcal{C}) $ can be easily constructed from the simple controller $ \mathcal{C} $ and the AFTS $ T $. Conversely, $ \mathcal{C} $ can be constructed from $ T(\mathcal{C}) $ by $ \mathcal{C} = \{(s,D(s)):s\in W,D(s)\not=\emptyset\} $, where $ D(s)=\{u:(s,u,s_2)\in \rightarrow_{T(\mathcal{C})}\} $.
+	By Definition \ref{def:T_C}, $ T(\mathcal{C}) $ can be easily constructed from the simple controller $ \mathcal{C} $ and the AFTS $ T $. Conversely, $ \mathcal{C} $ can be constructed from $ T(\mathcal{C}) $ by $ \mathcal{C} = \{(s,D(s)):s\in W,D(s)\not=\emptyset\} $, where $ D(s)=\{u:(s,u,s_2)\in \rightarrow_{T(\mathcal{C})}\} $.\label{rmk:conv}
 \end{remark}
-{\color{blue} don't abbreviate "not", write "do not", "does not", etc.}
-Due to the easy conversion between  $ \mathcal{C} $ and $ T(\mathcal{C}) $, we can modify a simple controller $ \mathcal{C} $ by modifying its corresponding FTS $ T(\mathcal{C}) $ and then converting $ T(\mathcal{C}) $ to $ \mathcal{C} $, with the advantages that $ T(\mathcal{C}) $ contains the necessary transition information, which $ \mathcal{C} $ doesn't have, and is easier to manipulate. {\color{purple} Not clear}
+%{\color{blue} don't abbreviate "not", write "do not", "does not", etc.}
+{\color{teal}Since $ T(\mathcal{C}) $ contains the transition information for all state-action pairs in $ \mathcal{C} $, it's easier to search invalid transitions in $ T(\mathcal{C}) $ than $ \mathcal{C} $ after some actions become unavailable. Also, the conversion between  $ \mathcal{C} $ and $ T(\mathcal{C}) $ is straightforward according to Remark \ref{rmk:conv}.} For those reasons, we modify a simple controller $ \mathcal{C} $ by modifying its corresponding FTS $ T(\mathcal{C}) $ and then converting $ T(\mathcal{C}) $ to $ \mathcal{C} $.  {\color{purple} Not clear}
 
 Assume the AFTS $ T = (Q,U,\rightarrow_T, G, AP, h_Q) $ is the abstraction of the system that needs to be controlled. Assume that $ T(\mathcal{C})=(Q_{\mathcal{C}}, U_{\mathcal{C}},\rightarrow_{T(\mathcal{C})})$ is a transition system corresponding to a simple controller $ \mathcal{C} $. 
 
