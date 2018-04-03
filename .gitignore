@@ -1,6 +1,4 @@
-acmart.cls
-acmart.pdf
-acmguide.pdf
+.gitignore
 *.pdf
 *.log
 *.aux
