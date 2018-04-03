@@ -46,11 +46,15 @@ For two sets $ A $ and $ B $, the set difference is denoted by $ A-B $. A functi
 
 \subsection{Augmented Finite Transition Systems}
 
+We consider plants modeled as augmented finite transition systems, a discrete structure that can either used as a direct modeling tool or can be obtained by abstracting the dynamics of a continuous-control system \cite{Nilsson2017}.
+
 \begin{definition}
-	An \textbf{augmented finite transition system} (AFTS) \cite{Nilsson2017} is a tuple $ T = (Q,U,\rightarrow_T, G,AP,h_Q) $, where $ Q $ is a set of states, $U$ is a set of actions (control inputs), $ \rightarrow_T\in Q\times U \times Q $ is {\color{purple} is a transition relation} between states under specific actions, $ G: 2^U\rightarrow 2^{2^Q} $ {\color{teal}maps a set of actions to a set of progress groups\footnotemark under that action set }, $ AP $ is a finite set of atomic propositions, and $ h_Q: Q\rightarrow 2^{AP} $ is a labeling function, which maps states to the set of atomic propositions they preserve {\color{purple} verify}. \footnotetext{\color{purple} %Maybe a few words on the progress group maps, which is a non-standard notion:	
+	An \textbf{augmented finite transition system} (AFTS) is a tuple $ T = (Q,U,\rightarrow_T, G,AP,h_Q) $, where $ Q $ is a set of states, $U$ is a set of actions (control inputs), $ \rightarrow_T\in Q\times U \times Q $ is a transition relation between states under specific actions, $ G: 2^U\rightarrow 2^{2^Q} $ maps a set of actions to a set of progress groups\footnotemark under that action set, $ AP $ is a finite set of atomic propositions, and $ h_Q: Q\rightarrow 2^{AP} $ is a labeling function, which maps each state to the set of atomic propositions that evaluate to true at that state. \footnotetext{\color{purple} 
 	A set $G \in G(D)$ is called a \emph{progress group under the action set $D$} , and it is related to the following semantic notion: the system cannot remain indefinitely within
-		$G$ by exclusively choosing actions from $U$. This restricts the behaviors allowed by the transition relation. (see \cite{Nilsson2017,Sun2014,Liu2014})}
+		$G$ by exclusively choosing actions from $U$. This restricts the behaviors allowed by the transition relation. Moreover, it is assumed that the $G$ is not invariant under the actions $U$ for the well-formedness of the definition (see \cite{Nilsson2017,Sun2014,Liu2014}).}
 \end{definition}
+
+A \emph{trajectory} of an AFTS is an infinite sequence $ s = \{s(n)\}_{n=0}^{\infty} $ of states such that for any two consecutive states $s(n), s(n+1)$ in the sequence, there is an action $a\in U$, such that $(s(n),a,s(n+a))\in \rightarrow_T$. Roughly speaking, control synthesis problem for an AFTS is to compute a function, i.e., control strategy, that restricts the possible actions at each time a state is visited so that only the desirable trajectories of the AFTS remain. A control strategy is formally defined next.
 
 \begin{definition}
 	A \textbf{control strategy} for an AFTS is a partial function $ \mu:~(Q\times U)^*\times Q\rightarrow 2^U $ which maps the history of state-action pairs and the current state to a set of actions.
@@ -58,7 +62,7 @@ For two sets $ A $ and $ B $, the set difference is denoted by $ A-B $. A functi
 
 \subsection{Linear Temporal Logic}
 
-Linear Temporal Logic (LTL) can be utilized to describe the desired behaviors of an AFTS system. It has logic operators (negation $ \neg $, conjunction $ \wedge $, disjunction $ \vee $), and temporal operators (next $ \bigcirc $, always $ \Square $, eventually $ \Diamond $ and until $ \mathbf{\ U\ }$).
+Linear Temporal Logic (LTL) can be utilized to describe the desired behaviors of an AFTS. It has logic operators (negation $ \neg $, conjunction $ \wedge $, disjunction $ \vee $), and temporal operators (next $ \bigcirc $, always $ \Square $, eventually $ \Diamond $ and until $ \mathbf{\ U\ }$).
 
 %{\color{blue} use grammar to define LTL, cite Baier and Katoen}
 %The LTL formula over a finite set of atomic propositions $ AP $ can be either: 
@@ -86,7 +90,7 @@ where $ p\in AP $, $ \phi_1 $ and $ \phi_2 $ are also LTL formulas. The other op
 
 An $\omega$-word $ w $ satisfies $ \phi $ if and only if $ (w,0)\models \phi $, written as $ w \models \phi $. 
 
-Given a trajectory of an AFTS $ y = \{y(n)\}_{n=0}^{\infty} $, the \textit{$\omega$-words} of y is $ h_Q(y) =  \{h_Q(y(n))\}_{n=0}^{\infty} $, where $ h_Q $ is the labeling function of the AFTS.  Given a LTL specification $ \phi $, we say that $ y\models \phi $ if and only if $ h_Q(y) \models \phi $.
+Given a trajectory $ s = \{s(n)\}_{n=0}^{\infty} $ of an AFTS, the \textit{$\omega$-word} corresponding to $ s $ is $ h_Q(s) =  \{h_Q(s(n))\}_{n=0}^{\infty} $, where $ h_Q $ is the labeling function of the AFTS.  Given a LTL specification $ \phi $, we say that $ s\models \phi $ if and only if $ h_Q(s) \models \phi $.
 
 \subsection{Control Synthesis and Fixed-Point Operators}
 \label{sec: cont_syn}
