@@ -322,7 +322,7 @@ In this section, we formally define the problem of interest. {\color{blue}it is 
 Before presenting the patching methods, we state a property of controller implementations that roughly shows that the controllers contain all the relevant information needed for patching. We start with a definition of strategy containment.
 
 \begin{definition}
-	For two control strategies $ \mu_1 $ and $ \mu_2 $ with winning set $ W_1 $ and $ W_2 $, we say $ \mu_2 $ contains $ \mu_1$, denoted as $ \mu_{1} \subseteq \mu_{2}$, if $ \mu_{1} (\{(s_i,a_i)\}_{i=1}^{n-1}, s_n) $ is a subset of $ \mu_{2}(\{(s_i,a_i)\}_{i=1}^{n-1}, s_n) $, for all feasible $ n $ and all transition trajectories $ q =(s_1,a_1),(s_2,a_2),...,(s_{n-1},a_{n-1}) $ satisfying $ s_1\in W_{1} $, $ a_k \in \mu_{1} (\{(s_i,a_i)\}_{i=1}^{k-1}, s_k) $.
+	For two control strategies $ \mu_1 $ and $ \mu_2 $ with winning set $ W_1 $ and $ W_2 $, we say $ \mu_2 $ contains $ \mu_1$, denoted with $ \mu_{1} \subseteq \mu_{2}$, if $ \mu_{1} (\{(s_i,a_i)\}_{i=1}^{n-1}, s_n) $ is a subset of $ \mu_{2}(\{(s_i,a_i)\}_{i=1}^{n-1}, s_n) $, for all feasible $ n $ and all transition trajectories $ q =(s_1,a_1),(s_2,a_2),...,(s_{n-1},a_{n-1}) $ satisfying $ s_1\in W_{1} $, $ a_k \in \mu_{1} (\{(s_i,a_i)\}_{i=1}^{k-1}, s_k) $.
 \end{definition}
 
 Consider an AFTS $ T = (Q,U,\rightarrow_T,G,AP,h_Q) $ and {\color{blue} an} LTL specification $ \phi = \Square A \wedge \Diamond \Square B \wedge \left( \bigvee_{i\in I} \Square \Diamond G^i\right) $. Compute its winning set \eqref{win_phi} and the winning control strategy $ \mu_{\phi} $ (or controller $ \mathcal{C}_{\phi} $) via fixed-point operators. Now disable some actions $ U_d \subseteq U$, i.e. getting a new AFTS $ \widehat{T} = (Q,U-U_d,\rightarrow_T,G,AP,h_Q) $ and re-compute the winning set and control strategy, denoted by $ \widehat{W}_{\phi} $ and $ \widehat{\mu}_{\phi} $ (or controller $ \widehat{\mathcal{C}}_{\phi} $), via the same fixed-point operator. Then, we have the following.
@@ -402,7 +402,7 @@ T(\widehat{\mathcal{C}}) = T_{0}\backslash E\\
 \widehat{W} = \{s_1: \exists u, \exists s_2 s.t. (s_1,u, s_2)\in \rightarrow_{T(\widehat{\mathcal{C}})} \}
 \end{cases}\label{patch_pre}
 \end{align}
-where $ \widehat{\mathcal{C}} $ is converted from $ T(\widehat{\mathcal{C}}) $. $ \widehat{W} $ and $ \widehat{\mathcal{C}} $ will be equal to the outputs of $ \text{Pre}_{\exists,\forall}^{T,\widehat{U}}(\widehat{V}) $.
+where $ \widehat{\mathcal{C}} $ is converted from $ T(\widehat{\mathcal{C}}) $. $ \widehat{W} $ and $ \widehat{\mathcal{C}} $ are the modified winning set and controller.
 
 \begin{theorem}
 	$ \widehat{W} $ and $ \widehat{C} $ returned by \eqref{patch_pre} would be the same as outputs resulting from $ \text{Pre}_{\exists,\forall}^{T,\widehat{U}}(\widehat{V})$.	\label{thm:pre}
@@ -461,7 +461,7 @@ Given a simple controller $ \mathcal{C} $ and new synthesis settings, both \eqre
 
 Based on the patching operators defined in the previous section, we are able to modify the winning sets and controllers resulting from \eqref{win_phi}, \eqref{win_interm}, \eqref{win_until}, \eqref{win_pgpre}.
 
-The intuition behind the  patching algorithms for existing controllers are similar: All the fixed-point operators considered in this section are either expanding algorithms  (\eqref{win_phi}, \eqref{win_until},\eqref{win_pgpre}) or contraction algorithm \eqref{win_interm} in the sense that $ \{W_k\}_{k=0}^\infty $ (or $ Z_k, X_k,V_k $ depending on  which fixed-point operator we consider) is a monotonic sequence in $ 2^Q $ whose limit is the winning set. Also, it's easy to see that the modified winning set would be contained by the original one. Motivated by those facts, our patching algorithm warm-starts the expanding or contraction process in the original algorithm based on patching the existing winning sets and controllers.
+{\color{teal}The intuition behind the  patching algorithms for those controllers are similar: All the fixed-point operators considered in this section are either expanding algorithms  (\eqref{win_phi}, \eqref{win_until},\eqref{win_pgpre}) or contraction algorithm (\eqref{win_interm}) in the sense that $ \{W_k\}_{k=0}^\infty $ (or $ Z_k, X_k,V_k $ depending on  which fixed-point operator is considered) is a monotonic sequence in $ 2^Q $ whose limit is the winning set. Also, it's easy to see that the modified winning set would be contained by the original one. Motivated by those facts, we can warm-start the expanding or contraction process from the existing winning sets instead of $ \emptyset $ for expansion or the set of full state $ Q $ for contraction.}
 
 Assume that $ Z $ and $ \mathcal{C} = (\mathcal{V},\mathcal{K},x) $ are the winning set and controller resulting from  $ \text{PGPre}_{\exists,\forall}^{T} (Z,B)$. Given $ \widehat{Z}\subseteq Z $,  $ \widehat{U}\subseteq U $, we want to modify $ Z $ and $ \mathcal{C} $ to be the winning set and controller for $ \text{PGPre}_{\exists, \forall}^{T,\widehat{U}}(\widehat{Z},B)$. The patching operator is:
 \begin{align}
@@ -480,7 +480,7 @@ Remove\ all\ \emptyset\ in\ \widehat{\mathcal{V}}\ and \ \widehat{\mathcal{K}},\
 \end{align}
 
 \begin{theorem}
-	$ \widehat{Z}_\infty $ and $ \widehat{C} $ returned by \eqref{patch_pg} would be the same as outputs resulting from $ \text{PGPre}_{\exists, \forall}^{T,\widehat{U}}(\widehat{Z},B)$.	
+	$ \widehat{Z}_\infty $ and $ \widehat{C} $ returned by \eqref{patch_pg} would be the same as outputs resulting from $ \text{PGPre}_{\exists, \forall}^{T,\widehat{U}}(\widehat{Z},B)$.	\label{thm:pg}
 \end{theorem}
 
 \begin{proof}
@@ -509,7 +509,7 @@ for~k\geq n\ and\ \widehat{X}_{k+1}\not=\widehat{X}_k:	\\
 The above patch algorithm has two parts: part one modifies the existing sub-controllers for $ k\leq n $; part two adds new sub-controllers by modifying the $ n $th existing sub-controller until convergence. The winning set $ \widehat{X}_{\infty} $, and controller $ \widehat{\mathcal{C}} $ would be equal to the outputs of \eqref{win_until} with input parameters $ \widehat{U},B,\widehat{Z} $. 
 
 \begin{theorem}
-	$ \widehat{X}_\infty $ and $ \widehat{C} $ returned by \eqref{patch_until} would be the same as outputs resulting from $ \text{Win}_{\exists,\forall}^{T,\widehat{U}}(B\mathbf{\ U\ }\widehat{Z}). $\label{thm:interm}	
+	$ \widehat{X}_\infty $ and $ \widehat{C} $ returned by \eqref{patch_until} would be the same as outputs resulting from $ \text{Win}_{\exists,\forall}^{T,\widehat{U}}(B\mathbf{\ U\ }\widehat{Z}). $\label{thm:until}	
 \end{theorem}
 
 \begin{proof}
@@ -520,7 +520,7 @@ The above patch algorithm has two parts: part one modifies the existing sub-cont
 	For $ k\geq n $, it's enough to show that $ X^t_k \subseteq X_n $, then the correctness again is guaranteed by \eqref{patch_pre} and \eqref{patch_pg}. According to \eqref{win_pgpre}, it's easy to show that $ \text{PGPre}_{\exists,\forall}^{T,U-U_d}(Z_1,B)\subseteq \text{PGPre}_{\exists,\forall}^{T,U}(Z_1,B)\subseteq \text{PGPre}_{\exists,\forall}^{T,U}(Z_2,B) $ for $ Z_1\subseteq Z_2 $. Prove by induction:  $ X_0^t = X_0 $. Assume that $ X_k^t \subseteq X_k $. Then $ \text{PGPre}^{T,U-U_d}_{\exists,\forall}(X^t_{k},B) \subseteq \text{PGPre}^{T,U-U_d}_{\exists,\forall}(X_{k},B)$. It's trivial that $ Pre^{T,U-U_d}_{\exists,\forall}(X^t_{k},B) \subseteq Pre^{T,U-U_d}_{\exists,\forall}(X_{k},B)$. Hence, $ X^t_{k+1}\subseteq X_{k+1} $. By induction argument, $ X_{k}^t\subseteq X_{k+1} \forall k$. But since $ \forall k>n, X_k=X_n $. $ X^t_k \subseteq X_n, \forall k>n $.
 \end{proof}
 
-Assume that $ W $ and $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ are the winning set and controller resulting from $\text{Win}_{\exists,\forall}^{T,U}((B\mathbf{\ U\ }Z)\vee \Square(B\wedge (\bigwedge_{i\in I} \Diamond R^i)) $. Given that $ \widehat{Z}\subseteq Z $ and $ \widehat{U}\subseteq U $, modify $ W $ and $ \mathcal{C} $ for $\text{Win}_{\exists,\forall}^{T,U}((B\mathbf{\ U\ }\widehat{Z})\vee \Square(B\wedge (\bigwedge_{i\in I} \Diamond R^i)) $. The patching operator for \eqref{win_interm}, written as $\overline{\text{Win}}^{T, U}_{\exists,\forall (\psi)}  $ is 
+Assume that $ W $ and $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ are the winning set and controller resulting from $\text{Win}_{\exists,\forall}^{T,U}((B\mathbf{\ U\ }Z)\vee \Square(B\wedge (\bigwedge_{i\in I} \Diamond R^i)) $. Given that $ \widehat{Z}\subseteq Z $ and $ \widehat{U}\subseteq U $, modify $ W $ and $ \mathcal{C} $ for $\text{Win}_{\exists,\forall}^{T,U}((B\mathbf{\ U\ }\widehat{Z})\vee \Square(B\wedge (\bigwedge_{i\in I} \Diamond R^i)) $. The patching operator for \eqref{win_interm} is 
 \begin{align}
 &[\widehat{W}_{\infty},\widehat{\mathcal{C}}]=\overline{\text{Win}}^{T, U}_{\exists,\forall (\psi)} (\mathcal{C},Z,\widehat{Z},U_d)\\
 =&\begin{cases}
@@ -538,7 +538,7 @@ while\ \widehat{W}_{k+1}\not=\widehat{W}_k:\\
 \end{align}
 
 \begin{theorem}
-	$ \widehat{W}_\infty $ and $ \widehat{C} $ returned by \eqref{patch_until} would be the same as outputs resulting from $\text{Win}_{\exists,\forall}^{T,\widehat{U}}((B\mathbf{\ U\ }\widehat{Z})\vee \Square(B\wedge (\bigwedge_{i\in I} \Diamond R^i)) $. \label{thm:phi}	
+	$ \widehat{W}_\infty $ and $ \widehat{C} $ returned by \eqref{patch_until} would be the same as outputs resulting from $\text{Win}_{\exists,\forall}^{T,\widehat{U}}((B\mathbf{\ U\ }\widehat{Z})\vee \Square(B\wedge (\bigwedge_{i\in I} \Diamond R^i)) $. \label{thm:interm}	
 \end{theorem}
 
 
@@ -585,14 +585,14 @@ The modified winning set $ \widehat{V}_{\infty} $ and controller $ \widehat{\mat
 The same as \eqref{patch_until}, the patching algorithm has two parts: one for modifying existing sub-controllers; one for adding new ones until convergence.
 
 \begin{theorem}
-	$ \widehat{V}_\infty $ and $ \widehat{C} $ returned by \eqref{patching_final} would be the same as outputs resulting from $\text{Win}_{\exists, \forall}^{T,U-U_d}\left(\Square A \wedge \Diamond \Square B \wedge \left( \bigwedge_{i\in I} \Square \Diamond R^i\right)\right) $. \label{thm:interm}	
+	$ \widehat{V}_\infty $ and $ \widehat{C} $ returned by \eqref{patching_final} would be the same as outputs resulting from $\text{Win}_{\exists, \forall}^{T,U-U_d}\left(\Square A \wedge \Diamond \Square B \wedge \left( \bigwedge_{i\in I} \Square \Diamond R^i\right)\right) $. \label{thm:phi}	
 \end{theorem}
 
 
 
 \begin{proof}
-	The correctness of $ \widehat{V}_{\text{inv}} $ is guaranteed by \eqref{patch_interm}.
-	For $ k\leq n $, the correctness of $ \widehat{V}_{k} $ is guaranteed by \eqref{patch_pre}, \eqref{patch_pg} and \eqref{patch_interm}. Assume that $ V^t_k $ and $ V_k $ are intermediate results in \eqref{win_phi} with action space $ U-U_d $ and $ U $ respectively. For $ k > n$, the correctness is guaranteed by  \eqref{patch_pre}, \eqref{patch_pg} and \eqref{patch_interm} as long as $ V^t_{k} \subseteq V_n $. We can prove it in the same way as the proof of \eqref{patch_until}. For simplicity, we can apply Theorem 1 instead:  Assume that $ V_k^t $ converges to $ V_{\infty}^t $ and $ V_k $ converges to $ V_{\infty} $. By Theorem \ref{thm: 1}, we have $ V^t_{\infty}\subseteq V_{\infty} = V_n $. Next, prove that $ \{V^t_k\} $ is a monotonic increasing sequence of sets by induction. $ \emptyset = V^t_0 \subseteq V^t_1 $. Assume that $ V^t_{k-1}\subseteq V^t_{k}$. Then it's not hard to see that $ Z^t_k \subseteq Z^t_{k+1} $, and $ V^t_k = \text{Win}_{\exists,\forall}^{T} ((B \mathbf{\ U\ }Z_{k}) \vee \Square (B\wedge ( \bigwedge_{i\in I}\Diamond R^i))\subseteq \text{Win}_{\exists,\forall}^{T} ((B \mathbf{\ U\ }Z_{k+1}) \vee \Square (B\wedge ( \bigwedge_{i\in I}\Diamond R^i))=V^t_{k+1} $ (this must be true otherwise \eqref{patch_interm} can't be correct). So $ V^t_k \subseteq V_n, \forall k $. 
+	The correctness of $ \widehat{V}_{\text{inv}} $ is guaranteed by Theorem \ref{thm:interm}.
+	For $ k\leq n $, the correctness of $ \widehat{V}_{k} $ is guaranteed by Theorem \ref{thm:pre}, \ref{thm:pg} and \ref{thm:interm}. Assume that $ V^t_k $ and $ V_k $ are intermediate results in \eqref{win_phi} with action space $ U-U_d $ and $ U $ respectively. For $ k > n$, the correctness is guaranteed by  \eqref{patch_pre}, \eqref{patch_pg} and \eqref{patch_interm} as long as $ V^t_{k} \subseteq V_n $. We can prove it in the same way as the proof of \eqref{patch_until}. For simplicity, we can apply Theorem 1 instead:  Assume that $ V_k^t $ converges to $ V_{\infty}^t $ and $ V_k $ converges to $ V_{\infty} $. By Theorem \ref{thm: 1}, we have $ V^t_{\infty}\subseteq V_{\infty} = V_n $. Next, prove that $ \{V^t_k\} $ is a monotonic increasing sequence of sets by induction. $ \emptyset = V^t_0 \subseteq V^t_1 $. Assume that $ V^t_{k-1}\subseteq V^t_{k}$. Then it's not hard to see that $ Z^t_k \subseteq Z^t_{k+1} $, and $ V^t_k = \text{Win}_{\exists,\forall}^{T} ((B \mathbf{\ U\ }Z_{k}) \vee \Square (B\wedge ( \bigwedge_{i\in I}\Diamond R^i))\subseteq \text{Win}_{\exists,\forall}^{T} ((B \mathbf{\ U\ }Z_{k+1}) \vee \Square (B\wedge ( \bigwedge_{i\in I}\Diamond R^i))=V^t_{k+1} $ (this must be true otherwise \eqref{patch_interm} can't be correct). So $ V^t_k \subseteq V_n, \forall k $. 
 	
 \end{proof}
 
