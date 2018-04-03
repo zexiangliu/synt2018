@@ -249,7 +249,7 @@ In the execution time, a controller $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ 
 		\item  if $ \mathcal{C} $ is returned by \eqref{win_interm}: %{\color{purple} just $x \mod ..$? It seems that $x$ may remain constant with this definition, are you sure that this is correct?}{\color{teal} there's $ +1 $ after mod}
 		\begin{displaymath}
 		x^+ = \begin{cases}
-		(x\mod\vert\mathcal{K}\vert + 1),\ \ \text{if}\ s\in \mathcal{V}(x+1)\\
+		(x\mod\vert\mathcal{K}\vert) + 1,\ \ \text{if}\ s\in \mathcal{V}(x+1)\\
 		x,\ \text{otherwise}
 		\end{cases}
 		\end{displaymath}
@@ -440,10 +440,12 @@ Y_0 = Y\cup (\Delta Z\cap G \cap B)\\
 T_0  = T(\mathcal{C})\cup E_0\\
 {\color{purple} k=0}\\
 while \ Y_{k+1}\not= Y_k:\\
+{\color{purple} repeat:}\\
 \ \ \ \ \Delta Y_{k+1} = \text{Pre}_{\forall,\exists}^{T_k,D}(\Delta Y_k) \\
 \ \ \ \ T_{k+1} = T_{k}\backslash (\Delta Y_{k+1},*,*)\\
 \ \ \ \ Y_{k+1} = Y_k- \Delta Y_{k+1}\\
-\ \ \ \ {\color{purple} k++}\\
+\ \ \ \ {\color{purple} k=k+1}\\
+{\color{purple} until \ Y_k = Y_{k-1}}\\
 \widehat{Y}=Y_k,\ T(\widehat{C}) = T_{k}
 \end{cases}\label{patch_inv}
 \end{align}
