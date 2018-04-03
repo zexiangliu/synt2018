@@ -329,7 +329,7 @@ If $ C_{\phi} $ is implemented to contain all the possible control strategies, T
 
 %From the perspective of implementation, a controller $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ is a data structure that organizes simple controllers in a hierarchy way. The partially ordered sets $ \mathcal{V} $  and internal variable are only used during execution. So the basic step for patching a controller is to modify its simple controllers, which are discussed in Section \ref{sec:patching_simple}. 
 
-\subsection{Patching Operators for Simple Controllers}
+\subsection{Patching Simple Controllers}
 \label{sec:patching_simple}
 \begin{definition}
 	Given a simple controller $ \mathcal{C} $ over an AFTS $T = (Q,U,\rightarrow_T, G,AP,h_Q) $, a \textbf{finite transition system} (FTS) corresponding to $ \mathcal{C} $ is $T(\mathcal{C}) = (Q_C, U_C, \rightarrow_{T(\mathcal{C})})$, where $ Q_C $ is the set of states that appear in $ \rightarrow_{T(\mathcal{C})} $, $ U_C=\{u: u\in \mathcal{C}(s), \forall s\in W\} $, $ \rightarrow_{T(\mathcal{C})} =\{(s_1,u,s_2)\in \rightarrow_T: s_1\in W,s_2\in Q, u\in \mathcal{C}(s_1)\} $. \label{def:T_C}
@@ -342,9 +342,9 @@ Due to the easy conversion between  $ \mathcal{C} $ and $ T(\mathcal{C}) $, we c
 
 Assume the AFTS $ T = (Q,U,\rightarrow_T, G, AP, h_Q) $ is the abstraction of the system that needs to be controlled. Assume that $ T(\mathcal{C})=(Q_{\mathcal{C}}, U_{\mathcal{C}},\rightarrow_{T(\mathcal{C})})$ is a transition system corresponding to a simple controller $ \mathcal{C} $. 
 
-Firstly let's define several operation to manipulate the FTS $ T(\mathcal{C}) $:
+Firstly let's define several operation to manipulate the finite transition system $ T(\mathcal{C}) $:
 
-\emph{transitions removing}: remove all transitions in $ E $ from $ T(\mathcal{C}) $ i.e. replace $ \rightarrow_{T(\mathcal{C})} $ with $\rightarrow_{T(\mathcal{C})} - E$, where $ E = \{(s_1,a,s_2): s_1,s_2\in Q_{\mathcal{C}}, a\in U_{\mathcal{C}}\} $. This operation is written as 
+\emph{transitions removing}: given $ E = \{(s_1,a,s_2): s_1,s_2\in Q_{\mathcal{C}}, a\in U_{\mathcal{C}}\} $, remove all transitions in $ E $ from $ T(\mathcal{C}) $ i.e. replace $ \rightarrow_{T(\mathcal{C})} $ with $\rightarrow_{T(\mathcal{C})} - E$, written as 
 \begin{displaymath}
 	T(\mathcal{C})\backslash E 
 \end{displaymath}
@@ -431,7 +431,7 @@ where $ \Delta Z = Z - \widehat{Z} $, and $ E_0 = \{(s_1,a,s_2)\in \rightarrow_{
 
 Given a simple controller $ \mathcal{C} $ and new synthesis settings, both \eqref{patch_pre} and \eqref{patch_inv} try to find $ T(\widehat{\mathcal{C}}) $ inside $ T(\mathcal{C}) $. However, if we re-synthesize the new simple controller from scratch, \eqref{eqn:pre} and \eqref{win_inv} would try to find $ T(\mathcal{C}) $ in the whole AFTS $ T $, which roughly needs more computation cost.
 
-\subsection{Fixed-point Patching Operators}
+\subsection{Patching Controllers}
 
 %\begin{assumption}
 %	A fixed-point patching operators has access to outputs and inputs of the corresponding fixed-point operator, as well as all the intermediate winning sets and controllers of the fixed-point operators generated at each iterative step. 
