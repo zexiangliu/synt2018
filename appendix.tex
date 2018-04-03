@@ -27,6 +27,8 @@ The building blocks of the above algorithm are the following fixed-point operato
 &[W_{\infty},\mathcal{C}]= \ \text{Win}_{\exists,\forall}^{T,U}((B\mathbf{\ U\ }Z)\vee \Square (B\wedge(\bigwedge_{i\in I}\Diamond R^i)) )\\
 =&\begin{cases}
 W_0 = Q,\ \mathcal{V}=\{\},\ \mathcal{K}=\{\}\\
+{\color{purple} k=0}\\
+
 while\ W_{k+1}\not= W_k:\\
 \ \ \ \ Z_{k+1}^i = Z\cup (B\cap R^i\cap \text{Pre}_{\exists, \forall}^{T,U}(W_k))\\
 \ \ \ \ [X^i, \mathcal{C}^i]= \text{Win}_{\exists,\forall}^{T,U} (B\mathbf{\ U\ }Z_{k+1}^i), \forall i \in I\\
