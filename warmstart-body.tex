@@ -305,21 +305,23 @@ In the execution time, a controller $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ 
 	$ \mathcal{C}^{2,1}_3 = \{(s_1,\{a,b\}),(s_2,\{c,d,f\}),(s_3,\{g,h\}),(s_4,\{e,i\})\} $.
 	
 	\begin{figure}
-		\begin{subfigure}[b]{0.4\textwidth}
-		\centering
-		\includegraphics[width=0.7\linewidth]{pic/xupdate}
-		\label{fig:xupdate}
-		\caption{no action disabled}
-	\end{subfigure}
-	\begin{subfigure}[b]{0.4\textwidth}
+%		\begin{subfigure}[b]{0.4\textwidth}
+%		\centering
+%		\includegraphics[width=0.7\linewidth]{pic/xupdate}
+%		\label{fig:xupdate}
+%		\caption{no action disabled}
+%	\end{subfigure}
+%	\begin{subfigure}[b]{0.4\textwidth}
+%	\centering
+%	\includegraphics[width=0.7\linewidth]{pic/xupdate2}
+%	\label{fig:xupdate2}
+%	\caption{ action $ e $ is disabled}
+%\end{subfigure}
 	\centering
-	\includegraphics[width=0.7\linewidth]{pic/xupdate2}
-	\label{fig:xupdate2}
-	\caption{ action $ e $ is disabled}
-\end{subfigure}
+	\includegraphics[width=1\linewidth]{pic/xupdate_full}
 	\caption{ %{\color{purple} Same comment as on the previous version: it would be nice to see both transition graphs (before/after) side by side. Also: why do you show $x_1^0$ in the two bottom transitions; it could make the reader think that the transitions depend on the values of other internal variables, but it's not the case. The transition to children controllers is relatively clear to me, so I would simpy remove the value of other internal variables in each subgraph.}{\color{teal} the only change on the graph comes from changes in $ \mathcal{V} $ in each sub-controller.} 
-		The transition graph is used to illustrate the update rules of $ x $ in Definition \ref{def:exec}. $ s $ is the current state of the system in Figure \ref{fig:eg1}. At each execution time, each internal variable transits from its current node to one of the neighbor node once the transition condition on the edge is satisfied. If no transition condition is satisfied, internal variable remains unchanged. Update $ x$ first, and then $ x^0 $, and lastly $ x_0^1 $ and $x^1_1 $.} 
-	\label{fig:transgraph}
+		The transition graph is used to illustrate the update rules of $ x $ in Definition \ref{def:exec}. (a) corresponds to the case in example \ref{ex:exec} (b) corresponds to the case in Section \ref{sec:example1}. $s $ is the current state of the system in Figure \ref{fig:eg1}. At each execution time, each internal variable transits from its current node to one of the neighbor node once the transition condition on the edge is satisfied. If no transition condition is satisfied, internal variable remains unchanged. Update $ x$ first, and then $ x^0 $, and lastly $ x_0^1 $ and $x^1_1 $.} 
+	\label{fig:xupdate}
 	\end{figure}
 	
 	$ \mathcal{C} $, $ \mathcal{C}_1^0 $ and $ \mathcal{C}_i^1 $ are returned by \eqref{win_phi}, \eqref{win_interm} and \eqref{win_until}. $ \mathcal{C}_i^{2,k} $ are simple controllers returned by \eqref{eqn:pre}. Each time $ \mathcal{C} $ is called, $ (x,x^0_1,x^1_1,x^1_2) $ is updated according to Definition \ref{def:exec}, and one of the simple controllers in $ \mathcal{C} $ is reached, which determines the set of feasible control inputs. The update rules for internal variables in this example \ref{ex:exec} can be illustrated by the transition graph in Figure \ref{fig:xupdate}, which is consistent with Definition \ref{def:exec}. %is determined by $ \mathcal{C}^{2,k}_{x^1_{k}} (s)$ (if $ x^0 = k  $).
@@ -638,6 +640,7 @@ The same as \eqref{patch_until}, the patching algorithm has two parts: one for m
 \section{EXAMPLE}
 \label{sec:example}
 \subsection{Simple Transition System}
+\label{sec:example1}
 For the transition system in Figure \ref{fig:eg1}, take the controller we get in Section \ref{sec: cont_syn} and  $ U_d= \{e\} $ as input of \eqref{patching_final}, the outputs are the modified winning set $ \widehat{W}=\{s_1,s_2,s_3\} $ and controller $ \widehat{\mathcal{C}} = (\{\widehat{W}\},\{\widehat{\mathcal{C}}_1^0\},x=1) $ , where the sub-controllers are: 
 
 $ \widehat{\mathcal{C}}^0_1 = (\{\widehat{W},\{s_1\},\{s_2,s_3\}\},\{\widehat{\mathcal{C}}^1_1, \widehat{\mathcal{C}}^1_2\},x^0) $;
