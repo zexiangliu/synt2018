@@ -138,15 +138,15 @@ Note that a control strategy as in definition \ref{def:cs} can require infinite 
 {\color{purple} in Section~\ref{sec:method}}.
 
 \begin{definition}
-	A \textbf{simple controller} for a winning set $ W $ over an AFTS $ T=\{Q,U,\rightarrow_T,G,AP,h_Q\} $ is a function $ \mathcal{C}: $ W $ \rightarrow 2^U $, i.e. a memoryless controller. A simple controller maps the current state to a set of actions under which the specification in the winning set remains guaranteed. {\color{purple} The problem here is that a simple controller is not always enough to enforce a specitifcation; here I wouldn't make the link between the simple controller and specifications or winning sets; it is just the definition of what a simple 
-controller is, not necessarily a simple controller that has been constructed to enforce a specification; so I would say "a simple controller for a subset $D \subset Q$ over an .."}
+	A \textbf{simple controller} for a set $ D\subseteq Q $ over an AFTS $ T=\{Q,U,\rightarrow_T,G,AP,h_Q\} $ is a function $ \mathcal{C}: $ $ D\rightarrow 2^U $, i.e. a memoryless controller that maps states in $ D $ to a set of actions. %under which the specification in the winning set remains guaranteed.
+	% {\color{purple} The problem here is that a simple controller is not always enough to enforce a specitifcation; here I wouldn't make the link between the simple controller and specifications or winning sets; it is just the definition of what a simple controller is, not necessarily a simple controller that has been constructed to enforce a specification; so I would say "a simple controller for a subset $D \subset Q$ over an .."}
 	\label{def:simp}
 \end{definition}
 
-Given $\widehat{W} \subseteq W $, a simple controller $ \mathcal{C} $ \textbf{restricted to} $ \widehat{W} $ means that the domain of $ \mathcal{C} $ is restricted to $\widehat{W}$.
+Given $\widehat{D} \subseteq D$, a simple controller $ \mathcal{C} $ \textbf{restricted to} $ \widehat{D} $ means that the domain of $ \mathcal{C} $ is restricted to $\widehat{D}$.
 
 \begin{definition}
-	For the AFTS $ T=\{Q,U,\rightarrow_T,G,AP,h_Q\} $, a \textbf{controller} $ \mathcal{C} $ for a winning set $ \text{Win}^T(\phi) $ is a tuple $ (\mathcal{V},\mathcal{K},x) $, where $ \mathcal{V} $ is a list of subsets of $ Q $, $ \mathcal{K} $ is a list of controllers or simple controllers, i.e. so-called sub-controllers of $ \mathcal{C} $, and $ x $ is an internal variable that saves the index of sub-controllers called last time.
+	For the AFTS $ T=\{Q,U,\rightarrow_T,G,AP,h_Q\} $, a \textbf{controller} $ \mathcal{C} $ corresponding to a winning set $ W $ is a tuple $ (\mathcal{V},\mathcal{K},x) $, where $ \mathcal{V} $ is a list of subsets of $ Q $, $ \mathcal{K} $ is a list of controllers or simple controllers, i.e. so-called sub-controllers of $ \mathcal{C} $, and $ x $ is an internal variable that saves the index of sub-controllers called last time.
 	\label{def:cont}
 \end{definition}
  
