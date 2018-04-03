@@ -321,13 +321,14 @@ In the execution time, a controller $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ 
 %{\color{blue} don't use b.w., s,t, use between, such that. in general, it is better writing practice to avoid abbreviations as much as possible}
 
 \subsection{Problem Statement}
-
+\label{sec:prob}
 In this section, we formally define the problem of interest. {\color{blue}it is usually a good idea to start with telling what you want to do in the section so that the user is prepared.}
 
 {\color{purple} Somewhere we should give the main steps of the solution also. I think one thing that would be important is to state clearly what can and cannot change in the structure of the controller when $U$ is modified. I guess it is not only a change of the transitions, like in the example, since in some cases the number of steps to convergence can be modified. But then what exactly remains invariant? Only the "depth" of the controller? } {\color{teal} I think basically everything could be changed in the patching operator.} {\color{purple} OK}
 
 \begin{problem}
 	Given an AFTS $ T = (Q,U,\rightarrow_T,G,AP,h_Q) $, a LTL specification $ \phi = \Square A \wedge \Diamond \Square B \wedge \left( \bigvee_{i\in I} \Square \Diamond R^i\right) $, the winning set $ W_{\phi} $ and controller $ \mathcal{C}_{\phi} $, if a set of actions $ U_d\subseteq U $ in $ T $ is unavailable, find the new winning set and a controller based on $ W_{\phi} $ and $ \mathcal{C}_{\phi} $.
+	\label{prob}
 \end{problem}
 
 
@@ -463,7 +464,7 @@ Given a simple controller $ \mathcal{C} $ and new synthesis settings, both \eqre
 %	A fixed-point patching operators has access to outputs and inputs of the corresponding fixed-point operator, as well as all the intermediate winning sets and controllers of the fixed-point operators generated at each iterative step. 
 %\end{assumption}
 
-Based on the patching operators defined in the previous section, we are able to modify the winning sets and controllers resulting from \eqref{win_phi}, \eqref{win_interm}, \eqref{win_until}, \eqref{win_pgpre}.
+Based on the patching operators defined in the previous section, we are able to modify the winning sets and controllers resulting from \eqref{win_phi}, \eqref{win_interm}, \eqref{win_until}, \eqref{win_pgpre}. Then in Theorem \ref{thm:phi} we show that the patching algorithm for \eqref{win_phi} offers a solution to the Problem \ref{prob} in Section \ref{sec:prob}
 
 The intuition behind the  patching algorithms for existing controllers are similar: All the fixed-point operators considered in this section are either expanding algorithms  (\eqref{win_phi}, \eqref{win_until},\eqref{win_pgpre}) or contraction algorithm \eqref{win_interm} in the sense that $ \{W_k\}_{k=0}^\infty $ (or $ Z_k, X_k,V_k $ depending on  which fixed-point operator we consider) is a monotonic sequence in $ 2^Q $ whose limit is the winning set. Also, it is easy to see that the modified winning set would be contained by the original one. Motivated by those facts, our patching algorithm warm-starts the expanding or contraction process in the original algorithm based on patching the existing winning sets and controllers.
 
@@ -590,7 +591,7 @@ The modified winning set $ \widehat{V}_{\infty} $ and controller $ \widehat{\mat
 The same as \eqref{patch_until}, the patching algorithm has two parts: one for modifying existing sub-controllers; one for adding new ones until convergence.
 
 \begin{theorem}
-	$ \widehat{V}_\infty $ and $ \widehat{C} $ returned by \eqref{patching_final} are the same as outputs resulting from $\text{Win}_{\exists, \forall}^{T,U-U_d}\left(\Square A \wedge \Diamond \Square B \wedge \left( \bigwedge_{i\in I} \Square \Diamond R^i\right)\right) $. \label{thm:phi}	
+	$ \widehat{V}_\infty $ and $ \widehat{C} $ returned by \eqref{patching_final} are the same as outputs resulting from $\text{Win}_{\exists, \forall}^{T,U-U_d}\left(\Square A \wedge \Diamond \Square B \wedge \left( \bigwedge_{i\in I} \Square \Diamond R^i\right)\right) $. \label{thm:phi}
 \end{theorem}
 
 
