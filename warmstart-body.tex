@@ -146,7 +146,7 @@ Note that a control strategy as in definition \ref{def:cs} can require infinite 
 Given $\widehat{D} \subseteq D$, a simple controller $ \mathcal{C} $ \textbf{restricted to} $ \widehat{D} $ means that the domain of $ \mathcal{C} $ is restricted to $\widehat{D}$.
 
 \begin{definition}
-	For the AFTS $ T=\{Q,U,\rightarrow_T,G,AP,h_Q\} $, a \textbf{controller} $ \mathcal{C} $ corresponding to a winning set $ W $ is a tuple $ (\mathcal{V},\mathcal{K},x) $, where $ \mathcal{V} $ is a list of subsets of $ Q $, $ \mathcal{K} $ is a list of controllers or simple controllers, i.e. so-called sub-controllers of $ \mathcal{C} $, and $ x $ is an internal variable that saves the index of sub-controllers called last time.
+	For the AFTS $ T=\{Q,U,\rightarrow_T,G,AP,h_Q\} $, a \textbf{controller} $ \mathcal{C} $ is a tuple $ (\mathcal{V},\mathcal{K},x) $, where $ \mathcal{V} $ is a list of subsets of $ Q $, $ \mathcal{K} $ is a list of controllers or simple controllers, {\color{purple} which we refer to as} sub-controllers of $ \mathcal{C} $, and $ x $ is an internal variable that indicates the index of sub-controllers executed last time. {\color{teal} The execution of controller and update rules of $ x $ refers to Definition \ref{def:exec}}. {\color{purple} Same remark as with the simple controllers: no need for a connection to winning sets here. Also, I still believe that the transition graph is lacking in this definition: without it, we don't know how to update $x$.} {\color{teal} the transition graph of $ x $ is totally equivalent to  Definition \ref{def:exec}+$ \mathcal{V} $ in $ \mathcal{C} $ and its sub-controllers.}
 	\label{def:cont}
 \end{definition}
  
@@ -302,7 +302,7 @@ In the execution time, a controller $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ 
 	\begin{figure}
 		\centering
 		\includegraphics[width=0.7\linewidth]{pic/xupdate}
-		\caption{ {\color{purple} Same comment as on the previous version: it would be nice to see both transition graphs (before/after) side by side.} The transition graph of internal variables according to Definition \ref{def:exec}. Update $ x$ first, and then $ x^0 $, and lastly $ x_0^1 $ and $x^1_1 $. $ s $ is the current state. The transition condition is labeled on the edge. Self loop exists (omitted on the graph): the corresponding internal variable remains unchanged if no condition is satisfied.}
+		\caption{ {\color{purple} Same comment as on the previous version: it would be nice to see both transition graphs (before/after) side by side.}{\color{teal} the only change on the graph comes from changes in $ \mathcal{V} $ in each sub-controller.} The transition graph is used to illustrate the update rules of $ x $ in Definition \ref{def:exec}. $ s $ is the current state of the system in Figure \ref{fig:eg1}. At each execution time, each internal variable transits from its current node to one of the neighbor node once the transition condition on the edge is satisfied. If no transition condition is satisfied, internal variable remains unchanged. Update $ x$ first, and then $ x^0 $, and lastly $ x_0^1 $ and $x^1_1 $.} 
 		\label{fig:xupdate}
 	\end{figure}
 	
