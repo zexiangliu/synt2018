@@ -49,16 +49,12 @@ For two sets $ A $ and $ B $, the set difference is denoted by $ A-B $. A functi
 We consider plants modeled as augmented finite transition systems, a discrete structure that can either used as a direct modeling tool or can be obtained by abstracting the dynamics of a continuous-control system \cite{Nilsson2017}.
 
 \begin{definition}
-	An \textbf{augmented finite transition system} (AFTS) is a tuple $ T = (Q,U,\rightarrow_T, G,AP,h_Q) $, where $ Q $ is a set of states, $U$ is a set of actions (control inputs), $ \rightarrow_T\in Q\times U \times Q $ is a transition relation between states under specific actions, $ G: 2^U\rightarrow 2^{2^Q} $ maps a set of actions to a set of progress groups\footnotemark under that action set, $ AP $ is a finite set of atomic propositions, and $ h_Q: Q\rightarrow 2^{AP} $ is a labeling function, which maps each state to the set of atomic propositions that evaluate to true at that state. \footnotetext{\color{purple} 
+	An \textbf{augmented finite transition system} (AFTS) is a tuple $ T = (Q,U,\rightarrow_T, G,AP,h_Q) $, where $ Q $ is a set of states, $U$ is a set of actions (control inputs), $ \rightarrow_T\in Q\times U \times Q $ is a transition relation between states under specific actions, $ G: 2^U\rightarrow 2^{2^Q} $ maps a set of actions to a set of progress groups\footnotemark under that action set, $ AP $ is a finite set of atomic propositions, and $ h_Q: Q\rightarrow 2^{AP} $ is a labeling function, which maps each state to the set of atomic propositions that evaluate to true at that state. \footnotetext{ 
 	A set $G \in G(D)$ is called a \emph{progress group under the action set $D$} , and it is related to the following semantic notion: the system cannot remain indefinitely within
 		$G$ by exclusively choosing actions from $U$. This restricts the behaviors allowed by the transition relation. Moreover, it is assumed that the $G$ is not invariant under the actions $U$ for the well-formedness of the definition (see \cite{Nilsson2017,Sun2014,Liu2014}).}
 \end{definition}
 
-A \emph{trajectory} of an AFTS $T$ is an infinite sequence $ s = \{s(n)\}_{n=0}^{\infty} $ of its states such that for any two consecutive states $s(n), s(n+1)$ in the sequence, there is an action $a\in U$, such that $(s(n),a,s(n+1))\in \rightarrow_T$. Roughly speaking, control synthesis problem for an AFTS is to compute a function, i.e., control strategy, that restricts the possible actions at each time a state is visited so that only the desirable trajectories of the AFTS remain. A control strategy is formally defined next.
-
-\begin{definition}
-	A \textbf{control strategy} for an AFTS is a partial function $ \mu:~(Q\times U)^*\times Q\rightarrow 2^U $ which maps the history of state-action pairs and the current state to a set of actions.
-\end{definition}
+A \emph{trajectory} of an AFTS $T$ is an infinite sequence $ s = \{s(n)\}_{n=0}^{\infty} $ of its states such that for any two consecutive states $s(n), s(n+1)$ in the sequence, there is an action $a\in U$, such that $(s(n),a,s(n+1))\in \rightarrow_T$. 
 
 \subsection{Linear Temporal Logic}
 
@@ -111,18 +107,29 @@ The specification considered in this work is of the form:
 \begin{align}
 \phi = \Square A \wedge \Diamond \Square B \wedge \left( \bigwedge_{i\in I} \Square \Diamond R^i\right)\label{phi}
 \end{align}
-for atomic propositions $A$, $B$, $R^i$. Such specifications can express properties of \emph{invariance} ($\Square A$), \emph{persistence} ($\Diamond \Square B$) and \emph{reccurence}. This LTL fragment, also used in \cite{wolff2013efficient,Nilsson2017}, is a subset of Generalized Rabin specifications \cite{ehlers2017supervisory}. As the progress groups in AFTS is equivalent to environment liveness assumptions, the formula in \eqref{phi} can also be seen as a generalization of GR(1) specifications, with well-separated environments \cite{klein2010revisiting, maoz2016well,schmuckrelation} under the well-formedness assumption in footnote 1.
+for atomic propositions $A$, $B$, $R^i$. Such specifications can express properties of \emph{invariance} ($\Square A$), \emph{persistence} ($\Diamond \Square B$) and \emph{reccurence}. This LTL fragment, also used in \cite{wolff2013efficient,Nilsson2017}, is a subset of Generalized Rabin specifications \cite{ehlers2017supervisory}. As the progress groups in AFTS is equivalent to environment liveness assumptions, the formula in \eqref{phi} can also be seen as a generalization of GR(1) specifications, with well-separated environments \cite{klein2010revisiting, maoz2016well,schmuckrelation} under the well-formedness assumption in footnote 1. In what follows, with slight abuse of notation, we treat $A$, $B$, $R^i$ as subsets of the state set $Q$, e.g., $A = \{ s\in Q \mid A\in h_Q(s)\}$, etc.
 %{\color{purple} for subsets $A$, $B$, $R^i \subseteq Q$ defining atomic propositions. Such specifications can express properties of \emph{invariance} ($\Square A$), \emph{persistence} ($\Diamond \Square B$) and \emph{reccurence}} 
 
 %{\color{blue}Maybe we should say a few words on how this fragment differs from GR(1) and others}
 
 %{\color{blue} Maybe we should say "the winning set" since it is unique when defined to be the largest.} {\color{purple} Yes, when it is stated that we consider the largest, we should use "the" I agree (but in the previous version it wasn't mentioned I think).}
-\begin{definition}
-	The \textbf{winning set} of the specification $ \phi $ over an AFTS $ T = (Q, U, \rightarrow_T, G, AP, h_Q) $, written as $ W_{\phi} $, is the largest subset of $ Q $ such that if the system $ T $ is initially in $ W_{\phi} $, specification can be enforced.
-\end{definition}
+
+Roughly speaking, control synthesis problem for an AFTS is to compute a function, i.e., control strategy, that restricts the possible actions at each time a state is visited so that only the desirable trajectories of the AFTS remain. A control strategy is formally defined next.
 
 \begin{definition}
-	A \textbf{simple controller} for a winning set $ W $ over an AFTS is a function $ \mathcal{C}: $ W $ \rightarrow 2^U $, i.e. a memoryless controller. A simple controller maps the current state to a set of actions under which the specification in the winning set remains guaranteed.
+	A \textbf{control strategy} for an AFTS is a partial function $ \mu:~(Q\times U)^*\times Q\rightarrow 2^U $ which maps the history of state-action pairs and the current state to a set of actions.\label{def:cs}
+\end{definition}
+
+For a given LTL specification, one can talk about the ``best'' control strategy in enforcing the specification and the set of initial states for which such a strategy is defined.
+
+\begin{definition}
+	The \textbf{winning set} of the specification $ \phi $ over an AFTS $T = \{Q,U,\rightarrow_T,G,AP,h_Q\}$, written as $ W_{\phi} $, is the largest subset of $ Q $ such that if the system $ T $ is initially in $ W_{\phi} $, specification can be enforced.
+\end{definition}
+
+Note that a control strategy as in definition \ref{def:cs} can require infinite memory. However for LTL specifications, it is known that there exists a finite memory control strategy corresponding to the winning set. In particular, for the specifications of the form \eqref{phi}, we define a data structure, which we call \emph{controller}, to implement a control strategy in a specific way. This data structure will be crucial for the patching algorithms developed.
+
+\begin{definition}
+	A \textbf{simple controller} for a winning set $ W $ over an AFTS $ T=\{Q,U,\rightarrow_T,G,AP,h_Q\} $ is a function $ \mathcal{C}: $ W $ \rightarrow 2^U $, i.e. a memoryless controller. A simple controller maps the current state to a set of actions under which the specification in the winning set remains guaranteed.
 	\label{def:simp}
 \end{definition}
 
@@ -133,94 +140,90 @@ Given $\widehat{W} \subseteq W $, a simple controller $ \mathcal{C} $ \textbf{re
 	\label{def:cont}
 \end{definition}
  
- Overall, a controller is a tree structure with controllers at each node and simple controllers at the leaf nodes. The list $\mathcal{K}$ for each controller (node) denotes the children of that controller in the tree.
-
-
-
-{\color{purple} Winning sets and controllers} for specifications in the form of \eqref{phi} are computed iteratively via the following fixed-point based algorithm {\color{purple} (see \cite{Nilsson2017})}.
+ Overall, a controller is a tree structure with controllers at each node and simple controllers at the leaf nodes. The list $\mathcal{K}$ for each controller (each non-leaf node in the tree) denotes the children of that controller in the tree. Winning sets and controllers for specifications in the form of \eqref{phi} are computed iteratively via fixed-point based algorithms given in the appendix \ref{app:basic_alg}.
 
 %\begin{remark}
 %	The definition of controller defines the implementation of a control strategy obtained by fixed-point operators discussed in the following. For \eqref{win_phi}, \eqref{win_interm}, \eqref{win_until} and \eqref{win_inv}, the number of sub-controllers in each controller is proportional to the number of iterations when the corresponding fixed-point operator converges. Simple controllers are smallest elements in a controller, i.e. the ones given by \eqref{eqn:pre} and \eqref{win_inv}. 
 %\end{remark}
 
-\begin{align}
-& [V_{\infty},\mathcal{C}] =\  \text{Win}_{\exists, \forall}^{T,U}\left(\Square A \wedge \Diamond \Square B \wedge \left( \bigwedge_{i\in I} \Square \Diamond R^i\right)\right)\\
-=&\begin{cases}V_{\text{inv}} = \text{\text{Win}}^{T,U}_{\exists, \forall} ((A\mathbf{U}\emptyset)\vee \Square (A\wedge \Diamond Q))\\
-\text{Restrict~ synthesis~ to~ }V_{\text{inv}}\\
-V_0 = \emptyset,\ \mathcal{V}=\{\},\ \mathcal{K} = \{\}\\
-while\ V_{k+1} \not= V_k:\\
-\ \ \ \ Z_{k+1} = \text{Pre}_{\exists,\forall}^{T,U} (V_k) \bigcup \text{PGPre}_{\exists,\forall}^{T,U} (V_k, Q)\\
-\ \ \ \ [V_{k+1}, \mathcal{C}_{k+1}]=\text{Win}_{\exists,\forall}^{T} ((B \mathbf{\ U\ }Z_{k+1}) \vee \Square (B\wedge ( \bigwedge_{i\in I}\Diamond R^i))\\
-\ \ \ \ \mathcal{V}(k+1)=V_{k+1},\ \mathcal{K}(k+1) = \mathcal{C}_{k+1}\\
-V_{\infty} = V_k,\ \mathcal{C}=(\mathcal{V},\mathcal{K},x)
-\end{cases}\label{win_phi}
-\end{align}
+% \begin{align}
+% & [V_{\infty},\mathcal{C}] =\  \text{Win}_{\exists, \forall}^{T,U}\left(\Square A \wedge \Diamond \Square B \wedge \left( \bigwedge_{i\in I} \Square \Diamond R^i\right)\right)\\
+% =&\begin{cases}V_{\text{inv}} = \text{\text{Win}}^{T,U}_{\exists, \forall} ((A\mathbf{U}\emptyset)\vee \Square (A\wedge \Diamond Q))\\
+% \text{Restrict~ synthesis~ to~ }V_{\text{inv}}\\
+% V_0 = \emptyset,\ \mathcal{V}=\{\},\ \mathcal{K} = \{\}\\
+% while\ V_{k+1} \not= V_k:\\
+% \ \ \ \ Z_{k+1} = \text{Pre}_{\exists,\forall}^{T,U} (V_k) \bigcup \text{PGPre}_{\exists,\forall}^{T,U} (V_k, Q)\\
+% \ \ \ \ [V_{k+1}, \mathcal{C}_{k+1}]=\text{Win}_{\exists,\forall}^{T} ((B \mathbf{\ U\ }Z_{k+1}) \vee \Square (B\wedge ( \bigwedge_{i\in I}\Diamond R^i))\\
+% \ \ \ \ \mathcal{V}(k+1)=V_{k+1},\ \mathcal{K}(k+1) = \mathcal{C}_{k+1}\\
+% V_{\infty} = V_k,\ \mathcal{C}=(\mathcal{V},\mathcal{K},x)
+% \end{cases}\label{win_phi}
+% \end{align}
 
-The winning set {\color{purple} that results from} \eqref{win_phi} is {\color{purple} equal to} $ V_{\infty} $, i.e. {\color{purple} the limit of the expanding sequence $V_k$}. $ \mathcal{C} $ is the controller corresponding to the winning set $ V_{\infty} $. 
+% The winning set {\color{purple} that results from} \eqref{win_phi} is {\color{purple} equal to} $ V_{\infty} $, i.e. {\color{purple} the limit of the expanding sequence $V_k$}. $ \mathcal{C} $ is the controller corresponding to the winning set $ V_{\infty} $. 
 
-The building blocks of the above algorithm are the following fixed-point operators. Each operator corresponds to a type of LTL formula used in \eqref{win_phi}. (Note that when a fixed-point operator appears as part of a formula, it only refers to its first output, i.e. the winning set.)
+% The building blocks of the above algorithm are the following fixed-point operators. Each operator corresponds to a type of LTL formula used in \eqref{win_phi}. (Note that when a fixed-point operator appears as part of a formula, it only refers to its first output, i.e. the winning set.)
 
-\begin{align}
-&[W_{\infty},\mathcal{C}]= \ \text{Win}_{\exists,\forall}^{T,U}((B\mathbf{\ U\ }Z)\vee \Square (B\wedge(\bigwedge_{i\in I}\Diamond R^i)) )\\
-=&\begin{cases}
-W_0 = Q,\ \mathcal{V}=\{\},\ \mathcal{K}=\{\}\\
-while\ W_{k+1}\not= W_k:\\
-\ \ \ \ Z_{k+1}^i = Z\cup (B\cap R^i\cap \text{Pre}_{\exists, \forall}^{T,U}(W_k))\\
-\ \ \ \ [X^i, \mathcal{C}^i]= \text{Win}_{\exists,\forall}^{T,U} (B\mathbf{\ U\ }Z_{k+1}^i), \forall i \in I\\
-\ \ \ \ W_{k+1} = \bigcap_{i\in I} X^i\\
-\mathcal{V}(1)=W_k,\ \mathcal{V}(i+1) = B\cap R^i,\ 
-\mathcal{K}(i) = \mathcal{C}^i, \forall i\in I\\
-W_{\infty} = W_k,\ \mathcal{C} = (\mathcal{V},\mathcal{K},x)
-\end{cases}\label{win_interm}
-\end{align}
-\begin{align}
-&[X_{\infty},\mathcal{C}]= \text{Win}_{\exists,\forall}^{T,U} (B\mathbf{\ U\ }Z)\\
-=&\begin{cases}
-X_0 = \emptyset,\ \mathcal{V}=\{\},\ \mathcal{K}=\{\}\\
-while\ X_{k+1}\not= X_k\\
-\ \ \ \ [V^1_k,C^1_k]=
-\text{Pre}_{\exists,\forall}^{T,U}(X_k)\\
-\ \ \ \  [V^2_k,C^2_k]=\text{PGPre}_{\exists,\forall}^{T,U}(Z\cup(B\cap V^1_k),B)\\
-\ \ \ \ X_{k+1} =Z\cup (B\cap V^1_k)\cup V^2_k\\
-\ \ \ \ \mathcal{V}(2k+1)=V^1_k, \mathcal{V}(2k+2)=V^2_k\\
-\ \ \ \ \mathcal{K}(2k+1)=C^1_k,\ \mathcal{K}(2k+2)=C^2_k\\
-X_{\infty}=X_k,\ \mathcal{C} = (\mathcal{V},\mathcal{K},x)
-\end{cases}\label{win_until}
-\end{align}
-\begin{align}
-&[Z_{\infty},\mathcal{C}]=\text{PGPre}_{\exists,\forall}^{T,U} (Z,B)\\
-=&\begin{cases}
-Z_{\infty} = Z,\ \mathcal{V} = \{\},\ \mathcal{K}=\{\}, k = 1\\
-for\ U\in 2^U:\\
-\ \ for\ G\in G(U):\\
-\ \ \ \ \ \  [V_k,\mathcal{C}_k]=Inv_{\exists}^{U,G}(Z_{\infty},B)\\
-\ \ \ \ \ \ Z_{\infty} = Z_{\infty} \cup V_k\\
-\ \ \ \ \ \ \mathcal{V}(k)=V_k,\ \mathcal{K}(k)=\mathcal{C}_k,\ k++\\
-\mathcal{C} = (\mathcal{V},\mathcal{K},x)
-\end{cases}\label{win_pgpre}
-\end{align}
-\begin{align}
-&[W,\mathcal{C}]=\text{Pre}_{\exists,\forall}^{T,U}(V)\\
-=&\begin{cases}
-W = \{q_1\in Q: \exists (u\in U) \forall (q_2\ s.t.\ (q_1, u, q_2) \in \rightarrow_T), q_2\in V\}\\
-D(q)=\{u\in U: \forall (q_2\ s.t.\ (q,u,q_2)),\ q_2\in V\}\\
-\mathcal{C}=\{(q,D(q)):q\in Q, D(q)\not=\emptyset\}
-\end{cases}\label{eqn:pre}\\
-&[Y_{\infty},\mathcal{C}]=\text{Inv}_{\exists}^{D,G}(Z,B)\\
-=&\begin{cases}Y_0 = (G\cap B) - Z\\
-while\ Y_{k+1}\not=Y_k:\\
-\ \ \ \ Y_{k+1} = Y_k\cap \text{Pre}_{\exists,\forall}^{T,D}(Y_k\cup Z)\\
-[-,\mathcal{C}] = Pre^{T,D}_{\exists,\forall}(Y_k\cup Z)\\
-Y_{\infty} = Y_k,\ \mathcal{C}\ restricted\ to\ Y_{\infty}
-\end{cases} \label{win_inv}
-\end{align}
+% \begin{align}
+% &[W_{\infty},\mathcal{C}]= \ \text{Win}_{\exists,\forall}^{T,U}((B\mathbf{\ U\ }Z)\vee \Square (B\wedge(\bigwedge_{i\in I}\Diamond R^i)) )\\
+% =&\begin{cases}
+% W_0 = Q,\ \mathcal{V}=\{\},\ \mathcal{K}=\{\}\\
+% while\ W_{k+1}\not= W_k:\\
+% \ \ \ \ Z_{k+1}^i = Z\cup (B\cap R^i\cap \text{Pre}_{\exists, \forall}^{T,U}(W_k))\\
+% \ \ \ \ [X^i, \mathcal{C}^i]= \text{Win}_{\exists,\forall}^{T,U} (B\mathbf{\ U\ }Z_{k+1}^i), \forall i \in I\\
+% \ \ \ \ W_{k+1} = \bigcap_{i\in I} X^i\\
+% \mathcal{V}(1)=W_k,\ \mathcal{V}(i+1) = B\cap R^i,\ 
+% \mathcal{K}(i) = \mathcal{C}^i, \forall i\in I\\
+% W_{\infty} = W_k,\ \mathcal{C} = (\mathcal{V},\mathcal{K},x)
+% \end{cases}\label{win_interm}
+% \end{align}
+% \begin{align}
+% &[X_{\infty},\mathcal{C}]= \text{Win}_{\exists,\forall}^{T,U} (B\mathbf{\ U\ }Z)\\
+% =&\begin{cases}
+% X_0 = \emptyset,\ \mathcal{V}=\{\},\ \mathcal{K}=\{\}\\
+% while\ X_{k+1}\not= X_k\\
+% \ \ \ \ [V^1_k,C^1_k]=
+% \text{Pre}_{\exists,\forall}^{T,U}(X_k)\\
+% \ \ \ \  [V^2_k,C^2_k]=\text{PGPre}_{\exists,\forall}^{T,U}(Z\cup(B\cap V^1_k),B)\\
+% \ \ \ \ X_{k+1} =Z\cup (B\cap V^1_k)\cup V^2_k\\
+% \ \ \ \ \mathcal{V}(2k+1)=V^1_k, \mathcal{V}(2k+2)=V^2_k\\
+% \ \ \ \ \mathcal{K}(2k+1)=C^1_k,\ \mathcal{K}(2k+2)=C^2_k\\
+% X_{\infty}=X_k,\ \mathcal{C} = (\mathcal{V},\mathcal{K},x)
+% \end{cases}\label{win_until}
+% \end{align}
+% \begin{align}
+% &[Z_{\infty},\mathcal{C}]=\text{PGPre}_{\exists,\forall}^{T,U} (Z,B)\\
+% =&\begin{cases}
+% Z_{\infty} = Z,\ \mathcal{V} = \{\},\ \mathcal{K}=\{\}, k = 1\\
+% for\ U\in 2^U:\\
+% \ \ for\ G\in G(U):\\
+% \ \ \ \ \ \  [V_k,\mathcal{C}_k]=Inv_{\exists}^{U,G}(Z_{\infty},B)\\
+% \ \ \ \ \ \ Z_{\infty} = Z_{\infty} \cup V_k\\
+% \ \ \ \ \ \ \mathcal{V}(k)=V_k,\ \mathcal{K}(k)=\mathcal{C}_k,\ k++\\
+% \mathcal{C} = (\mathcal{V},\mathcal{K},x)
+% \end{cases}\label{win_pgpre}
+% \end{align}
+% \begin{align}
+% &[W,\mathcal{C}]=\text{Pre}_{\exists,\forall}^{T,U}(V)\\
+% =&\begin{cases}
+% W = \{q_1\in Q: \exists (u\in U) \forall (q_2\ s.t.\ (q_1, u, q_2) \in \rightarrow_T), q_2\in V\}\\
+% D(q)=\{u\in U: \forall (q_2\ s.t.\ (q,u,q_2)),\ q_2\in V\}\\
+% \mathcal{C}=\{(q,D(q)):q\in Q, D(q)\not=\emptyset\}
+% \end{cases}\label{eqn:pre}\\
+% &[Y_{\infty},\mathcal{C}]=\text{Inv}_{\exists}^{D,G}(Z,B)\\
+% =&\begin{cases}Y_0 = (G\cap B) - Z\\
+% while\ Y_{k+1}\not=Y_k:\\
+% \ \ \ \ Y_{k+1} = Y_k\cap \text{Pre}_{\exists,\forall}^{T,D}(Y_k\cup Z)\\
+% [-,\mathcal{C}] = Pre^{T,D}_{\exists,\forall}(Y_k\cup Z)\\
+% Y_{\infty} = Y_k,\ \mathcal{C}\ restricted\ to\ Y_{\infty}
+% \end{cases} \label{win_inv}
+% \end{align}
 
-The winning sets {\color{purple} resulting from} \eqref{win_interm}, \eqref{win_until}, \eqref{win_inv} are $ W_{\infty} $, $ X_{\infty} $ and $ Y_{\infty} $. {\color{purple} $\text{Pre}_{\exists,\forall}^{T,U}$ is a one-step reachability operator, and $\text{Inv}_{\exists}^{U,G}(Z,B)$ computes $Y_\infty \subseteq (G\cap B) - Z$ from where the state can be controlled (with actions in $U$) to either remain inside $Y_\infty$ or reach $Z$, but because $G$ is a progress group under $U$, remaining indefinitely in $G$ is impossible and therefore $Z$ is
-	eventually reached, which is why $Y_\infty$ is a winning set for $B\mathbf{\ U\ }Z$.}
+% The winning sets {\color{purple} resulting from} \eqref{win_interm}, \eqref{win_until}, \eqref{win_inv} are $ W_{\infty} $, $ X_{\infty} $ and $ Y_{\infty} $. {\color{purple} $\text{Pre}_{\exists,\forall}^{T,U}$ is a one-step reachability operator, and $\text{Inv}_{\exists}^{U,G}(Z,B)$ computes $Y_\infty \subseteq (G\cap B) - Z$ from where the state can be controlled (with actions in $U$) to either remain inside $Y_\infty$ or reach $Z$, but because $G$ is a progress group under $U$, remaining indefinitely in $G$ is impossible and therefore $Z$ is
+% 	eventually reached, which is why $Y_\infty$ is a winning set for $B\mathbf{\ U\ }Z$.}
 
-%The control strategy enforcing the specification in the winning set $ W_{\phi} $ can be extracted in the meantime when executing the fixed-point operators \cite{Nilsson2017}. 
-%{\color{purple} The control strategy enforcing the specification in $ W_{\phi} $  can be extracted while computing the limits $ V_{\infty} $, $ W_{\infty} $, $ X_{\infty} $ and $ Y_{\infty} $. As stated in \cite{Nilsson2017}, 
-%all the fixed points are ultimately defined in terms of $\text{Pre}_{\exists,\forall}^{T,U}$, so it is enough to extract control strategies during calls to this operator and map the results into higher-level fixed points together with internal variables that control a hierarchy of partial reachability objectives.}
+% %The control strategy enforcing the specification in the winning set $ W_{\phi} $ can be extracted in the meantime when executing the fixed-point operators \cite{Nilsson2017}. 
+% %{\color{purple} The control strategy enforcing the specification in $ W_{\phi} $  can be extracted while computing the limits $ V_{\infty} $, $ W_{\infty} $, $ X_{\infty} $ and $ Y_{\infty} $. As stated in \cite{Nilsson2017}, 
+% %all the fixed points are ultimately defined in terms of $\text{Pre}_{\exists,\forall}^{T,U}$, so it is enough to extract control strategies during calls to this operator and map the results into higher-level fixed points together with internal variables that control a hierarchy of partial reachability objectives.}
 
 \begin{definition} \textbf{Execution of controllers}:
 In the execution time, a controller $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ acts as a function that maps the current state in $ Q $ to a set of feasible actions in $ U $, for the AFTS $ T = (Q,U,\rightarrow_T, G,AP,h_Q)$. Given the current state $ s $, the output $ \mathcal{C}(s) $ is determined in two steps:
@@ -250,8 +253,8 @@ In the execution time, a controller $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ 
 	\end{displaymath}
 \end{itemize}
 	
-	In the execution of $ \mathcal{K}(x^+)(s) $, the process above would be repeated and then a sub-controller of $ \mathcal{K}(x^+) $ would be executed. Thus it's a recursive process that doesn't end until a simple controller is reached.
-	The set of feasible actions will be returned by that simple controller. For those sub-controllers not called in this execution, their internal variables keeps unchanged.
+	In the execution of $ \mathcal{K}(x^+)(s) $, the process above would be repeated and then a sub-controller of $ \mathcal{K}(x^+) $ would be executed. Thus it's a recursive process that does not end until a simple controller is reached.
+	The set of feasible actions are returned by that simple controller. For those sub-controllers not called in this execution, their internal variables are kept unchanged.
 	
 
 	%Assume the current state is $ s_t $. Each time a controller is called with input $ s_t $, the controller updates its internal variable according to $ s_t $, the winning sets of sub-controllers and the current value of internal variable. Then, the sub-controller indexed by the new value of internal variable would be called with $ s_t $ as input. Repeat the above procedure inductively until a simple controller is reached, which returns the set of feasible actions for $ s_t $. \label{ref:cont}
@@ -348,6 +351,7 @@ If $ C_{\phi} $ is implemented to contain all the possible control strategies, T
 \begin{remark}
 	By Definition \ref{def:T_C}, $ T(\mathcal{C}) $ can be easily constructed from the simple controller $ \mathcal{C} $ and the AFTS $ T $. Conversely, $ \mathcal{C} $ can be constructed from $ T(\mathcal{C}) $ by $ \mathcal{C} = \{(s,D(s)):s\in W,D(s)\not=\emptyset\} $, where $ D(s)=\{u:(s,u,s_2)\in \rightarrow_{T(\mathcal{C})}\} $.
 \end{remark}
+{\color{blue} don't abbreviate "not", write "do not", "does not", etc.}
 Due to the easy conversion between  $ \mathcal{C} $ and $ T(\mathcal{C}) $, we can modify a simple controller $ \mathcal{C} $ by modifying its corresponding FTS $ T(\mathcal{C}) $ and then converting $ T(\mathcal{C}) $ to $ \mathcal{C} $, with the advantages that $ T(\mathcal{C}) $ contains the necessary transition information, which $ \mathcal{C} $ doesn't have, and is easier to manipulate. 
 
 Assume the AFTS $ T = (Q,U,\rightarrow_T, G, AP, h_Q) $ is the abstraction of the system that needs to be controlled. Assume that $ T(\mathcal{C})=(Q_{\mathcal{C}}, U_{\mathcal{C}},\rightarrow_{T(\mathcal{C})})$ is a transition system corresponding to a simple controller $ \mathcal{C} $. 
@@ -623,7 +627,7 @@ $ \widehat{\mathcal{C}}^{2,1}_3 = \{(s_1,\{a,b\}),(s_2,\{c,f\}),(s_3,\{g,h\})\} 
 %	\label{fig:xupdate2}
 %\end{figure}
 
-Let the system starts from $ s_1 $ and initialize internal variables as $ (1,1,1,1) $. Only one trajectory is available under control of $\widehat{\mathcal{C}} $, i.e. $ s_1,s_2,s_3,s_2,s_1,...$, where the sequence of actions is $ b,f,g,c,... $ according to the controller execution rules in Definition \ref{def:exec}. The trajectory doesn't visit $ s_4 $, for the system isn't able to jump to $ A $ from $ s_4 $ after action $ e $ is removed.
+Let the system start from $ s_1 $ and initialize internal variables as $ (1,1,1,1) $. Only one trajectory is available under control of $\widehat{\mathcal{C}} $, i.e. $ s_1,s_2,s_3,s_2,s_1,...$, where the sequence of actions is $ b,f,g,c,... $ according to the controller execution rules in Definition \ref{def:exec}. The trajectory doesn't visit $ s_4 $, for the system isn't able to jump to $ A $ from $ s_4 $ after action $ e $ is removed.
 
 \subsection{Case study: 1D Hopping Robot}
 
