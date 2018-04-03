@@ -28,10 +28,13 @@ The building blocks of the above algorithm are the following fixed-point operato
 =&\begin{cases}
 W_0 = Q,\ \mathcal{V}=\{\},\ \mathcal{K}=\{\}\\
 {\color{purple} k=0}\\
-{\color{purple} k=0} while\ W_{k+1}\not= W_k:\\
+{\color{purple} remove:} while\ W_{k+1}\not= W_k:\\
+{\color{purple} repeat:}\\
 \ \ \ \ Z_{k+1}^i = Z\cup (B\cap R^i\cap \text{Pre}_{\exists, \forall}^{T,U}(W_k))\\
 \ \ \ \ [X^i, \mathcal{C}^i]= \text{Win}_{\exists,\forall}^{T,U} (B\mathbf{\ U\ }Z_{k+1}^i), \forall i \in I\\
 \ \ \ \ W_{k+1} = \bigcap_{i\in I} X^i\\
+\ \ \ \ {\color{purple} k=k+1}\\
+{\color{purple} until \ W_{k}= W_{k-1} }\\
 \mathcal{V}(1)=W_k,\ \mathcal{V}(i+1) = B\cap R^i,\ 
 \mathcal{K}(i) = \mathcal{C}^i, \forall i\in I\\
 W_{\infty} = W_k,\ \mathcal{C} = (\mathcal{V},\mathcal{K},x)
