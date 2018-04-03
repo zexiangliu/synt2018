@@ -401,7 +401,7 @@ T(\widehat{\mathcal{C}}) = T_{0}\backslash E\\
 where $ \widehat{\mathcal{C}} $ is converted from $ T(\widehat{\mathcal{C}}) $. $ \widehat{W} $ and $ \widehat{\mathcal{C}} $ will be equal to the outputs of $ \text{Pre}_{\exists,\forall}^{T,\widehat{U}}(\widehat{V}) $.
 
 \begin{theorem}
-	$ \widehat{W} $ and $ \widehat{C} $ returned by \ref{patch_pre} would be the same as outputs resulting from $ \text{Pre}_{\exists,\forall}^{T,\widehat{U}}(\widehat{V})$.	
+	$ \widehat{W} $ and $ \widehat{C} $ returned by \eqref{patch_pre} would be the same as outputs resulting from $ \text{Pre}_{\exists,\forall}^{T,\widehat{U}}(\widehat{V})$.	
 \end{theorem}
 
 \begin{proof}
@@ -412,7 +412,7 @@ where $ \widehat{\mathcal{C}} $ is converted from $ T(\widehat{\mathcal{C}}) $. 
 	By \eqref{patch_pre}, transitions in $ T(\widehat{\mathcal{C}}) $ can only take actions in $ \widehat{U} $ and transit to states in $ \widehat{V} $, which implies that $ \rightarrow_{T(\widehat{\mathcal{C}})}\subseteq \rightarrow_{T(\mathcal{C}_t)} $.  
 \end{proof}
 
-Next, $ Y $ and $ \mathcal{C} $ assume that  the winning set and controller resulting from $ \text{Inv}_{\exists}^{D,G}(Z,B) $. Assume that the set of unavailable actions is $ U_d $. If $ D\cap U_d \not= \emptyset$, the winning set would be empty by definition of progress group (see\cite{Nilsson2017}). Given that $ \widehat{Z} \subseteq Z $ and $ D\cap U_d=\emptyset $, we want to modify $ W $ and $ \mathcal{C} $ to be the winning set and controller for $ \text{Inv}_{\exists}^{D,G}(\widehat{Z}, B) $. The patching operator is
+Next, $ Y $ and $ \mathcal{C} $ assume that  the winning set and controller resulting from $ \text{Inv}_{\exists}^{D,G}(Z,B) $. Assume that the set of unavailable actions is $ U_d $. If $ D\cap U_d \not= \emptyset$, the winning set would be empty by definition of progress group (see\cite{Nilsson2017}). Given that $ \widehat{Z} \subseteq Z $ and $ D\cap U_d=\emptyset $, we want to modify $ W $ and $ \mathcal{C} $ to be the winning set and controller for $ \text{Inv}_{\exists}^{D,G}(\widehat{Z}, B) $. It'll be proven later that the modified winning set is contained by $ Y\cup (\Delta Z\cap G\cap B) $. Also, \eqref{win_inv} is a contraction algorithm in the sense that $ \{Y_k\}_{k=1}^{\infty} $ is a monotonic decreasing sequence whose limit is the winning set. Combined these two facts, we can warm-start the contraction algorithm in \eqref{win_inv} with $ Y_0=Y\cup (\Delta Z\cap G\cap B)$ instead of $ Q $. Motivated by that idea, the patching operator is
 
 \begin{align}
 &[\widehat{Y},\widehat{\mathcal{C}}]=\overline{Inv}_{\exists}^{D,G}(Y,\mathcal{C},Z,\widehat{Z}) \\
@@ -430,7 +430,7 @@ while \ Y_{k+1}\not= Y_k:\\
 where $ \Delta Z = Z - \widehat{Z} $, $ E_0 = \{(s_1,a,s_2)\in \rightarrow_{T}: s_1\in Y_0, a\in D, s_2 \in Q\} $, $ \text{Pre}_{\forall,\exists}^{T_k,D}(\Delta Y_k) = \{q_1: \forall u\in D, \exists q_2\in \Delta Y_k, s.t.\ (q_1, u, q_2) \in \rightarrow_{T_k} \} $. $ \widehat{Y} $ is the modified winning set, and the controller $ \widehat{\mathcal{C}} $ can be recovered from $ T(\widehat{\mathcal{C}}) $.
 
 \begin{theorem}
-$ \widehat{W} $ and $ \widehat{C} $ returned by \eqref{patch_inv} would be the same as outputs resulting from $ \text{Inv}_{\exists}^{D,G}(\widehat{Z},B) $.	
+$ \widehat{Y} $ and $ \widehat{C} $ returned by \eqref{patch_inv} would be the same as outputs resulting from $ \text{Inv}_{\exists}^{D,G}(\widehat{Z},B) $.	
 \end{theorem}
 
 {\color{red} Requires careful reading}
@@ -472,6 +472,10 @@ Remove\ all\ \emptyset\ in\ \widehat{\mathcal{V}}\ and \ \widehat{\mathcal{K}},\
 \widehat{\mathcal{C}} = (\widehat{\mathcal{V}},\widehat{\mathcal{K}},x)
 \end{cases}\label{patch_pg}
 \end{align}
+
+\begin{theorem}
+	$ \widehat{Z}_\infty $ and $ \widehat{C} $ returned by \eqref{patch_until} would be the same as outputs resulting from $ \text{PGPre}_{\exists, \forall}^{T,\widehat{U}}(\widehat{Z},B)$.	
+\end{theorem}
 
 \begin{proof}
 	As long as \eqref{patch_inv} works well, $ \widehat{Z}_\infty $ and $ \mathcal{V}(k) $ will be equal to those in $ \text{PGPre}^{T,\widehat{U}}_{\exists,\forall}(\widehat{Z},B) $ for all $ k $. The soundness and completeness of \eqref{patch_inv} have been proven, so \eqref{patch_pg} is sound and complete.
