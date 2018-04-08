@@ -277,7 +277,7 @@ Overall, a controller is a tree structure with controllers at each node and simp
 
 \begin{figure}
 	\centering
-	\includegraphics[width=0.6\linewidth]{pic/eg1}
+	\includegraphics[width=0.7\linewidth]{pic/eg1}
 	\caption{A simple finite transition system with state space $\{s1,s2,s3,s4\}$ and action space $\{a-h\}$, used to illustrate how the controller works. Atomic propositions are $ A =\{s_1\} $ and $ B=\{s_3, s_4\} $.}
 	\label{fig:eg1}
 \end{figure}
@@ -305,21 +305,20 @@ Overall, a controller is a tree structure with controllers at each node and simp
 	$ \mathcal{C}^{2,1}_3 = \{(s_1,\{a,b\}),(s_2,\{c,d,f\}),(s_3,\{g,h\}),(s_4,\{e,i\})\} $.
 	
 	\begin{figure}
+		%		\begin{subfigure}[b]{0.4\textwidth}
+		%		\centering
+		%		\includegraphics[width=0.7\linewidth]{pic/xupdate}
+		%		\label{fig:xupdate}
+		%		\caption{no action disabled}
+		%	\end{subfigure}
+		%	\begin{subfigure}[b]{0.4\textwidth}
+		%	\centering
+		%	\includegraphics[width=0.7\linewidth]{pic/xupdate2}
+		%	\label{fig:xupdate2}
+		%	\caption{ action $ e $ is disabled}
+		%\end{subfigure}
 		\centering
-		\begin{subfigure}[b]{0.4\textwidth}
-				\centering
-				\includegraphics[width=0.7\linewidth]{pic/xupdate}
-				\label{fig:xupdate1}
-				\caption{no action disabled}
-		\end{subfigure}
-		\begin{subfigure}[b]{0.4\textwidth}
-			\centering
-			\includegraphics[width=0.7\linewidth]{pic/xupdate2}
-			\label{fig:xupdate2}
-			\caption{ action $ e $ is disabled}
-		\end{subfigure}
-		%\centering
-		%\includegraphics[width=0.8\linewidth]{pic/xupdate-full}
+		\includegraphics[width=1\linewidth]{pic/xupdate-full}
 		\caption{ %{\color{purple} Same comment as on the previous version: it would be nice to see both transition graphs (before/after) side by side. Also: why do you show $x_1^0$ in the two bottom transitions; it could make the reader think that the transitions depend on the values of other internal variables, but it's not the case. The transition to children controllers is relatively clear to me, so I would simpy remove the value of other internal variables in each subgraph.}{\color{teal} the only change on the graph comes from changes in $ \mathcal{V} $ in each sub-controller.} 
 			The transition graph here is a visual illustration of the update rules of $ x $ in Definition \ref{def:exec}. (a) corresponds to the example \ref{ex:exec} (b) corresponds to the example in Section \ref{sec:example1}. $s $ is the current state of the system in Figure \ref{fig:eg1}. At each execution time, each internal variable transits from its current node to one of the neighbor node once the transition condition on the edge is satisfied. If no transition condition is satisfied, internal variable remains unchanged. Update $ x$ first, and then $ x^0 $, and lastly $ x_0^1 $ and $x^1_1 $.} 
 		\label{fig:xupdate}
