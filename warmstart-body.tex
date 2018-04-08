@@ -149,6 +149,7 @@ Given $\widehat{D} \subseteq D$, a simple controller $ \mathcal{C} $ \textbf{res
 
 \begin{definition}
 	For the AFTS $ T=\{Q,U,\rightarrow_T,G,AP,h_Q\} $, a \textbf{controller} $ \mathcal{C} $ is a tuple $ (\mathcal{V},\mathcal{K},x) $, where $ \mathcal{V} $ is a list of subsets of $ Q $, $ \mathcal{K} $ is a list of controllers or simple controllers, {\color{purple} which we refer to as} sub-controllers of $ \mathcal{C} $, and $ x $ is an internal variable that indicates the index of sub-controllers executed last time. {\color{teal}Initial value for the internal variable $ x $ is (but not necessarily) $ 1 $. The execution of controller and update rules of $ x $ refers to Definition \ref{def:exec}.}({\color{purple} Same remark as with the simple controllers: no need for a connection to winning sets here.} {\color{teal} the transition graph of $ x $ is totally equivalent to  Definition \ref{def:exec}+$ \mathcal{V} $ in $ \mathcal{C} $ and its sub-controllers.} {\color{purple} Yes you reacted before I removed the comment myself ;})
+	\label{def:cont}
 \end{definition}
 
 Overall, a controller is a tree structure with controllers at each node and simple controllers at the leaf nodes. The list $\mathcal{K}$ for each controller (each non-leaf node in the tree) denotes the children of that controller in the tree. Winning sets and controllers for specifications in the form of \eqref{phi} are computed iteratively via fixed-point based algorithms given in Appendix \ref{app:basic-alg}.
@@ -441,7 +442,7 @@ T(\widehat{\mathcal{C}}) = T_{0}\backslash E\\
 where $ \widehat{\mathcal{C}} $ is converted from $ T(\widehat{\mathcal{C}}) $. $ \widehat{W} $ and $ \widehat{\mathcal{C}} $ are the modified winning set and controller.
 
 \begin{theorem}
-	$ \widehat{W} $ and $ \widehat{C} $ returned by \eqref{patch-pre} are the same as the outputs resulting from $ \text{Pre}_{\exists,\forall}^{T,\widehat{U}}(\widehat{V})$.	\label{thm:pre}
+	$ \widehat{W} $ and $ \widehat{\mathcal{C}} $ returned by \eqref{patch-pre} are the same as the outputs resulting from $ \text{Pre}_{\exists,\forall}^{T,\widehat{U}}(\widehat{V})$.	\label{thm:pre}
 \end{theorem}
 
 \begin{proof}
@@ -468,7 +469,7 @@ T_0  = T(\mathcal{C})\cup E_0\\
 \ \ \ \ Y_{k+1} = Y_k- \Delta Y_{k+1}\\
 \ \ \ \ {\color{purple} k=k+1}\\
 {\color{purple} until \ Y_k = Y_{k-1}}\\
-\widehat{Y}=Y_k,\ T(\widehat{C}) = T_{k}
+\widehat{Y}=Y_k,\ T(\widehat{\mathcal{C}}) = T_{k}
 \end{cases}\label{patch-inv}
 \end{align}
 where $ \Delta Z = Z - \widehat{Z} $, $ E_0 = \{(s_1,a,s_2)\in \rightarrow_{T}: s_1\in Y_0, a\in D, s_2 \in Q\} $, $ \text{Pre}_{\forall,\exists}^{T_k,D}(\Delta Y_k) = \{q_1: \forall u\in D, \exists q_2\in \Delta Y_k, s.t.\ (q_1, u, q_2) \in \rightarrow_{T_k} \} $. $ \widehat{Y} $ is the modified winning set, and the controller $ \widehat{\mathcal{C}} $ can be recovered from $ T(\widehat{\mathcal{C}}) $.
@@ -476,7 +477,7 @@ where $ \Delta Z = Z - \widehat{Z} $, $ E_0 = \{(s_1,a,s_2)\in \rightarrow_{T}: 
 In regards to the patching operator in \eqref{patch-inv}, we have the following result, proof of which is given in Appendix \ref{app:pr-31}:
 
 \begin{theorem}
-	$ \widehat{Y} $ and $ \widehat{C} $ returned by \eqref{patch-inv} are the same as the outputs resulting from $ \text{Inv}_{\exists}^{D,G}(\widehat{Z},B) $.	\label{thm:inv}
+	$ \widehat{Y} $ and $ \widehat{\mathcal{C}} $ returned by \eqref{patch-inv} are the same as the outputs resulting from $ \text{Inv}_{\exists}^{D,G}(\widehat{Z},B) $.	\label{thm:inv}
 \end{theorem}
 
 
@@ -511,7 +512,7 @@ Remove\ all\ \emptyset\ in\ \widehat{\mathcal{V}}\ and \ \widehat{\mathcal{K}},\
 \end{align}
 
 \begin{theorem}
-	$ \widehat{Z}_\infty $ and $ \widehat{C} $ returned by \eqref{patch-pg} are the same as outputs resulting from $ \text{PGPre}_{\exists, \forall}^{T,\widehat{U}}(\widehat{Z},B)$.	\label{thm:pg}
+	$ \widehat{Z}_\infty $ and $ \widehat{\mathcal{C}} $ returned by \eqref{patch-pg} are the same as outputs resulting from $ \text{PGPre}_{\exists, \forall}^{T,\widehat{U}}(\widehat{Z},B)$.	\label{thm:pg}
 \end{theorem}
 
 \begin{proof}
@@ -546,7 +547,7 @@ X_0 = \emptyset, \widehat{X}_0 = \emptyset, \Delta X = \emptyset, \ \widehat{\ma
 The above patch algorithm has two parts: part one modifies the existing sub-controllers for $ k\leq n $; part two adds new sub-controllers by modifying the $ n $th existing sub-controller until convergence. The winning set $ \widehat{X}_{\infty} $, and controller $ \widehat{\mathcal{C}} $ would be equal to the outputs of \eqref{win-until} with input parameters $ \widehat{U},B,\widehat{Z} $. 
 
 \begin{theorem}
-	$ \widehat{X}_\infty $ and $ \widehat{C} $ returned by \eqref{patch-until} are the same as outputs resulting from $ \text{Win}_{\exists,\forall}^{T,\widehat{U}}(B\mathbf{\ U\ }\widehat{Z}). $\label{thm:until}	
+	$ \widehat{X}_\infty $ and $ \widehat{\mathcal{C}} $ returned by \eqref{patch-until} are the same as outputs resulting from $ \text{Win}_{\exists,\forall}^{T,\widehat{U}}(B\mathbf{\ U\ }\widehat{Z}). $\label{thm:until}	
 \end{theorem}
 
 \begin{proof}
@@ -579,7 +580,7 @@ Z_{\infty}^i = Z\cup (B\cap R^i\cap \text{Pre}_{\exists, \forall}^{T,U}(W_0))\\
 \end{align}
 
 \begin{theorem}
-	$ \widehat{W}_\infty $ and $ \widehat{C} $ returned by \eqref{patch-until} are the same as outputs resulting from $\text{Win}_{\exists,\forall}^{T,\widehat{U}}((B\mathbf{\ U\ }\widehat{Z})\vee \Square(B\wedge (\bigwedge_{i\in I} \Diamond R^i)) $. \label{thm:interm}	
+	$ \widehat{W}_\infty $ and $ \widehat{\mathcal{C}} $ returned by \eqref{patch-until} are the same as outputs resulting from $\text{Win}_{\exists,\forall}^{T,\widehat{U}}((B\mathbf{\ U\ }\widehat{Z})\vee \Square(B\wedge (\bigwedge_{i\in I} \Diamond R^i)) $. \label{thm:interm}	
 \end{theorem}
 
 
@@ -608,7 +609,7 @@ Restrict~ synthesis~ to~ \widehat{V}_{\text{inv}}\\
 \widehat{V}_0 = \emptyset,\ \mathcal{V}(0)=\emptyset,\ \widehat{\mathcal{V}}=\{\},\ \widehat{\mathcal{K}}=\{\}\\
 {\color{purple} k=0}\\
 %{\color{purple} remove:} for~k\in \{0,1,2,...,n-1\}\ and\ \widehat{V}_{k+1}\not=\widehat{V}_k:\\
-{\color{purple} repeat:}
+{\color{purple} repeat:}\\
 \ \ \ \ \widehat{Z}_{k+1}^1 =  \overline{\text{Pre}}_{\exists,\forall}^{T,U}(\mathcal{K}_1(k+1),\mathcal{V}(k)-\widehat{V}_k,U_d)\\
 \ \ \ \ \widehat{Z}_{k+1}^2 = \overline{\text{PGPre}}_{\exists,\forall}^{T,U} ( \mathcal{K}_2(k+1),\mathcal{V}(k), \widehat{V}_k,U_d)\\
 \ \ \ \ Z_{k+1}=\mathcal{V}_1(k+1)\cup\mathcal{V}_2(k+1),\  \widehat{Z}_{k+1} = \widehat{Z}_{k+1}^1\bigcup\widehat{Z}_{k+1}^2  \\
@@ -632,7 +633,7 @@ The modified winning set $ \widehat{V}_{\infty} $ and controller $ \widehat{\mat
 The same as \eqref{patch-until}, the patching algorithm has two parts: one for modifying existing sub-controllers; one for adding new ones until convergence.
 
 \begin{theorem}
-	$ \widehat{V}_\infty $ and $ \widehat{C} $ returned by \eqref{patch-final} are the same as outputs resulting from $\text{Win}_{\exists, \forall}^{T,U-U_d}\left(\Square A \wedge \Diamond \Square B \wedge \left( \bigwedge_{i\in I} \Square \Diamond R^i\right)\right) $. \label{thm:phi}
+	$ \widehat{V}_\infty $ and $ \widehat{\mathcal{C}} $ returned by \eqref{patch-final} are the same as outputs resulting from $\text{Win}_{\exists, \forall}^{T,U-U_d}\left(\Square A \wedge \Diamond \Square B \wedge \left( \bigwedge_{i\in I} \Square \Diamond R^i\right)\right) $. \label{thm:phi}
 \end{theorem}
 
 
@@ -793,7 +794,7 @@ We illustrated the efficiency of our method on a example of hopping { \color{pur
 \textbf{Proof of \eqref{patch-inv}}:
 
 \begin{proof}
-	Assume that $ Y_t $ and $ \mathcal{C}_t $ are the winning set and controller resulting from $ \text{Inv}_{\exists}^{D,G} (\widehat{Z}) $. Here we're going to prove that $ Y_t=\widehat{Y}$. Once we have $ Y_t=\widehat{Y}$, it is easy to check that $ T(\mathcal{C}_t) = T(\widehat{C}) $.
+	Assume that $ Y_t $ and $ \mathcal{C}_t $ are the winning set and controller resulting from $ \text{Inv}_{\exists}^{D,G} (\widehat{Z}) $. Here we're going to prove that $ Y_t=\widehat{Y}$. Once we have $ Y_t=\widehat{Y}$, it is easy to check that $ T(\mathcal{C}_t) = T(\widehat{\mathcal{C}}) $.
 	
 	By \eqref{win-inv}, the winning set $ Y $ of $ \text{Inv}_{\exists}^{D,G} (Z) $ is the largest subset of $ (G\cap B) - Z  $ satisfying the convergence condition w.r.t $ Z $, i.e. $ Y \subseteq Pre^{T,D}_{\exists, \forall}(Y\cup Z) $, so is $ Y_t $ w.r.t. $ \widehat{Z} $.
 	
