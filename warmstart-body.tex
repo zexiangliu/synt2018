@@ -79,7 +79,7 @@ Linear Temporal Logic (LTL) can be utilized to describe the desired behaviors of
 %{\color{blue}what is the numbering vi, v, etc. below?} 
 where $ p\in AP $, $ \phi_1 $ and $ \phi_2 $ are also LTL formulas. The other operators can be derived as follows: $ \phi_1 \wedge \phi_2 = \neg (\neg \phi_1 \vee \neg \phi_2) $, $ \phi_1 \implies \phi_2 = \neg \phi_1 \vee \phi_2 $, $ \Diamond \phi = True \mathbf{\ U\ } \phi $, $ \Square \phi = \neg \Diamond \neg \phi $.
 
-{\color{teal}\emph{Semantics of LTL} \cite{Nilsson2017}:} An $\omega$-word is an infinite sequence in $ 2^{AP}$.  The satisfaction of an LTL specification $ \phi $ by an $\omega$-word $ w = w(0)w(1)w(2)\dots $, written as $ (w,i) \models \phi $, is defined inductively as follows:
+{\color{teal}\emph{Semantics of LTL} \cite{Nilsson2017}:} An $\omega$-word is an infinite sequence in $ 2^{AP}$.  The satisfaction of an LTL specification $ \phi $ at step $i$ by an $\omega$-word $ w = w(0)w(1)w(2)\dots $, written as $ (w,i) \models \phi $, is defined inductively as follows:
 \begin{itemize}
 	\item For $ \phi = p \in AP $, $ (w,i)\models p $ iff $ p\in w(i) $ 
 	\item $ (w,i)\models \neg \phi $ iff $ (w,i)\not\models \phi $
@@ -114,7 +114,7 @@ The specification considered in this work is of the form:
 \end{align}
 for atomic propositions $A$, $B$, $R^i$. Such specifications can express properties of \emph{invariance} ($\Square A$), \emph{persistence} ($\Diamond \Square B$) and \emph{recurrence}
 {\color{purple} ($\Square \Diamond R^i$)}
-. This LTL fragment, also used in \cite{wolff2013efficient,Nilsson2017}, is a subset of Generalized Rabin specifications \cite{ehlers2017supervisory}. As the progress groups in AFTS is equivalent to environment liveness assumptions, the formula in \eqref{phi} can also be seen as a generalization of GR(1) specifications, with well-separated environments \cite{klein2010revisiting, maoz2016well,schmuckrelation} under the well-formedness {\color{teal} well-formed?} assumption in footnote 1. In what follows, with a slight abuse of notation, we treat $A$, $B$, $R^i$ as subsets of the state set $Q$, e.g., $A = \{ s\in Q \mid A\in h_Q(s)\}$, etc.
+. This LTL fragment, also used in \cite{wolff2013efficient,Nilsson2017}, is a subset of Generalized Rabin specifications \cite{ehlers2017supervisory}. As the progress groups in AFTS is equivalent to environment liveness assumptions, the formula in \eqref{phi} can also be seen as a generalization of GR(1) specifications, with well-separated environments \cite{klein2010revisiting, maoz2016well,schmuckrelation} under the well-formedness assumption in footnote 1. In what follows, with a slight abuse of notation, we treat $A$, $B$, $R^i$ as subsets of the state set $Q$, e.g., $A = \{ s\in Q \mid A\in h_Q(s)\}$, etc.
 %{\color{purple} for subsets $A$, $B$, $R^i \subseteq Q$ defining atomic propositions. Such specifications can express properties of \emph{invariance} ($\Square A$), \emph{persistence} ($\Diamond \Square B$) and \emph{reccurence}} 
 
 %{\color{blue}Maybe we should say a few words on how this fragment differs from GR(1) and others}
@@ -128,7 +128,7 @@ Roughly speaking, the control synthesis problem for an AFTS is to compute a func
 \end{definition}
 
 For a given LTL specification, one can talk about the ``best'' control strategy in enforcing the specification
-{\color{purple} (i.e. the most general one)}
+{\color{purple} (i.e. the most general one)} {\color{blue} what is this i.e. for?}
 and the set of initial states for which such a strategy is defined.
 
 \begin{definition}
