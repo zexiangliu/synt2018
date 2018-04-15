@@ -54,15 +54,13 @@ We consider plants modeled as augmented finite transition systems, a discrete st
 		$G$ by exclusively choosing actions from $U$. This restricts the behaviors allowed by the transition relation. Moreover, it is assumed that $G$ is not invariant under the actions $U$ for the well-formedness of the definition (see \cite{Nilsson2017,Sun2014,Liu2014}).}
 \end{definition}
 
-A \emph{trajectory} of an AFTS $T$ is an infinite sequence 
-{\color{purple} an infinite sequence $\{s(n)\}_{n=0}^{\infty}$ 
+A \emph{trajectory} of an AFTS $T$ is an infinite sequence of states $\{s(n)\}_{n=0}^{\infty}$ 
 	%(I wouldn't introduce an $s$ here for the whole sequence since later we use several times the variable $s$ to refer to a single state)
-}
-of its states such that for any two consecutive states $s(n), s(n+1)$ in the sequence, there is an action $a\in U$, such that $(s(n),a,s(n+1))\in \rightarrow_T$. 
+such that for any two consecutive states $s(n), s(n+1)$ in the sequence, exists an action $a\in U$ satisfying $(s(n),a,s(n+1))\in \rightarrow_T$. 
 
 \subsection{Linear Temporal Logic}
 
-Linear Temporal Logic (LTL) can be utilized to describe the desired behaviors of an AFTS. It has logic operators (negation $ \neg $, conjunction $ \wedge $, disjunction $ \vee $), and temporal operators (next $ \bigcirc $, always $ \Square $, eventually $ \Diamond $ and until $ \mathbf{\ U\ }$).
+Linear Temporal Logic (LTL) is utilized to describe the desired behaviors achieved in an AFTS or the concrete system, which we call it a specification of our control synthesis problem. It has logic operators (negation $ \neg $, conjunction $ \wedge $, disjunction $ \vee $), and temporal operators (next $ \bigcirc $, always $ \Square $, eventually $ \Diamond $ and until $ \mathbf{\ U\ }$).
 
 %{\color{blue} use grammar to define LTL, cite Baier and Katoen}
 %The LTL formula over a finite set of atomic propositions $ AP $ can be either: 
@@ -278,7 +276,7 @@ Overall, a controller is a tree structure with controllers at each node and simp
 
 \begin{figure}
 	\centering
-	\includegraphics[width=0.6\linewidth]{pic/eg1}
+	\includegraphics[width=0.4\linewidth]{pic/eg1}
 	\caption{A simple finite transition system with state space $\{s1,s2,s3,s4\}$ and action space $\{a-h\}$, used to illustrate how the controller works. Atomic propositions are $ A =\{s_1\} $ and $ B=\{s_3, s_4\} $.}
 	\label{fig:eg1}
 \end{figure}
@@ -328,7 +326,7 @@ Overall, a controller is a tree structure with controllers at each node and simp
 	
 	$ \mathcal{C} $, $ \mathcal{C}_1^0 $ and $ \mathcal{C}_i^1 $ are returned by \eqref{win-phi}, \eqref{win-interm} and \eqref{win-until}. $ \mathcal{C}_i^{2,k} $ are simple controllers returned by \eqref{eqn:pre}. Each time $ \mathcal{C} $ is called, $ (x,x^0_1,x^1_1,x^1_2) $ is updated according to Definition \ref{def:exec}, and one of the simple controllers in $ \mathcal{C} $ is reached, which determines the set of feasible control inputs. The update rules for internal variables in this example \ref{ex:exec} can be illustrated by the transition graph in Figure \ref{fig:xupdate}, which is consistent with Definition \ref{def:exec}. %is determined by $ \mathcal{C}^{2,k}_{x^1_{k}} (s)$ (if $ x^0 = k  $).
 	
-	For example, initialize the internal variables to be $ (1,1,1,1) $ {\color{purple} Is this initialization just an example, or is it compulsory to initialize the variables with these values?}{\color{teal} has put initialization of x in definition of controller}. Let's start from $ s_1 $ and run $ \mathcal{C}(s_1) $: The updated internal variables would be $ (1,2,1,2) $, after $ \mathcal{C}(s_1), \mathcal{C}^0_1(s_1)$, $ \mathcal{C}^1_2(s_1) $ and $ \mathcal{C}^{2,1}_2(s_1) $ are called recursively. The set of feasible actions is $ \{b\}= \mathcal{C}^{2,1}_2(s_1) $. Under action $ b $, the system in Figure \ref{fig:eg1} transits to $ s_2 $. Now run $ \mathcal{C}(s_2) $. The internal variable would be updated to $ (1,2,1,1) $. The set of feasible actions is$ \{d,f\}=\mathcal{C}^{2,1}_1(s_2) $. Let's keep doing this and always take the first action in the output of $ \mathcal{C} $ at each execution. The trajectory under control of $\mathcal{C} $ would be $ s_1,s_2,s_4,s_2,s_1,...$, where the sequence of actions is $ b,d,e,c,... $. The trajectory visits $ A $ and $ B $ in turn, satisfying the given specification.
+	For example, initialize the internal variables to be $ (1,1,1,1) $. Let's start from $ s_1 $ and run $ \mathcal{C}(s_1) $: The updated internal variables would be $ (1,2,1,2) $, after $ \mathcal{C}(s_1), \mathcal{C}^0_1(s_1)$, $ \mathcal{C}^1_2(s_1) $ and $ \mathcal{C}^{2,1}_2(s_1) $ are called recursively. The set of feasible actions is $ \{b\}= \mathcal{C}^{2,1}_2(s_1) $. Under action $ b $, the system in Figure \ref{fig:eg1} transits to $ s_2 $. Now run $ \mathcal{C}(s_2) $. The internal variable would be updated to $ (1,2,1,1) $. The set of feasible actions is$ \{d,f\}=\mathcal{C}^{2,1}_1(s_2) $. Let's keep doing this and always take the first action in the output of $ \mathcal{C} $ at each execution. The trajectory under control of $\mathcal{C} $ would be $ s_1,s_2,s_4,s_2,s_1,...$, where the sequence of actions is $ b,d,e,c,... $. The trajectory visits $ A $ and $ B $ in turn, satisfying the given specification.
 	
 	%\footnote{Define $ x_{total}: = (x,x^0,x^1_0,x^1_1) $. Each $ x_{total} $ locates a simple controller, i.g. $ x_{total}  = (0,1,0,5)$  gives that $ C_0^0\rightarrow C^1_1\rightarrow C^2_5 $. The evolution of $ x_{total} $ in the example above is $ (0,0,0,0), (0,1,0,5),(0,1,0,4), (0,0,1,4), (0,0,0,4)... $.}
 \end{example}
@@ -375,50 +373,52 @@ If $ C_{\phi} $ is implemented to contain all the possible control strategies, T
 \subsection{Patching Simple Controllers}
 \label{sec:patch-simple}
 \begin{definition}
-	Given a simple controller $ \mathcal{C} $ over an AFTS $T = (Q,U,\rightarrow_T, G,AP,h_Q) $, a \textbf{finite transition system} (FTS) corresponding to $ \mathcal{C} $ is $T(\mathcal{C}) = (Q_C, U_C, \rightarrow_{T(\mathcal{C})})$ {\color{purple} I'm not sure $T(C)$ is the best notation, since $T$ is usually our AFTS; A(C)?}, where $ Q_C $ is the set of states that appear in $ \rightarrow_{T(\mathcal{C})} $, $ U_C=\{u: u\in \mathcal{C}(s), \forall s\in W\} $, $ \rightarrow_{T(\mathcal{C})} =\{(s_1,u,s_2)\in \rightarrow_T: s_1\in W,s_2\in Q, u\in \mathcal{C}(s_1)\} $. \label{def:TC}
+	Given a simple controller $ \mathcal{C} $ over an AFTS $T = (Q,U,\rightarrow_T, G,AP,h_Q) $, a \textbf{finite transition system} (FTS) corresponding to $ \mathcal{C} $ is $A(\mathcal{C}) = (Q_C, U_C, \rightarrow_{A(\mathcal{C})})$ %{\color{purple} I'm not sure $T(C)$ is the best notation, since $T$ is usually our AFTS; A(C)?}
+	, where $ Q_C $ is the set of states that appear in $ \rightarrow_{A(\mathcal{C})} $, $ U_C=\{u: u\in \mathcal{C}(s), \forall s\in W\} $, $ \rightarrow_{A(\mathcal{C})} =\{(s_1,u,s_2)\in \rightarrow_T: s_1\in W,s_2\in Q, u\in \mathcal{C}(s_1)\} $. \label{def:TC}
 \end{definition}
 
 \begin{remark}
-	By Definition \ref{def:TC}, $ T(\mathcal{C}) $ can be easily constructed from the simple controller $ \mathcal{C} $ and the AFTS $ T $. Conversely, $ \mathcal{C} $ can be constructed from $ T(\mathcal{C}) $ by $ \mathcal{C} = \{(s,D(s)):s\in W,D(s)\not=\emptyset\} $, where $ D(s)=\{u:(s,u,s_2)\in \rightarrow_{T(\mathcal{C})}\} $.\label{rmk:conv}
+	By Definition \ref{def:TC}, $ A(\mathcal{C}) $ can be easily constructed from the simple controller $ \mathcal{C} $ and the AFTS $ T $. Conversely, $ \mathcal{C} $ can be constructed from $ A(\mathcal{C}) $ by $ \mathcal{C} = \{(s,D(s)):s\in W,D(s)\not=\emptyset\} $, where $ D(s)=\{u:(s,u,s_2)\in \rightarrow_{A(\mathcal{C})}\} $.\label{rmk:conv}
 \end{remark}
 %{\color{blue} don't abbreviate "not", write "do not", "does not", etc.}
-{\color{teal}Since $ T(\mathcal{C}) $ contains the transition information for all state-action pairs in $ \mathcal{C} $, it's easier to search invalid transitions in $ T(\mathcal{C}) $ than $ \mathcal{C} $ after some actions become unavailable. Also, the conversion between  $ \mathcal{C} $ and $ T(\mathcal{C}) $ is straightforward according to Remark \ref{rmk:conv}.} For those reasons, we modify a simple controller $ \mathcal{C} $ by modifying its corresponding FTS $ T(\mathcal{C}) $ and then converting $ T(\mathcal{C}) $ to $ \mathcal{C} $. Several operations applied to the FTS $ T(\mathcal{C}) $ are defined in Table \ref{tab:oper}.  {\color{purple} Not clear}
+{\color{teal}Since $ A(\mathcal{C}) $ contains the transition information for all state-action pairs in $ \mathcal{C} $, it's easier to search invalid transitions in $ A(\mathcal{C}) $ than $ \mathcal{C} $ after some actions become unavailable. Also, the conversion between  $ \mathcal{C} $ and $ A(\mathcal{C}) $ is straightforward according to Remark \ref{rmk:conv}.} For those reasons, we modify a simple controller $ \mathcal{C} $ by modifying its corresponding FTS $ A(\mathcal{C}) $ and then converting $ A(\mathcal{C}) $ to $ \mathcal{C} $. Several operations applied to the FTS $ A(\mathcal{C}) $ are defined in Table \ref{tab:oper}.  {\color{purple} Not clear}
 
-%Assume the AFTS $ T = (Q,U,\rightarrow_T, G, AP, h_Q) $ is the abstraction of the system that needs to be controlled. Assume that $ T(\mathcal{C})=(Q_{\mathcal{C}}, U_{\mathcal{C}},\rightarrow_{T(\mathcal{C})})$ is a transition system corresponding to a simple controller $ \mathcal{C} $. 
+%Assume the AFTS $ T = (Q,U,\rightarrow_T, G, AP, h_Q) $ is the abstraction of the system that needs to be controlled. Assume that $ A(\mathcal{C})=(Q_{\mathcal{C}}, U_{\mathcal{C}},\rightarrow_{A(\mathcal{C})})$ is a transition system corresponding to a simple controller $ \mathcal{C} $. 
 
-%Firstly let's define several operation to manipulate the finite transition system $ T(\mathcal{C}) $:
+%Firstly let's define several operation to manipulate the finite transition system $ A(\mathcal{C}) $:
 
-%\emph{transitions removing}: given $ E = \{(s_1,a,s_2): s_1,s_2\in Q_{\mathcal{C}}, a\in U_{\mathcal{C}}\} $, remove all transitions in $ E $ from $ T(\mathcal{C}) $ i.e. replace $ \rightarrow_{T(\mathcal{C})} $ with $\rightarrow_{T(\mathcal{C})} - E$, written as 
+%\emph{transitions removing}: given $ E = \{(s_1,a,s_2): s_1,s_2\in Q_{\mathcal{C}}, a\in U_{\mathcal{C}}\} $, remove all transitions in $ E $ from $ A(\mathcal{C}) $ i.e. replace $ \rightarrow_{A(\mathcal{C})} $ with $\rightarrow_{A(\mathcal{C})} - E$, written as 
 %\begin{displaymath}
-%	T(\mathcal{C})\backslash E 
+%	A(\mathcal{C})\backslash E 
 %\end{displaymath}
 
-%\emph{transition adding}: given $ E \subseteq Q \times U \times Q$, replace $ \rightarrow_{T(\mathcal{C})} $ with $ \rightarrow_{T(\mathcal{C})}\cup E $, denoted for simplicity by
+%\emph{transition adding}: given $ E \subseteq Q \times U \times Q$, replace $ \rightarrow_{A(\mathcal{C})} $ with $ \rightarrow_{A(\mathcal{C})}\cup E $, denoted for simplicity by
 %\begin{displaymath}
-%T(\mathcal{C})\cup E
+%A(\mathcal{C})\cup E
 %\end{displaymath}
 
 %WNote that since $ E \subseteq Q\times U\times Q $, $ E $ may contain states and actions which do not exists in $ Q_{\mathcal{C}}\subseteq Q $ and $ U_{\mathcal{C}}\subseteq U $. Then just assume that $ Q_{\mathcal{C}} $ and $ U_{\mathcal{C}} $ will enlarge automatically, which is easy to implement in the code.
 
-%\emph{null node seeking}: return the set $\{s_1\in Q_{T(\mathcal{C})}: \not\exists (s_1,a,s_2)\in \rightarrow_{T(\mathcal{C})},\forall a\in U_{T(\mathcal{C})}, \forall s_2 \in Q_{T(\mathcal{C})}\} $, i.e. all the nodes whose out-degree is zero, written as
+%\emph{null node seeking}: return the set $\{s_1\in Q_{A(\mathcal{C})}: \not\exists (s_1,a,s_2)\in \rightarrow_{A(\mathcal{C})},\forall a\in U_{A(\mathcal{C})}, \forall s_2 \in Q_{A(\mathcal{C})}\} $, i.e. all the nodes whose out-degree is zero, written as
 %\begin{displaymath}
-%Vac(T(\mathcal{C}))
+%Vac(A(\mathcal{C}))
 %\end{displaymath}
 
-%\emph{state-action pre}: return the set $ \{(s_1,a): (s_1,a,s_2)\in \rightarrow_{T(\mathcal{C})}, s_2\in S_2\} $, i.e. all the edges pointing into nodes in $ S_2 $, written as
+%\emph{state-action pre}: return the set $ \{(s_1,a): (s_1,a,s_2)\in \rightarrow_{A(\mathcal{C})}, s_2\in S_2\} $, i.e. all the edges pointing into nodes in $ S_2 $, written as
 %\begin{displaymath}
-%\widehat{Pre}^{T(\mathcal{C}),U}_{\exists,\exists}(S_2)
+%\widehat{Pre}^{A(\mathcal{C}),U}_{\exists,\exists}(S_2)
 %\end{displaymath}
 
 \begin{table*}
+	\centering
 	\caption{Basic Operations on the FTS corresponding to controller $ \mathcal{C} $}
 	\begin{tabular}{ccc}
 		\hline
 		Operation & Definition & Notation\\
 		\hline
-		\emph{transition removing} & given $ E\subseteq Q\times U\times Q $, replace $ \rightarrow_{T(\mathcal{C})} $ with $\rightarrow_{T(\mathcal{C})} - E$ & $ T(\mathcal{C})\backslash E $\\
-		\emph{transition adding} & given $ E\subseteq Q\times U\times Q $, replace $ \rightarrow_{T(\mathcal{C})} $ with $ \rightarrow_{T(\mathcal{C})}\cup E $ & $ T(\mathcal{C})\cup E $\\
-		\emph{state-action pre} &  Given $ S_2\subseteq Q $, output $ \{(s_1,a): (s_1,a,s_2)\in \rightarrow_{T(\mathcal{C})}, s_2\in S_2\} $ & $ \widehat{Pre}^{T(\mathcal{C}),U}_{\exists,\exists}(S_2) $\\
+		\emph{transition removing} & given $ E\subseteq Q\times U\times Q $, replace $ \rightarrow_{A(\mathcal{C})} $ with $\rightarrow_{A(\mathcal{C})} - E$ & $ A(\mathcal{C})\backslash E $\\
+		\emph{transition adding} & given $ E\subseteq Q\times U\times Q $, replace $ \rightarrow_{A(\mathcal{C})} $ with $ \rightarrow_{A(\mathcal{C})}\cup E $ & $ A(\mathcal{C})\cup E $\\
+		\emph{state-action pre} &  Given $ S_2\subseteq Q $, output $ \{(s_1,a): (s_1,a,s_2)\in \rightarrow_{A(\mathcal{C})}, s_2\in S_2\} $ & $ \widehat{Pre}^{A(\mathcal{C}),U}_{\exists,\exists}(S_2) $\\
 		\hline
 	\end{tabular}
 	\label{tab:oper}
@@ -428,12 +428,12 @@ Now we are ready to modify simple controllers returned by \eqref{eqn:pre} and \e
 
 Assume the AFTS $ T = (Q,U,\rightarrow_T, G, AP, h_Q) $ is the abstraction of the system that needs to be controlled. 
 
-Assume that  $ W $ and $ \mathcal{C} $ are the winning set and controller returned by $ \text{Pre}_{\exists,\forall}^{T, U}(V) $. Given $ \widehat{V}= V-\Delta V $ and $ \widehat{U} = U-U_d $, we want to modify $ W $ and $ \mathcal{C} $ to be the winning set and controller for $ \text{Pre}_{\exists,\forall}^{T,\widehat{U}}(\widehat{V}) $. Intuitively if we can find all the invalid transitions $ (s_1,u,s_2) $ in $ T(\mathcal{C}) $ due to $ u\in U_d $ or $ s_2\in\Delta V $, and remove them from $ T(\mathcal{C}) $, that would result in a controller that works for the modified problem setting. Motivated by this idea, the patching operator for \eqref{eqn:pre} is:
+Assume that  $ W $ and $ \mathcal{C} $ are the winning set and controller returned by $ \text{Pre}_{\exists,\forall}^{T, U}(V) $. Given $ \widehat{V}= V-\Delta V $ and $ \widehat{U} = U-U_d $, we want to modify $ W $ and $ \mathcal{C} $ to be the winning set and controller for $ \text{Pre}_{\exists,\forall}^{T,\widehat{U}}(\widehat{V}) $. Intuitively if we can find all the invalid transitions $ (s_1,u,s_2) $ in $ A(\mathcal{C}) $ due to $ u\in U_d $ or $ s_2\in\Delta V $, and remove them from $ A(\mathcal{C}) $, that would result in a controller that works for the modified problem setting. Motivated by this idea, the patching operator for \eqref{eqn:pre} is:
 
 \begin{align}
 &[\widehat{W},\widehat{\mathcal{C}}]=\overline{\text{Pre}}_{\exists,\forall}^{T, U}(\mathcal{C},\Delta V,U_d)\\
 =&\begin{cases} 
-T_{0} = T(\mathcal{C})\backslash (*,U_d,*)\\
+T_{0} = A(\mathcal{C})\backslash (*,U_d,*)\\
 E =  \widehat{Pre}^{T_0,U-U_d}_{\exists,\exists}(\Delta V)\\
 T(\widehat{\mathcal{C}}) = T_{0}\backslash E\\
 \widehat{W} = \{s_1: \exists u, \exists s_2 s.t. (s_1,u, s_2)\in \rightarrow_{T(\widehat{\mathcal{C}})} \}
@@ -448,7 +448,7 @@ where $ \widehat{\mathcal{C}} $ is converted from $ T(\widehat{\mathcal{C}}) $. 
 \begin{proof}
 	Let's assume that $ \text{Pre}_{\exists,\forall}^{T,\widehat{U}}(\widehat{V}) $ returns $ W_t $ and $ \mathcal{C}_t $. It's enough to show that $ T(\widehat{\mathcal{C}})= T(\mathcal{C}_t)$, i.e. $ \rightarrow_{T(\widehat{\mathcal{C}})} = \rightarrow_{T(\mathcal{C}_t)} $. 
 	
-	By \eqref{eqn:pre} and Definition \ref{def:TC}, it is obvious that $ \rightarrow_{T(\mathcal{C}_t)} \subseteq \rightarrow_{T(\mathcal{C})}$ for $ \widehat{V}\subseteq V $ and $ \widehat{U}\subseteq U $. The set of transitions $ S = (*,U_d,*)\cup E $ is only related to states in $ \Delta V $ or actions in $ U_d $, so $\rightarrow_{T(\mathcal{C}_t)}$ and $ S $ are disjoint. $ \rightarrow_{T(\widehat{\mathcal{C}})}= \rightarrow_{T(\mathcal{C})}-S$. Thus $ \rightarrow_{T(\mathcal{C}_t)}\subseteq \rightarrow_{T(\widehat{\mathcal{C}})}$ 
+	By \eqref{eqn:pre} and Definition \ref{def:TC}, it is obvious that $ \rightarrow_{T(\mathcal{C}_t)} \subseteq \rightarrow_{A(\mathcal{C})}$ for $ \widehat{V}\subseteq V $ and $ \widehat{U}\subseteq U $. The set of transitions $ S = (*,U_d,*)\cup E $ is only related to states in $ \Delta V $ or actions in $ U_d $, so $\rightarrow_{T(\mathcal{C}_t)}$ and $ S $ are disjoint. $ \rightarrow_{T(\widehat{\mathcal{C}})}= \rightarrow_{A(\mathcal{C})}-S$. Thus $ \rightarrow_{T(\mathcal{C}_t)}\subseteq \rightarrow_{T(\widehat{\mathcal{C}})}$ 
 	
 	By \eqref{patch-pre}, transitions in $ T(\widehat{\mathcal{C}}) $ can only take actions in $ \widehat{U} $ and transit to states in $ \widehat{V} $, which implies that $ \rightarrow_{T(\widehat{\mathcal{C}})}\subseteq \rightarrow_{T(\mathcal{C}_t)} $.  
 \end{proof}
@@ -460,7 +460,7 @@ Next, assume that $ Y $ and $ \mathcal{C} $ are the winning set and controller r
 =&\begin{cases}
 Y_0 = Y\cup (\Delta Z\cap G \cap B)\\
 \Delta Y_0 = Q - (Y_0 \cup \widehat{Z})\\
-T_0  = T(\mathcal{C})\cup E_0\\
+T_0  = A(\mathcal{C})\cup E_0\\
 {\color{purple} k=0}\\
 %while \ Y_{k+1}\not= Y_k:\\
 {\color{purple} repeat:}\\
@@ -481,7 +481,7 @@ In regards to the patching operator in \eqref{patch-inv}, we have the following 
 \end{theorem}
 
 
-Given a simple controller $ \mathcal{C} $ and new synthesis settings, both \eqref{patch-pre} and \eqref{patch-inv} try to find $ T(\widehat{\mathcal{C}}) $ inside $ T(\mathcal{C}) $. However, if we re-synthesize the new simple controller from scratch, \eqref{eqn:pre} and \eqref{win-inv} would try to find $ T(\mathcal{C}) $ in the whole AFTS $ T $, which in general might need more computation cost, as we demonstrate via simulations. However, in the worst case, there might not be any computational gains.
+Given a simple controller $ \mathcal{C} $ and new synthesis settings, both \eqref{patch-pre} and \eqref{patch-inv} try to find $ T(\widehat{\mathcal{C}}) $ inside $ A(\mathcal{C}) $. However, if we re-synthesize the new simple controller from scratch, \eqref{eqn:pre} and \eqref{win-inv} would try to find $ A(\mathcal{C}) $ in the whole AFTS $ T $, which in general might need more computation cost, as we demonstrate via simulations. However, in the worst case, there might not be any computational gains.
 
 \subsection{Patching General Controllers}
 
@@ -717,6 +717,7 @@ where $ B=[-2.5,2.5]\times[-2,2] $. It says that the CoM of the robot should alw
 
 Now imagine that some holes on the ground are detected, as shown in Figure \ref{fig:hoprob}, where the robot should avoid stepping. Therefore some actions need to be disabled. Once we determine which actions will be affected, we can put them in $ U_d $ and patch the existing controllers for the new action profiles.
 \begin{table}
+	\centering
 	\caption{Comparison of re-synthesis time and patching time under multiple action profiles. The first row is the set of available actions. The second row is the percentage of transitions left after $ U_d $ is disabled. The last two rows are the time used for re-synthesizing and patching.}
 	\begin{tabular}{lllllll}
 		\hline 
@@ -731,6 +732,7 @@ Now imagine that some holes on the ground are detected, as shown in Figure \ref{
 \end{table}
 
 \begin{table}
+	\centering
 	\caption{Comparison of re-synthesis time and patching time under random action profiles. The first row is number of unavailable actions ($ \sharp U_d $). For each number, choose 10 random sets of unavailable actions. The last two rows are the average time used for re-synthesizing and patching.}
 	\begin{tabular}{ccccccc}
 		\hline 
