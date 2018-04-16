@@ -151,11 +151,9 @@ Given $\widehat{D} \subseteq D$, a simple controller $ \mathcal{C} $ \textbf{res
 	\label{def:cont}
 \end{definition}
 
-Overall, a controller is a tree structure with controllers at each node and simple controllers at the leaf nodes. The list $\mathcal{K}$ for each controller (each non-leaf node in the tree) denotes the children of that controller in the tree. Winning sets and controllers for specifications in the form of \eqref{phi} are computed iteratively via fixed-point based algorithm \eqref{win-phi} given in Appendix \ref{app:basic-alg}.
+Overall, a controller is {\color{teal} an ordered } tree structure with controllers at each node and simple controllers at the leaf nodes. The list $\mathcal{K}$ for each controller (each non-leaf node in the tree) denotes the children of that controller in the tree. Winning sets and controllers for specifications in the form of \eqref{phi} are computed iteratively via fixed-point based algorithm \eqref{win-phi} given in Appendix \ref{app:basic-alg}.
 
-Note that although we are only interested in the specification in the form of \eqref{phi}, to compute its winning set and controller, we need the fixed-point based algorithms for some other specifications, which may not be in the form of \eqref{phi}. All those algorithms are also given in Appendix A, which output the winning sets and controllers consistent with Definition \ref{def:winset}, \ref{def:simp} and \ref{def:cont}. 
-
-
+Note that although we are only interested in the specification in the form of \eqref{phi}, to compute its winning set and controller, several fixed-point based algorithms for specifications not in the form of \eqref{phi} are called by \eqref{win-phi} internally. The output winning sets and controllers of those fixed-point algorithms are consistent with Definition \ref{def:winset} and \ref{def:cont}, which are usually stored as sub-controllers in the output controller of \eqref{win-phi}. 
 
 %\begin{remark}
 %	The definition of controller defines the implementation of a control strategy obtained by fixed-point operators discussed in the following. For \eqref{win-phi}, \eqref{win-interm}, \eqref{win-until} and \eqref{win-inv}, the number of sub-controllers in each controller is proportional to the number of iterations when the corresponding fixed-point operator converges. Simple controllers are smallest elements in a controller, i.e. the ones given by \eqref{eqn:pre} and \eqref{win-inv}. 
@@ -245,7 +243,7 @@ Note that although we are only interested in the specification in the form of \e
 	\begin{itemize}
 		\item[(i)] update the internal variable $ x $ of $ \mathcal{C} $: 
 		\begin{itemize}
-			\item 	if $ \mathcal{C} $ is returned by \eqref{win-phi},\eqref{win-until},\eqref{win-inv}:
+			\item 	if $ \mathcal{C} $ is returned by \eqref{win-phi}, \eqref{win-until}, \eqref{win-inv}:
 			\begin{displaymath}
 			x^+ =	\begin{cases}
 			\text{arg}\min_{y\leq x}\{s\in \mathcal{V}(y)\},\ \ \text{if}\ x\not=0\\
@@ -289,23 +287,17 @@ Note that although we are only interested in the specification in the form of \e
 	\label{ex:exec}
 	For a simple AFTS shown in Figure \ref{fig:eg1}, given the specification $ \phi = \Square \Diamond A \wedge \Square \Diamond B $, the outputs of \eqref{win-phi} are the winning set $ W= \{s_1,s_2,s_3,s_4\}$, and the controller $ \mathcal{C} = (W,\{\mathcal{C}^0_1\}, x = 1) $, where the sub-controllers are:
 	
-	$ \mathcal{C}^0_1 = (\{W,\{s_1\},\{s_3,s_4\}\},\{\mathcal{C}^1_1, \mathcal{C}^1_2\}, x^0_1 ) $; 
+	\noindent$ \mathcal{C}^0_1 = (\{W,\{s_1\},\{s_3,s_4\}\},\{\mathcal{C}^1_1, \mathcal{C}^1_2\}, x^0_1 ) $; 
+	$ \mathcal{C}^1_1 = (\{\{s_1,s_2\},W,W \},\{\mathcal{C}^{2,0}_i\}_{i=1}^3,x^1_1)$; 
 	
-	$ \mathcal{C}^1_1 = (\{\{s_1,s_2\},W,W \},\{\mathcal{C}^{2,0}_i\}_{i=1}^3,x^1_1)$;
+	\noindent$ \mathcal{C}^1_2 = (\{\{s_2,s_3,s_4\},W,W \},\{\mathcal{C}^{2,1}_i\}_{i=1}^{3},x^1_2 )$; $ \mathcal{C}^{2,0}_1 = \{(s_1,\{a\}),(s_2,\{c\})\} $; 
 	
-	$ \mathcal{C}^1_2 = (\{\{s_2,s_3,s_4\},W,W \},\{\mathcal{C}^{2,1}_i\}_{i=1}^{3},x^1_2 )$;
-	
-	$ \mathcal{C}^{2,0}_1 = \{(s_1,\{a\}),(s_2,\{c\})\} $;
-	
-	$ \mathcal{C}^{2,0}_2 = \{(s_1,\{a,b\}),(s_2,\{c\}),(s_3,\{g\}),(s_4,\{e\})\} $;
-	
+	\noindent$ \mathcal{C}^{2,0}_2 = \{(s_1,\{a,b\}),(s_2,\{c\}),(s_3,\{g\}),(s_4,\{e\})\} $;
 	$ \mathcal{C}^{2,0}_3 = \{(s_1,\{a,b\}),(s_2,\{c,d,f\}),(s_3,\{g,h\}),(s_4,\{e,i\})\} $; 
 	
-	$ \mathcal{C}^{2,1}_1 = \{(s_2,\{d,f\}),(s_3,\{h\}),(s_4,i)\} $; 
+	\noindent$ \mathcal{C}^{2,1}_1 = \{(s_2,\{d,f\}),(s_3,\{h\}),(s_4,i)\} $; $ \mathcal{C}^{2,1}_2 = \{(s_1,\{b\}),(s_2,\{d,f\}), (s_3,\{g,h\}), (s_4,\{e,i\})\} $;
 	
-	$ \mathcal{C}^{2,1}_2 = \{(s_1,\{b\}),(s_2,\{d,f\}), (s_3,\{g,h\}), (s_4,\{e,i\})\} $;
-	
-	$ \mathcal{C}^{2,1}_3 = \{(s_1,\{a,b\}),(s_2,\{c,d,f\}),(s_3,\{g,h\}),(s_4,\{e,i\})\} $.
+	\noindent$ \mathcal{C}^{2,1}_3 = \{(s_1,\{a,b\}),(s_2,\{c,d,f\}),(s_3,\{g,h\}),(s_4,\{e,i\})\} $.
 	
 	\begin{figure}
 		\centering
@@ -347,8 +339,7 @@ In this section, we formally define the problem of interest. %{\color{blue}it is
 	Given an AFTS $ T = (Q,U,\rightarrow_T,G,AP,h_Q) $, an LTL specification $ \phi = \Square A \wedge \Diamond \Square B \wedge \left( \bigvee_{i\in I} \Square \Diamond R^i\right) $, the winning set $ W_{\phi} $ and controller $ \mathcal{C}_{\phi} $, if a set of actions $ U_d\subseteq U $ in $ T $ is unavailable, find the new winning set and a controller with an algorithm that exploits the knowledge of $ W_{\phi} $ and $ \mathcal{C}_{\phi} $.\label{prob}
 \end{problem}
 
-In Section \ref{sec:method}, we show that for winning sets and controllers computed by fixed-point based algorithms \eqref{win-phi}-\eqref{win-inv}.
-
+In Section \ref{sec:method}, we show that each fixed-point based algorithm \eqref{win-phi}-\eqref{win-inv} 
 
 \section{PATCHING METHOD}
 \label{sec:method}
@@ -470,6 +461,8 @@ T_0  = A(\mathcal{C})\cup E_0\\
 {\color{purple} k=0}\\
 %while \ Y_{k+1}\not= Y_k:\\
 {\color{purple} repeat:}\\
+\end{cases}
+\begin{cases}
 \ \ \ \ \Delta Y_{k+1} = \text{Pre}_{\forall,\exists}^{T_k,D}(\Delta Y_k) \\
 \ \ \ \ T_{k+1} = T_{k}\backslash (\Delta Y_{k+1},*,*)\\
 \ \ \ \ Y_{k+1} = Y_k- \Delta Y_{k+1}\\
@@ -502,6 +495,7 @@ The intuition behind the patching algorithms for existing controllers are simila
 
 Assume that $ Z $ and $ \mathcal{C} = (\mathcal{V},\mathcal{K},x) $ are the winning set and controller resulting from  $ \text{PGPre}_{\exists,\forall}^{T} (Z,B)$. Given $ \widehat{Z}\subseteq Z $,  $ \widehat{U}\subseteq U $, we want to modify $ Z $ and $ \mathcal{C} $ to be the winning set and controller for $ \text{PGPre}_{\exists, \forall}^{T,\widehat{U}}(\widehat{Z},B)$. The patching operator is:
 \begin{align}
+\begin{split}
 &[\widehat{Z}_{\infty},\widehat{\mathcal{C}}]=\overline{\text{PGPre}}_{\exists,\forall}^{T,U} (\mathcal{C},Z,\widehat{Z},U_d)\\
 &= \begin{cases}
 Z_{\infty} = Z,\ \widehat{Z}_{\infty}=\widehat{Z},\ \widehat{\mathcal{V}}=\{\},\ \widehat{\mathcal{K}}=\{\},\ k = 1\\
@@ -509,12 +503,15 @@ for\ U\in 2^U:\\
 \ \ for\ G\in G(U):\\
 \ \ \ \ \ \ if\ U_d\cap U = \emptyset:\\
 \ \ \ \ \ \ \ \ \  [\widehat{\mathcal{V}}(k),\widehat{\mathcal{K}}(k)]=\overline{Inv}_{\exists}^{U,G}(\mathcal{V}(k),\mathcal{K}(k),Z_\infty, \widehat{Z}_\infty)\\
+\end{cases}
+\begin{cases}
 \ \ \ \ \ \ else:\ \widehat{\mathcal{V}}(k)=\emptyset, \widehat{\mathcal{K}}(k) = \emptyset\\
 \ \ \ \ \ \  Z_\infty = Z_\infty\cup \mathcal{V}(k),\ \widehat{Z}_{\infty} = \widehat{Z}_{\infty} \cup \widehat{\mathcal{V}}(k)\\
 \ \ \ \ \ \ {\color{purple} k = k+1}\\
 Remove\ all\ \emptyset\ in\ \widehat{\mathcal{V}}\ and \ \widehat{\mathcal{K}},\ \ 
 \widehat{\mathcal{C}} = (\widehat{\mathcal{V}},\widehat{\mathcal{K}},x)
 \end{cases}\label{patch-pg}
+\end{split}
 \end{align}
 
 \begin{theorem}
@@ -527,28 +524,34 @@ Remove\ all\ \emptyset\ in\ \widehat{\mathcal{V}}\ and \ \widehat{\mathcal{K}},\
 
 Assume that $ X_\infty $ and $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ are the winning set and controller resulting from $ \text{Win}_{\exists,\forall}^{T,U}(B\mathbf{\ U\ }Z) $. Assume $ \vert \mathcal{K}\vert = 2n $, i.e. \eqref{win-until} converges in $ n $ steps. Then, given $ \widehat{Z}\subseteq Z $ and $ \widehat{U}= U-U_d $, to get the winning set and controller for $ \text{Win}_{\exists,\forall}^{T,\widehat{U}}(B\mathbf{\ U\ }\widehat{Z}) $, the patching operator is
 \begin{align}
+\begin{split}
 &[\widehat{X}_\infty, \widehat{\mathcal{C}}]=\overline{\text{Win}}^{T, U}_{\exists,\forall, (B\mathbf{\ U\ }Z)}(\mathcal{C},Z,\widehat{Z}, U_d)\\
 =&\begin{cases}
 X_0 = \emptyset, \widehat{X}_0 = \emptyset, \Delta X = \emptyset, \ \widehat{\mathcal{V}}=\{\},\ \widehat{\mathcal{K}}=\{\}\\
 %{\color{purple} remove: } for ~ k\in \{0,2,...,n-1\}\ and\ \widehat{X}_{k+1}\not=\widehat{X}_k:\\
 {\color{purple} k = 0}\\
 {\color{purple} repeat:}\\
-\ \ \ \ [\widehat{\mathcal{V}}(2k+1),\widehat{\mathcal{K}}(2k+1)] = \overline{\text{Pre}}_{\exists,\forall}^{T,U}(\mathcal{K}(2k+1),X_{k}-\widehat{X}_{k}, U_d)\\
-\ \ \ \ E_k = Z\cup (B\cap \mathcal{V}(2k+1)),\ \widehat{E}_k =  Z\cup (B\cap \widehat{\mathcal{V}}(2k+1))\\
-\ \ \ \ [\widehat{\mathcal{V}}(2k+2),\widehat{\mathcal{K}}(2k+2)] = \overline{\text{PGPre}}_{\exists,\forall}^{T,U}(\mathcal{K}(2k+2),E_k, \widehat{E}_k,U_d)\\ 
+\ \ \ \ [\widehat{\mathcal{V}}(2k+1),\widehat{\mathcal{K}}(2k+1)] =\\ \ \ \ \ \ \ \ \ \  \overline{\text{Pre}}_{\exists,\forall}^{T,U}(\mathcal{K}(2k+1),X_{k}-\widehat{X}_{k}, U_d)\\
+\ \ \ \ E_k = Z\cup (B\cap \mathcal{V}(2k+1))\\
+\ \ \ \  \widehat{E}_k =  Z\cup (B\cap \widehat{\mathcal{V}}(2k+1))\\
+\ \ \ \ [\widehat{\mathcal{V}}(2k+2),\widehat{\mathcal{K}}(2k+2)] =\\ \ \ \ \ \ \ \ \ \  \overline{\text{PGPre}}_{\exists,\forall}^{T,U}(\mathcal{K}(2k+2),E_k, \widehat{E}_k,U_d)\\ 
 \ \ \ \ X_{k+1} = Z\cup (B\cap \mathcal{V}(2k+1)) \cup \mathcal{V}(2k+2)\\
 \ \ \ \ \widehat{X}_{k+1} =\widehat{Z}\cup (B\cap \widehat{\mathcal{V}}(2k+1)) \cup \widehat{\mathcal{V}}(2k+2)\\
+\end{cases}
+\begin{cases}
 \ \ \ \ {\color{purple} k = k +1}\\
 {\color{purple} until \ k = n \ or \ \widehat{X}_{k}=\widehat{X}_{k-1}}\\
 %{\color{purple} remove: }for~k\geq n\ and\ \widehat{X}_{k+1}\not=\widehat{X}_k:	\\
 {\color{purple} while \ \widehat{X}_{k}\not=\widehat{X}_{k-1}:}\\
-\ \ \ \ [\widehat{\mathcal{V}}(2k+1),\widehat{\mathcal{K}}(2k+1)] = \overline{\text{Pre}}_{\exists,\forall}^{T,U}(\mathcal{K}(2n-1),X_{n}-\widehat{X}_{k}, U_d)\\
+\ \ \ \ [\widehat{\mathcal{V}}(2k+1),\widehat{\mathcal{K}}(2k+1)] = \\ \ \ \ \ \ \ \ \ \overline{\text{Pre}}_{\exists,\forall}^{T,U}(\mathcal{K}(2n-1),X_{n}-\widehat{X}_{k}, U_d)\\
 \ \ \ \ \widehat{E}_k =  Z\cup (B\cap \widehat{\mathcal{V}}(2k+1))\\
-\ \ \ \ [\widehat{\mathcal{V}}(2k+2),\widehat{\mathcal{K}}(2k+2)] = \overline{\text{PGPre}}_{\exists,\forall}^{T,U}(\mathcal{K}(2n),E_n, \widehat{E}_k,U_d)\\
+\ \ \ \ [\widehat{\mathcal{V}}(2k+2),\widehat{\mathcal{K}}(2k+2)] =\\ 
+\ \ \ \ \ \ \ \ \overline{\text{PGPre}}_{\exists,\forall}^{T,U}(\mathcal{K}(2n),E_n, \widehat{E}_k,U_d)\\
 \ \ \ \ \widehat{X}_{k+1} =\widehat{Z}\cup (B\cap \widehat{\mathcal{V}}(2k+1)) \cup \widehat{\mathcal{V}}(2k+2)\\
 \ \ \ \ {\color{purple} k=k+1}\\
 \widehat{X}_\infty = \widehat{X}_k,\ \widehat{\mathcal{C}} = (\widehat{\mathcal{V}},\widehat{\mathcal{K}},x)
 \end{cases} \label{patch-until}
+\end{split}
 \end{align}
 The above patch algorithm has two parts: part one modifies the existing sub-controllers for $ k\leq n $; part two adds new sub-controllers by modifying the $ n $th existing sub-controller until convergence. The winning set $ \widehat{X}_{\infty} $, and controller $ \widehat{\mathcal{C}} $ would be equal to the outputs of \eqref{win-until} with input parameters $ \widehat{U},B,\widehat{Z} $. 
 
@@ -573,7 +576,9 @@ Z_{\infty}^i = Z\cup (B\cap R^i\cap \text{Pre}_{\exists, \forall}^{T,U}(W_0))\\
 \widehat{Z}_{0}^i = \widehat{Z}\cup (B\cap R^i\cap \text{Pre}_{\exists, \forall}^{T,U-U_d}(W_0))\\
 [X^i_0,\widehat{\mathcal{K}}(i)] = \overline{\text{Win}}^{T,U}_{\exists,\forall, (B\mathbf{U}Z)}(\widehat{\mathcal{K}}(i),Z_\infty^i,\widehat{Z}_0^i, U_d)\\
 \widehat{W}_{0} = \bigcap_{i\in I} X^i_0\\
-{\color{purple} k=0}\\
+{\color{purple} k=0}
+\end{cases}
+\begin{cases}
 %{\color{purple} remove:} while\ \widehat{W}_{k+1}\not=\widehat{W}_k:\\
 {\color{purple} repeat:}\\
 \ \ \ \ \widehat{Z}_{k+1}^i = \widehat{Z} \cup (B\cap R^i\cap \text{Pre}_{\exists, \forall}^{T,U-U_d}(\widehat{W}_k))\\
@@ -602,12 +607,8 @@ Z_{\infty}^i = Z\cup (B\cap R^i\cap \text{Pre}_{\exists, \forall}^{T,U}(W_0))\\
 
 Now we are ready to modify controller in \eqref{win-phi}, since we have all the patching operators it requires. 
 
-Assume that $ W $ and $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ are the winning set and controller resulting from 
-\begin{displaymath}
-\text{Win}_{\exists, \forall}^{T,U}\left(\Square A \wedge \Diamond \Square B \wedge \left( \bigwedge_{i\in I} \Square \Diamond R^i\right)\right)
-\end{displaymath}
-
-Assuming that $ \vert \mathcal{K}\vert = n $. For patching purpose, we need some extra information: the lists of winning sets and controllers returned by $\text{Pre}_{\exists,\forall}^{T,U}(V_k)$ in \eqref{win-phi}, i.e. $ [\mathcal{V}_1(k),\mathcal{K}_1(k)]=\text{Pre}_{\exists,\forall}^{T,U}(V_k)$;  the lists of winning sets and controllers returned by $ \text{PGPre}_{\exists,\forall}^{T}(V_k, B) $ in \eqref{win-phi}, i.e. $ [\mathcal{V}_2(k), \mathcal{K}_2(k)]= \text{PGPre}_{\exists,\forall}^{T}(V_k, B)$ ($ k=1,..., n $) ; the controller $ \mathcal{C}_{Inv} $ returned by $ \text{\text{Win}}^{T,U}_{\exists, \forall} ((A\mathbf{U}\emptyset)\vee \Square (A\wedge \Diamond Q)) $ in the first line of \eqref{win-phi}. To restrict action space to $ \widehat{U} = U-U_d $, the patching operator for \eqref{win-phi} is 
+Assume that $ W $ and $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ are the winning set and controller resulting from the operator $
+\text{Win}_{\exists, \forall}^{T,U}\left(\Square A \wedge \Diamond \Square B \wedge \left( \bigwedge_{i\in I} \Square \Diamond R^i\right)\right)$. Assuming that $ \vert \mathcal{K}\vert = n $. For patching purpose, we need some extra information: the lists of winning sets and controllers returned by $\text{Pre}_{\exists,\forall}^{T,U}(V_k)$ in \eqref{win-phi}, i.e. $ [\mathcal{V}_1(k),\mathcal{K}_1(k)]=\text{Pre}_{\exists,\forall}^{T,U}(V_k)$;  the lists of winning sets and controllers returned by $ \text{PGPre}_{\exists,\forall}^{T}(V_k, B) $ in \eqref{win-phi}, i.e. $ [\mathcal{V}_2(k), \mathcal{K}_2(k)]= \text{PGPre}_{\exists,\forall}^{T}(V_k, B)$ ($ k=1,..., n $) ; the controller $ \mathcal{C}_{Inv} $ returned by $ \text{\text{Win}}^{T,U}_{\exists, \forall} ((A\mathbf{U}\emptyset)\vee \Square (A\wedge \Diamond Q)) $ in the first line of \eqref{win-phi}. To restrict action space to $ \widehat{U} = U-U_d $, the patching operator for \eqref{win-phi} is 
 \begin{align}
 &[\widehat{V}_\infty, \widehat{\mathcal{C}}]=\overline{\text{Win}}_{\exists, \forall,(\phi)}^{T,U}(\mathcal{C},\mathcal{C}_{Inv},\mathcal{V}_1,\mathcal{K}_1,\mathcal{V}_2,\mathcal{K}_2,U_d)\\
 =&\begin{cases}\widehat{V}_{\text{inv}} = \overline{\text{Win}}^{T,U}_{\exists, \forall,(\psi)} (\mathcal{C}_{Inv},\emptyset,\emptyset,U_d)\\
@@ -619,8 +620,11 @@ Restrict~ synthesis~ to~ \widehat{V}_{\text{inv}}\\
 \ \ \ \ \widehat{Z}_{k+1}^1 =  \overline{\text{Pre}}_{\exists,\forall}^{T,U}(\mathcal{K}_1(k+1),\mathcal{V}(k)-\widehat{V}_k,U_d)\\
 \ \ \ \ \widehat{Z}_{k+1}^2 = \overline{\text{PGPre}}_{\exists,\forall}^{T,U} ( \mathcal{K}_2(k+1),\mathcal{V}(k), \widehat{V}_k,U_d)\\
 \ \ \ \ Z_{k+1}=\mathcal{V}_1(k+1)\cup\mathcal{V}_2(k+1),\  \widehat{Z}_{k+1} = \widehat{Z}_{k+1}^1\bigcup\widehat{Z}_{k+1}^2  \\
-\ \ \ \ [\widehat{V}_{k+1},\widehat{\mathcal{K}}(k+1)]=\overline{\text{Win}}_{\exists,\forall,(\psi)}^{T, U}(\mathcal{K}(k+1),Z_{k+1},\widehat{Z}_{k+1},U_d)\\
+\ \ \ \ [\widehat{V}_{k+1},\widehat{\mathcal{K}}(k+1)]=\\
+\ \ \ \ \ \ \ \ \overline{\text{Win}}_{\exists,\forall,(\psi)}^{T, U}(\mathcal{K}(k+1),Z_{k+1},\widehat{Z}_{k+1},U_d)\\
 \ \ \ \ \widehat{\mathcal{V}}(k+1)=\widehat{V}_{k+1}\\
+\end{cases}
+\begin{cases}
 \ \ \ \ {\color{purple} k = k+1}\\
 {\color{purple} until \ k=n \ or \ \widehat{V}_{k}=\widehat{V}_{k-1} }\\
 %{\color{purple} remove:} for~ k\geq n\ and\ \widehat{V}_{k+1}\not=\widehat{V}_k:\\
@@ -628,18 +632,23 @@ Restrict~ synthesis~ to~ \widehat{V}_{\text{inv}}\\
 \ \ \ \ \widehat{Z}_{k+1}^1 =  \overline{\text{Pre}}_{\exists,\forall}^{T,U}(\mathcal{K}_1(n),\mathcal{V}(n-1)-\widehat{V}_k,U_d)\\
 \ \ \ \ \widehat{Z}_{k+1}^2 = \overline{\text{PGPre}}_{\exists,\forall}^{T,U} ( \mathcal{K}_2(n),\mathcal{V}(n-1), \widehat{V}_k,U_d)\\
 \ \ \ \ \widehat{Z}_{k+1} = \widehat{Z}_{k+1}^1\bigcup\widehat{Z}_{k+1}^2  \\
-\ \ \ \ [\widehat{V}_{k+1},\widehat{\mathcal{K}}(k+1)]=\overline{\text{Win}}_{\exists,\forall,(\psi)}^{T, U}(\mathcal{K}(n),Z_{n},\widehat{Z}_{k+1},U_d)\\
+\ \ \ \ [\widehat{V}_{k+1},\widehat{\mathcal{K}}(k+1)]=\\
+\ \ \ \ \ \ \ \ \overline{\text{Win}}_{\exists,\forall,(\psi)}^{T, U}(\mathcal{K}(n),Z_{n},\widehat{Z}_{k+1},U_d)\\
 \ \ \ \ \widehat{\mathcal{V}}(k+1)=\widehat{V}_{k+1}\\
 \ \ \ \ {\color{purple} k = k+1}\\
 \widehat{V}_\infty = \widehat{V}_k, \widehat{\mathcal{C}} = (\widehat{\mathcal{V}},\widehat{\mathcal{K}},x) 
 \end{cases}\label{patch-final}
 \end{align}
 
-The modified winning set $ \widehat{V}_{\infty} $ and controller $ \widehat{\mathcal{C}} $ will be equal to outputs resulting from $ \text{Win}_{\exists, \forall}^{T,U-U_d}\left(\Square A \wedge \Diamond \Square B \wedge \left( \bigwedge_{i\in I} \Square \Diamond R^i\right)\right) $. 
+The modified winning set $ \widehat{V}_{\infty} $ and controller $ \widehat{\mathcal{C}} $ will be equal to outputs resulting from \\
+\noindent$ \text{Win}_{\exists, \forall}^{T,U-U_d}\left(\Square A \wedge \Diamond \Square B \wedge \left( \bigwedge_{i\in I} \Square \Diamond R^i\right)\right) $. 
 The same as \eqref{patch-until}, the patching algorithm has two parts: one for modifying existing sub-controllers; one for adding new ones until convergence.
 
 \begin{theorem}
-	$ \widehat{V}_\infty $ and $ \widehat{\mathcal{C}} $ returned by \eqref{patch-final} are the same as outputs resulting from $\text{Win}_{\exists, \forall}^{T,U-U_d}\left(\Square A \wedge \Diamond \Square B \wedge \left( \bigwedge_{i\in I} \Square \Diamond R^i\right)\right) $. \label{thm:phi}
+	$ \widehat{V}_\infty $ and $ \widehat{\mathcal{C}} $ returned by \eqref{patch-final} are the same as outputs resulting from
+\begin{displaymath}
+	\text{Win}_{\exists, \forall}^{T,U-U_d}\left(\Square A \wedge \Diamond \Square B \wedge \left( \bigwedge_{i\in I} \Square \Diamond R^i\right)\right)
+\end{displaymath} \label{thm:phi}
 \end{theorem}
 
 
@@ -658,23 +667,15 @@ The same as \eqref{patch-until}, the patching algorithm has two parts: one for m
 \label{sec:example1}
 For the transition system in Figure \ref{fig:eg1}, take the controller we get in Section \ref{sec:contsyn} and  $ U_d= \{e\} $ as input of \eqref{patch-final}, the outputs are the modified winning set $ \widehat{W}=\{s_1,s_2,s_3\} $ and controller $ \widehat{\mathcal{C}} = (\{\widehat{W}\},\{\widehat{\mathcal{C}}_1^0\},x=1) $ , where the sub-controllers are: 
 
-$ \widehat{\mathcal{C}}^0_1 = (\{\widehat{W},\{s_1\},\{s_2,s_3\}\},\{\widehat{\mathcal{C}}^1_1, \widehat{\mathcal{C}}^1_2\},x^0) $;
+\noindent$ \widehat{\mathcal{C}}^0_1 = (\{\widehat{W},\{s_1\},\{s_2,s_3\}\},\{\widehat{\mathcal{C}}^1_1, \widehat{\mathcal{C}}^1_2\},x^0) $; $ \widehat{\mathcal{C}}^1_1 = (\{\{s_1,s_2\},W,W\},\{\widehat{\mathcal{C}}^{2,0}_i\}_{i=1}^3, x^1_0)$; 
 
-$ \widehat{\mathcal{C}}^1_1 = (\{\{s_1,s_2\},W,W\},\{\widehat{\mathcal{C}}^{2,0}_i\}_{i=1}^3, x^1_0)$;
+\noindent$ \widehat{\mathcal{C}}^1_2 = (\{\{s_2,s_3\},W,W\},\{\widehat{\mathcal{C}}^{2,1}_i\}_{i=1}^{3}, x^1_1)$; $ \widehat{\mathcal{C}}^{2,0}_1 = \{(s_1,\{a\}),(s_2,\{c\})\} $;
 
-$ \widehat{\mathcal{C}}^1_2 = (\{\{s_2,s_3\},W,W\},\{\widehat{\mathcal{C}}^{2,1}_i\}_{i=1}^{3}, x^1_1)$;
+\noindent$ \widehat{\mathcal{C}}^{2,0}_2 = \{(s_1,\{a,b\}),(s_2,\{c\}),(s_3,\{g\})\} $; $ \widehat{\mathcal{C}}^{2,0}_3 = \{(s_1,\{a,b\}),(s_2,\{c,f\}),(s_3,\{g,h\})\} $; 
 
-$ \widehat{\mathcal{C}}^{2,0}_1 = \{(s_1,\{a\}),(s_2,\{c\})\} $;
+\noindent$ \widehat{\mathcal{C}}^{2,1}_1 = \{(s_2,\{f\}),(s_3,\{h\})\} $; $ \widehat{\mathcal{C}}^{2,1}_2 = \{(s_1,\{b\}),(s_2,\{f\}), (s_3,\{g,h\})\} $;
 
-$ \widehat{\mathcal{C}}^{2,0}_2 = \{(s_1,\{a,b\}),(s_2,\{c\}),(s_3,\{g\})\} $;
-
-$ \widehat{\mathcal{C}}^{2,0}_3 = \{(s_1,\{a,b\}),(s_2,\{c,f\}),(s_3,\{g,h\})\} $; 
-
-$ \widehat{\mathcal{C}}^{2,1}_1 = \{(s_2,\{f\}),(s_3,\{h\})\} $;
-
-$ \widehat{\mathcal{C}}^{2,1}_2 = \{(s_1,\{b\}),(s_2,\{f\}), (s_3,\{g,h\})\} $;
-
-$ \widehat{\mathcal{C}}^{2,1}_3 = \{(s_1,\{a,b\}),(s_2,\{c,f\}),(s_3,\{g,h\})\} $;
+\noindent$ \widehat{\mathcal{C}}^{2,1}_3 = \{(s_1,\{a,b\}),(s_2,\{c,f\}),(s_3,\{g,h\})\} $;
 
 %\begin{figure}
 %	\centering
@@ -689,7 +690,7 @@ Let the system start from $ s_1 $ and initialize internal variables as $ (1,1,1,
 
 \begin{figure}
 	\centering
-	\includegraphics[width=0.8\linewidth]{pic/hop-rob}
+	\includegraphics[width=0.5\linewidth]{pic/hop-rob}
 	\caption{Hopping {\color{purple} Simple model of one-legged 1D} robots with point foot {\color{purple} walking} on a ground with holes. {\color{purple} Remark: the linear-inverted pendulum model assumes that the center of mass remains at a fixed height, so this figure can be a bit misleading. But so is the term "hopping", 
 			so maybe we should just call it "1D walking robot".}}
 	\label{fig:hoprob}
@@ -751,9 +752,9 @@ Now imagine that some holes on the ground are detected, as shown in Figure \ref{
 	\label{tab: exper2}
 \end{table}
 
-\begin{figure}
+\begin{figure*}
 	\centering
-	\begin{subfigure}[b]{0.235\textwidth}
+	\begin{subfigure}[b]{0.25\textwidth}
 		\centering
 		\includegraphics[width=0.8\textwidth]{pic/win-set}
 		\caption{winning set}
@@ -761,7 +762,7 @@ Now imagine that some holes on the ground are detected, as shown in Figure \ref{
 	\end{subfigure}
 	%add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
 	%(or a blank line to force the subfigure onto a new line)
-	\begin{subfigure}[b]{0.235\textwidth}
+	\begin{subfigure}[b]{0.25\textwidth}
 		\centering
 		\includegraphics[width=0.8\textwidth]{pic/traj}
 		\caption{trajectories}
@@ -769,14 +770,14 @@ Now imagine that some holes on the ground are detected, as shown in Figure \ref{
 	\end{subfigure}
 	%add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
 	%(or a blank line to force the subfigure onto a new line)
-	\begin{subfigure}[b]{0.5\textwidth}
+	\begin{subfigure}[b]{0.25\textwidth}
 		
 		\includegraphics[width=0.9\textwidth]{pic/input}
 		\caption{inputs}
 		\label{fig:input}
 	\end{subfigure}
 	\caption{(a) Six regions with different colors are labeled as $ W_1,W_2,...,W6 $. The winning sets under action profiles $U_d = [1], [1:5],[1:10],...,[1:25]$ are the regions corresponding to $ \bigcup_{i=1}^6 W_i,\ \bigcup_{i=2}^6 W_i,\bigcup_{i=3}^6 W_i,...,\ W_6 $ respectively. (b) Trajectories with initial state $ (0.85,-3.95) $ under $ U_d = \emptyset $ (blue) and $[1:10] $ (red). The region inside orange box is the target set $ B $. (c) Inputs over time under $ U_d = \emptyset $ (blue) and $ [1:10] $ (red) for trajectories in (b). The red dash point line indicates value corresponding to input $ u = 10 $.} %{\color{purple} (a) is a bit hard to understand: we  see only disjoint regions on the image but the winning sets are decreasing in size. Maybe say that the winning set $i$ is the union of the $i$ first regions on the graph. (and redefine them accordingly)}
-\end{figure}
+\end{figure*}
 
 The experiment environment is MATLAB R2017a with CPU Intel Core  i7-6820 HQ.
 

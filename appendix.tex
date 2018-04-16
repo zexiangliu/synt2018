@@ -11,6 +11,8 @@ V_0 = \emptyset,\ \mathcal{V}=\{\},\ \mathcal{K} = \{\}\\
 %{\color{purple} remove:} while\ V_{k+1} \not= V_k:\\
 {\color{purple} repeat:}\\
 \ \ \ \ Z_{k+1} = \text{Pre}_{\exists,\forall}^{T,U} (V_k) \bigcup \text{PGPre}_{\exists,\forall}^{T,U} (V_k, Q)\\
+\end{cases}
+\begin{cases}
 \ \ \ \ [V_{k+1}, \mathcal{C}_{k+1}]=\text{Win}_{\exists,\forall}^{T} ((B \mathbf{\ U\ }Z_{k+1}) \vee \Square (B\wedge ( \bigwedge_{i\in I}\Diamond R^i))\\
 \ \ \ \ \mathcal{V}(k+1)=V_{k+1},\ \mathcal{K}(k+1) = \mathcal{C}_{k+1}\\
 \ \ \ \ {\color{purple} k=k+1}\\
@@ -32,6 +34,8 @@ W_0 = Q,\ \mathcal{V}=\{\},\ \mathcal{K}=\{\}\\
 {\color{purple} repeat:}\\
 \ \ \ \ Z_{k+1}^i = Z\cup (B\cap R^i\cap \text{Pre}_{\exists, \forall}^{T,U}(W_k))\\
 \ \ \ \ [X^i, \mathcal{C}^i]= \text{Win}_{\exists,\forall}^{T,U} (B\mathbf{\ U\ }Z_{k+1}^i), \forall i \in I\\
+\end{cases}
+\begin{cases}
 \ \ \ \ W_{k+1} = \bigcap_{i\in I} X^i\\
 \ \ \ \ {\color{purple} k=k+1}\\
 {\color{purple} until \ W_{k}= W_{k-1} }\\
@@ -51,6 +55,8 @@ X_0 = \emptyset,\ \mathcal{V}=\{\},\ \mathcal{K}=\{\}\\
 \text{Pre}_{\exists,\forall}^{T,U}(X_k)\\
 \ \ \ \  [V^2_k,C^2_k]=\text{PGPre}_{\exists,\forall}^{T,U}(Z\cup(B\cap V^1_k),B)\\
 \ \ \ \ X_{k+1} =Z\cup (B\cap V^1_k)\cup V^2_k\\
+\end{cases}
+\begin{cases}
 \ \ \ \ \mathcal{V}(2k+1)=V^1_k, \mathcal{V}(2k+2)=V^2_k\\
 \ \ \ \ \mathcal{K}(2k+1)=C^1_k,\ \mathcal{K}(2k+2)=C^2_k\\
 \ \ \ \ {\color{purple} k=k+1}\\
@@ -65,6 +71,8 @@ Z_{\infty} = Z,\ \mathcal{V} = \{\},\ \mathcal{K}=\{\}, k = 1\\
 for\ U\in 2^U:\\
 \ \ for\ G\in G(U):\\
 \ \ \ \ \ \  [V_k,\mathcal{C}_k]=Inv_{\exists}^{U,G}(Z_{\infty},B)\\
+\end{cases}
+\begin{cases}
 \ \ \ \ \ \ Z_{\infty} = Z_{\infty} \cup V_k\\
 \ \ \ \ \ \ \mathcal{V}(k)=V_k,\ \mathcal{K}(k)=\mathcal{C}_k\\
 \ \ \ \ \ \ {\color{purple} k = k+1}\\
