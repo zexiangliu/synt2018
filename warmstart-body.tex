@@ -60,7 +60,7 @@ such that for any two consecutive states $s(n), s(n+1)$ in the sequence, exists 
 
 \subsection{Linear Temporal Logic}
 
-Linear Temporal Logic (LTL) is utilized to describe the desired behaviors achieved in an AFTS or the concrete system, which we call it a specification of our control synthesis problem. It has logic operators (negation $ \neg $, conjunction $ \wedge $, disjunction $ \vee $), and temporal operators (next $ \bigcirc $, always $ \Square $, eventually $ \Diamond $ and until $ \mathbf{\ U\ }$).
+Linear Temporal Logic (LTL) is utilized to describe the desired behaviors of an AFTS. It consists of logic operators (negation $ \neg $, conjunction $ \wedge $, disjunction $ \vee $), and temporal operators (next $ \bigcirc $, always $ \Square $, eventually $ \Diamond $ and until $ \mathbf{\ U\ }$).
 
 %{\color{blue} use grammar to define LTL, cite Baier and Katoen}
 %The LTL formula over a finite set of atomic propositions $ AP $ can be either: 
@@ -106,12 +106,11 @@ The procedure of abstraction-based control synthesis is as follows:
 
 %{\color{blue}I just noticed G is used for progress group. Maybe we can use R (for recurrence) if it is not used for something else}
 
-The specification considered in this work is of the form:
+The LTL specification considered in this work is of the form:
 \begin{align}
 \phi = \Square A \wedge \Diamond \Square B \wedge \left( \bigwedge_{i\in I} \Square \Diamond R^i\right)\label{phi}
 \end{align}
-for atomic propositions $A$, $B$, $R^i$. Such specifications can express properties of \emph{invariance} ($\Square A$), \emph{persistence} ($\Diamond \Square B$) and \emph{recurrence}
-{\color{purple} ($\Square \Diamond R^i$)}
+for atomic propositions $A$, $B$, $R^i$. Such specifications can express properties of \emph{invariance} ($\Square A$), \emph{persistence} ($\Diamond \Square B$) and \emph{recurrence} ($\Square \Diamond R^i$)
 . This LTL fragment, also used in \cite{wolff2013efficient,Nilsson2017}, is a subset of Generalized Rabin specifications \cite{ehlers2017supervisory}. As the progress groups in AFTS is equivalent to environment liveness assumptions, the formula in \eqref{phi} can also be seen as a generalization of GR(1) specifications, with well-separated environments \cite{klein2010revisiting, maoz2016well,schmuckrelation} under the well-formedness assumption in footnote 1. In what follows, with a slight abuse of notation, we treat $A$, $B$, $R^i$ as subsets of the state set $Q$, e.g., $A = \{ s\in Q \mid A\in h_Q(s)\}$, etc.
 %{\color{purple} for subsets $A$, $B$, $R^i \subseteq Q$ defining atomic propositions. Such specifications can express properties of \emph{invariance} ($\Square A$), \emph{persistence} ($\Diamond \Square B$) and \emph{reccurence}} 
 
@@ -126,15 +125,15 @@ Roughly speaking, the control synthesis problem for an AFTS is to compute a func
 \end{definition}
 
 For a given LTL specification, one can talk about the ``best'' control strategy in enforcing the specification
-{\color{purple} (i.e. the most general one)} {\color{blue} what is this i.e. for?}
-and the set of initial states for which such a strategy is defined.
+{\color{purple} (i.e. the most general one)} {\color{blue} what is this i.e. for?} {\color{teal} ``the most general one" refers to \eqref{phi}}
+and the set of initial states for which such a strategy is defined, i.e. the winning set.
 
 \begin{definition}
-	The \textbf{winning set} of the specification $ \phi $ over an AFTS $T = \{Q,U,\rightarrow_T,G,AP,h_Q\}$, written as $ W_{\phi} $, is the largest subset of $ Q $ such that if the system $ T $ is initially in $ W_{\phi} $, the specification can be enforced.
+	The \textbf{winning set} of the specification $ \phi $ over an AFTS $T = \{Q,U,\rightarrow_T,G,AP,h_Q\}$, written as $ W_{\phi} $, is the largest subset of $ Q $ such that if the system $ T $ is initially in $ W_{\phi} $, the specification can be enforced.\label{def:winset}
 \end{definition}
 
 Note that a control strategy as in definition \ref{def:cs} can require infinite memory. However for LTL specifications, it is known that there exists a finite memory control strategy corresponding to the winning set. In particular, for the specifications of the form \eqref{phi}, we define a data structure, which we call \emph{controller}, to implement a control strategy in a specific way. This data structure will be crucial for the patching algorithms developed
-{\color{purple} in Section~\ref{sec:method}}.
+in Section~\ref{sec:method}.
 
 \begin{definition}
 	A \textbf{simple controller}\footnotemark for a set $ D\subseteq Q $ over an AFTS $ T=\{Q,U,\rightarrow_T,G,AP,h_Q\} $ is a function $ \mathcal{C}: $ $ D\rightarrow 2^U $, i.e. a memoryless controller that maps states in $ D $ to a set of actions. %under which the specification in the winning set remains guaranteed.
@@ -146,11 +145,16 @@ Note that a control strategy as in definition \ref{def:cs} can require infinite 
 Given $\widehat{D} \subseteq D$, a simple controller $ \mathcal{C} $ \textbf{restricted to} $ \widehat{D} $ means that the domain of $ \mathcal{C} $ is restricted to $\widehat{D}$.
 
 \begin{definition}
-	For the AFTS $ T=\{Q,U,\rightarrow_T,G,AP,h_Q\} $, a \textbf{controller} $ \mathcal{C} $ is a tuple $ (\mathcal{V},\mathcal{K},x) $, where $ \mathcal{V} $ is a list of subsets of $ Q $, $ \mathcal{K} $ is a list of controllers or simple controllers, {\color{purple} which we refer to as} sub-controllers of $ \mathcal{C} $, and $ x $ is an internal variable that indicates the index of sub-controllers executed last time. {\color{teal}Initial value for the internal variable $ x $ is (but not necessarily) $ 1 $. The execution of controller and update rules of $ x $ refers to Definition \ref{def:exec}.}({\color{purple} Same remark as with the simple controllers: no need for a connection to winning sets here.} {\color{teal} the transition graph of $ x $ is totally equivalent to  Definition \ref{def:exec}+$ \mathcal{V} $ in $ \mathcal{C} $ and its sub-controllers.} {\color{purple} Yes you reacted before I removed the comment myself ;})
+	For the AFTS $ T=\{Q,U,\rightarrow_T,G,AP,h_Q\} $, a \textbf{controller} $ \mathcal{C} $ is a tuple $ (\mathcal{V},\mathcal{K},x) $, where $ \mathcal{V} $ is a list of subsets of $ Q $, $ \mathcal{K} $ is a list of controllers or simple controllers, {\color{purple} which we refer to as} sub-controllers of $ \mathcal{C} $, and $ x $ is an internal variable that indicates the index of sub-controllers executed last time. {\color{teal}Set the initial values of the internal variable $ x $ as $ 1 $ (but not necessarily). The execution of controller and update rules of $ x $ refers to Definition \ref{def:exec}.}
+	
+	%({\color{purple} Same remark as with the simple controllers: no need for a connection to winning sets here.} {\color{teal} the transition graph of $ x $ is totally equivalent to  Definition \ref{def:exec}+$ \mathcal{V} $ in $ \mathcal{C} $ and its sub-controllers.} {\color{purple} Yes you reacted before I removed the comment myself ;})
 	\label{def:cont}
 \end{definition}
 
-Overall, a controller is a tree structure with controllers at each node and simple controllers at the leaf nodes. The list $\mathcal{K}$ for each controller (each non-leaf node in the tree) denotes the children of that controller in the tree. Winning sets and controllers for specifications in the form of \eqref{phi} are computed iteratively via fixed-point based algorithms given in Appendix \ref{app:basic-alg}.
+Overall, a controller is a tree structure with controllers at each node and simple controllers at the leaf nodes. The list $\mathcal{K}$ for each controller (each non-leaf node in the tree) denotes the children of that controller in the tree. Winning sets and controllers for specifications in the form of \eqref{phi} are computed iteratively via fixed-point based algorithm \eqref{win-phi} given in Appendix \ref{app:basic-alg}.
+
+Note that although we are only interested in the specification in the form of \eqref{phi}, to compute its winning set and controller, we need the fixed-point based algorithms for some other specifications, which may not be in the form of \eqref{phi}. All those algorithms are also given in Appendix A, which output the winning sets and controllers consistent with Definition \ref{def:winset}, \ref{def:simp} and \ref{def:cont}. 
+
 
 
 %\begin{remark}
@@ -277,13 +281,13 @@ Overall, a controller is a tree structure with controllers at each node and simp
 \begin{figure}
 	\centering
 	\includegraphics[width=0.4\linewidth]{pic/eg1}
-	\caption{A simple finite transition system with state space $\{s1,s2,s3,s4\}$ and action space $\{a-h\}$, used to illustrate how the controller works. Atomic propositions are $ A =\{s_1\} $ and $ B=\{s_3, s_4\} $.}
+	\caption{A simple AFTS with state space $\{s1,s2,s3,s4\}$ and action space $\{a-h\}$, used to illustrate how the controller works. Atomic propositions are $ A =\{s_1\} $ and $ B=\{s_3, s_4\} $. For simplicity, assume no progress group exists.}  
 	\label{fig:eg1}
 \end{figure}
 
 \begin{example}
 	\label{ex:exec}
-	For a simple transition system shown in Figure \ref{fig:eg1}, given the specification $ \phi = \Square \Diamond A \wedge \Square \Diamond B $, the outputs of \eqref{win-phi} are the winning set $ W= \{s_1,s_2,s_3,s_4\}$, and the controller $ \mathcal{C} = (W,\{\mathcal{C}^0_1\}, x = 1) $, where the sub-controllers are:
+	For a simple AFTS shown in Figure \ref{fig:eg1}, given the specification $ \phi = \Square \Diamond A \wedge \Square \Diamond B $, the outputs of \eqref{win-phi} are the winning set $ W= \{s_1,s_2,s_3,s_4\}$, and the controller $ \mathcal{C} = (W,\{\mathcal{C}^0_1\}, x = 1) $, where the sub-controllers are:
 	
 	$ \mathcal{C}^0_1 = (\{W,\{s_1\},\{s_3,s_4\}\},\{\mathcal{C}^1_1, \mathcal{C}^1_2\}, x^0_1 ) $; 
 	
@@ -335,13 +339,15 @@ Overall, a controller is a tree structure with controllers at each node and simp
 
 \subsection{Problem Statement}
 \label{sec:prob}
-In this section, we formally define the problem of interest. {\color{blue}it is usually a good idea to start with telling what you want to do in the section so that the user is prepared.}
+In this section, we formally define the problem of interest. %{\color{blue}it is usually a good idea to start with telling what you want to do in the section so that the user is prepared.}
 
-{\color{purple} Somewhere we should give the main steps of the solution also. I think one thing that would be important is to state clearly what can and cannot change in the structure of the controller when $U$ is modified. I guess it is not only a change of the transitions, like in the example, since in some cases the number of steps to convergence can be modified. But then what exactly remains invariant? Only the "depth" of the controller? } {\color{teal} I think basically everything could be changed in the patching operator.} {\color{purple} OK}
+%{\color{purple} Somewhere we should give the main steps of the solution also. I think one thing that would be important is to state clearly what can and cannot change in the structure of the controller when $U$ is modified. I guess it is not only a change of the transitions, like in the example, since in some cases the number of steps to convergence can be modified. But then what exactly remains invariant? Only the "depth" of the controller? } {\color{teal} I think basically everything could be changed in the patching operator.} {\color{purple} OK}
 
 \begin{problem}
-	Given an AFTS $ T = (Q,U,\rightarrow_T,G,AP,h_Q) $, an LTL specification $ \phi = \Square A \wedge \Diamond \Square B \wedge \left( \bigvee_{i\in I} \Square \Diamond R^i\right) $, the winning set $ W_{\phi} $ and controller $ \mathcal{C}_{\phi} $, if a set of actions $ U_d\subseteq U $ in $ T $ is unavailable, find the new winning set and a controller {\color{purple} with an algorithm that exploits the knowledge of $ W_{\phi} $ and $ \mathcal{C}_{\phi} $.}\label{prob}
+	Given an AFTS $ T = (Q,U,\rightarrow_T,G,AP,h_Q) $, an LTL specification $ \phi = \Square A \wedge \Diamond \Square B \wedge \left( \bigvee_{i\in I} \Square \Diamond R^i\right) $, the winning set $ W_{\phi} $ and controller $ \mathcal{C}_{\phi} $, if a set of actions $ U_d\subseteq U $ in $ T $ is unavailable, find the new winning set and a controller with an algorithm that exploits the knowledge of $ W_{\phi} $ and $ \mathcal{C}_{\phi} $.\label{prob}
 \end{problem}
+
+In Section \ref{sec:method}, we show that for winning sets and controllers computed by fixed-point based algorithms \eqref{win-phi}-\eqref{win-inv}, controllers can be modified  
 
 
 \section{PATCHING METHOD}
