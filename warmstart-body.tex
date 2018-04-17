@@ -358,9 +358,8 @@ Consider an AFTS $ T = (Q,U,\rightarrow_T,G,AP,h_Q) $ and {\color{blue} an} LTL 
 	For $ W_{\phi}, \mu_{\phi}, \widehat{W}_{\phi}, \widehat{\mu}_{\phi} $ defined above, we have $ \widehat{W}_{\phi} \subseteq W_{\phi}  $ and $ \widehat{\mu}_{\phi} \subseteq \mu_{\phi}$\label{thm: 1}.
 \end{theorem}
 
-\begin{proof}
-	(i) For any state $ s\in \widehat{W}_{\phi} $, if the system $ \widehat{T} $ starting from $ s $ could be controlled under an infinite sequence of actions and satisfy the specification, so is $ T $, since $ T $ can apply exactly the same sequence of actions and get the same trajectory. Hence $ s\in W_{\phi} $, for \eqref{win-phi} is sound and complete (See Lemma 13 in \cite{Nilsson2017}). Therefore $ \widehat{W}_{\phi}\subseteq W_{\phi} $. (ii) any control strategy in $ \widehat{T} $ works in $ T $ by construction, which implies $ \widehat{\mu}_{\phi} \subseteq \mu_{\phi}$.
-\end{proof}
+\emph{Proof:} (i) For any state $ s\in \widehat{W}_{\phi} $, if the system $ \widehat{T} $ starting from $ s $ could be controlled under an infinite sequence of actions and satisfy the specification, so is $ T $, since $ T $ can apply exactly the same sequence of actions and get the same trajectory. Hence $ s\in W_{\phi} $, for \eqref{win-phi} is sound and complete (See Lemma 13 in \cite{Nilsson2017}). Therefore $ \widehat{W}_{\phi}\subseteq W_{\phi} $. (ii) any control strategy in $ \widehat{T} $ works in $ T $ by construction, which implies $ \widehat{\mu}_{\phi} \subseteq \mu_{\phi}$.
+%$\qedhere$
 
 If $ C_{\phi} $ is implemented to contain all the possible control strategies, Theorem \ref{thm: 1} says that {\color{teal}given the same sequence of inputs, the outputs of $ \widehat{\mathcal{C}}_{\phi} $ should be contained by the outputs of $ \mathcal{C}_{\phi} $}, which implies there is a possibility to obtain $ \widehat{\mathcal{C}}_{\phi} $ by patching the existing controller $ C_{\phi} $. {\color{purple} I have mixed feeling about this last remark; "contain all the information" is a vague notion}
 
@@ -442,13 +441,11 @@ where $ \widehat{\mathcal{C}} $ is converted from $ T(\widehat{\mathcal{C}}) $. 
 	$ \widehat{W} $ and $ \widehat{\mathcal{C}} $ returned by \eqref{patch-pre} are the same as the outputs resulting from $ \text{Pre}_{\exists,\forall}^{T,\widehat{U}}(\widehat{V})$.	\label{thm:pre}
 \end{theorem}
 
-\begin{proof}
-	Let's assume that $ \text{Pre}_{\exists,\forall}^{T,\widehat{U}}(\widehat{V}) $ returns $ W_t $ and $ \mathcal{C}_t $. It's enough to show that $ T(\widehat{\mathcal{C}})= T(\mathcal{C}_t)$, i.e. $ \rightarrow_{T(\widehat{\mathcal{C}})} = \rightarrow_{T(\mathcal{C}_t)} $. 
+\emph{Proof:} Let's assume that $ \text{Pre}_{\exists,\forall}^{T,\widehat{U}}(\widehat{V}) $ returns $ W_t $ and $ \mathcal{C}_t $. It's enough to show that $ T(\widehat{\mathcal{C}})= T(\mathcal{C}_t)$, i.e. $ \rightarrow_{T(\widehat{\mathcal{C}})} = \rightarrow_{T(\mathcal{C}_t)} $. 
 	
 	By \eqref{eqn:pre} and Definition \ref{def:TC}, it is obvious that $ \rightarrow_{T(\mathcal{C}_t)} \subseteq \rightarrow_{A(\mathcal{C})}$ for $ \widehat{V}\subseteq V $ and $ \widehat{U}\subseteq U $. The set of transitions $ S = (*,U_d,*)\cup E $ is only related to states in $ \Delta V $ or actions in $ U_d $, so $\rightarrow_{T(\mathcal{C}_t)}$ and $ S $ are disjoint. $ \rightarrow_{T(\widehat{\mathcal{C}})}= \rightarrow_{A(\mathcal{C})}-S$. Thus $ \rightarrow_{T(\mathcal{C}_t)}\subseteq \rightarrow_{T(\widehat{\mathcal{C}})}$ 
 	
-	By \eqref{patch-pre}, transitions in $ T(\widehat{\mathcal{C}}) $ can only take actions in $ \widehat{U} $ and transit to states in $ \widehat{V} $, which implies that $ \rightarrow_{T(\widehat{\mathcal{C}})}\subseteq \rightarrow_{T(\mathcal{C}_t)} $.  
-\end{proof}
+	By \eqref{patch-pre}, transitions in $ T(\widehat{\mathcal{C}}) $ can only take actions in $ \widehat{U} $ and transit to states in $ \widehat{V} $, which implies that $ \rightarrow_{T(\widehat{\mathcal{C}})}\subseteq \rightarrow_{T(\mathcal{C}_t)} $. \QEDB 
 
 Next, assume that $ Y $ and $ \mathcal{C} $ are the winning set and controller resulting from $ \text{Inv}_{\exists}^{D,G}(Z,B) $. Denote the set of unavailable actions with $ U_d $. If $ D\cap U_d \not= \emptyset$, the winning set would be empty by definition of progress group (see\cite{Nilsson2017}). Given $ \widehat{Z} \subseteq Z $ and $U_d$ such that $ D\cap U_d=\emptyset $, we want to modify $ Y $ and $ \mathcal{C} $ to be the winning set and controller for $ \text{Inv}_{\exists}^{D,G}(\widehat{Z}, B) $. As proven later that the modified winning set $\widehat{Y}$ is contained by $ Y\cup (\Delta Z\cap G\cap B) $. Also, $ \text{Inv}_{\exists}^{D,G}(Z,B) $ computation in \eqref{win-inv} is a contraction algorithm in the sense that $ \{Y_k\}_{k=1}^{\infty} $ is a monotonic decreasing sequence whose limit is the winning set. Combining these two facts, we can warm-start the contraction algorithm in \eqref{win-inv} with $ Y_0=Y\cup (\Delta Z\cap G\cap B)$ instead of $ Q $. Motivated by that idea, the patching operator is
 
@@ -518,9 +515,8 @@ Remove\ all\ \emptyset\ in\ \widehat{\mathcal{V}}\ and \ \widehat{\mathcal{K}},\
 	$ \widehat{Z}_\infty $ and $ \widehat{\mathcal{C}} $ returned by \eqref{patch-pg} are the same as outputs resulting from $ \text{PGPre}_{\exists, \forall}^{T,\widehat{U}}(\widehat{Z},B)$.	\label{thm:pg}
 \end{theorem}
 
-\begin{proof}
-	Guaranteed by Theorem \ref{thm:inv}, $ \widehat{Z}_\infty $ and $ \widehat{\mathcal{V}}(k) $ in \eqref{patch-pg} will be equal to $ Z_{\infty} $ and $ \mathcal{V}(k) $ in \eqref{win-pgpre} when $ \text{PGPre}^{T,\widehat{U}}_{\exists,\forall}(\widehat{Z},B) $ is called, for all $ k $. 
-\end{proof}
+\emph{Proof:} Guaranteed by Theorem \ref{thm:inv}, $ \widehat{Z}_\infty $ and $ \widehat{\mathcal{V}}(k) $ in \eqref{patch-pg} will be equal to $ Z_{\infty} $ and $ \mathcal{V}(k) $ in \eqref{win-pgpre} when $ \text{PGPre}^{T,\widehat{U}}_{\exists,\forall}(\widehat{Z},B) $ is called, for all $ k $. \QEDB
+
 
 Assume that $ X_\infty $ and $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ are the winning set and controller resulting from $ \text{Win}_{\exists,\forall}^{T,U}(B\mathbf{\ U\ }Z) $. Assume $ \vert \mathcal{K}\vert = 2n $, i.e. \eqref{win-until} converges in $ n $ steps. Then, given $ \widehat{Z}\subseteq Z $ and $ \widehat{U}= U-U_d $, to get the winning set and controller for $ \text{Win}_{\exists,\forall}^{T,\widehat{U}}(B\mathbf{\ U\ }\widehat{Z}) $, the patching operator is
 \begin{align}
@@ -559,13 +555,12 @@ The above patch algorithm has two parts: part one modifies the existing sub-cont
 	$ \widehat{X}_\infty $ and $ \widehat{\mathcal{C}} $ returned by \eqref{patch-until} are the same as outputs resulting from $ \text{Win}_{\exists,\forall}^{T,\widehat{U}}(B\mathbf{\ U\ }\widehat{Z}). $\label{thm:until}	
 \end{theorem}
 
-\begin{proof}
+\emph{Proof:}
 	Let's denote $ X_k $ in \eqref{win-until} with inputs $ \widehat{U},B,\widehat{Z} $ as $ X_k^t $. 	To show the soundness and completeness of \eqref{patch-until}, it is enough to show that $ \widehat{X}_k $ in \eqref{patch-until} is equal to $ X_k^t $, for all $ k $. 
 	
 	For $ k< n $, $ \widehat{X}_k = X_k^t $ is guaranteed by the correctness of \eqref{patch-pre} and \eqref{patch-pg}. 
 	
-	For $ k\geq n $, it is enough to show that $ X^t_k \subseteq X_n $, then the correctness again is guaranteed by \eqref{patch-pre} and \eqref{patch-pg}. According to \eqref{win-pgpre}, it is easy to show that $ \text{PGPre}_{\exists,\forall}^{T,U-U_d}(Z_1,B)\subseteq \text{PGPre}_{\exists,\forall}^{T,U}(Z_1,B)\subseteq \text{PGPre}_{\exists,\forall}^{T,U}(Z_2,B) $ for $ Z_1\subseteq Z_2 $. Prove by induction:  $ X_0^t = X_0 $. Assume that $ X_k^t \subseteq X_k $. Then $ \text{PGPre}^{T,U-U_d}_{\exists,\forall}(X^t_{k},B) \subseteq \text{PGPre}^{T,U-U_d}_{\exists,\forall}(X_{k},B)$. It's trivial that $ Pre^{T,U-U_d}_{\exists,\forall}(X^t_{k},B) \subseteq Pre^{T,U-U_d}_{\exists,\forall}(X_{k},B)$. Hence, $ X^t_{k+1}\subseteq X_{k+1} $. By induction argument, $ X_{k}^t\subseteq X_{k+1} \forall k$. But since $ \forall k>n, X_k=X_n $. $ X^t_k \subseteq X_n, \forall k>n $.
-\end{proof}
+	For $ k\geq n $, it is enough to show that $ X^t_k \subseteq X_n $, then the correctness again is guaranteed by \eqref{patch-pre} and \eqref{patch-pg}. According to \eqref{win-pgpre}, it is easy to show that $ \text{PGPre}_{\exists,\forall}^{T,U-U_d}(Z_1,B)\subseteq \text{PGPre}_{\exists,\forall}^{T,U}(Z_1,B)\subseteq \text{PGPre}_{\exists,\forall}^{T,U}(Z_2,B) $ for $ Z_1\subseteq Z_2 $. Prove by induction:  $ X_0^t = X_0 $. Assume that $ X_k^t \subseteq X_k $. Then $ \text{PGPre}^{T,U-U_d}_{\exists,\forall}(X^t_{k},B) \subseteq \text{PGPre}^{T,U-U_d}_{\exists,\forall}(X_{k},B)$. It's trivial that $ Pre^{T,U-U_d}_{\exists,\forall}(X^t_{k},B) \subseteq Pre^{T,U-U_d}_{\exists,\forall}(X_{k},B)$. Hence, $ X^t_{k+1}\subseteq X_{k+1} $. By induction argument, $ X_{k}^t\subseteq X_{k+1} \forall k$. But since $ \forall k>n, X_k=X_n $. $ X^t_k \subseteq X_n, \forall k>n $. \QEDB
 
 Assume that $ W $ and $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ are the winning set and controller resulting from $\text{Win}_{\exists,\forall}^{T,U}((B\mathbf{\ U\ }Z)\vee \Square(B\wedge (\bigwedge_{i\in I} \Diamond R^i)) $. Given that $ \widehat{Z}\subseteq Z $ and $ \widehat{U}\subseteq U $, modify $ W $ and $ \mathcal{C} $ for $\text{Win}_{\exists,\forall}^{T,U}((B\mathbf{\ U\ }\widehat{Z})\vee \Square(B\wedge (\bigwedge_{i\in I} \Diamond R^i)) $. The patching operator for \eqref{win-interm} is 
 \begin{align}
@@ -595,20 +590,20 @@ Z_{\infty}^i = Z\cup (B\cap R^i\cap \text{Pre}_{\exists, \forall}^{T,U}(W_0))\\
 \end{theorem}
 
 
-\begin{proof}
+\emph{Proof:}
 	Assume that $ W_t $ is the winning set of \eqref{win-interm} with input parameters $ U-U_d $, $ B $, $ C_i $ and $ \widehat{Z} $. To show that $ W_t=\widehat{W}_\infty $, it is enough to show that $ W_t\subseteq \widehat{W}_\infty $, i.e. $ \widehat{W}_\infty $ is a larger winning set than $ W_t $. Then by the completeness of \eqref{win-interm}, $ W_t=\widehat{W}_\infty $. 
 	
 	First of all, prove that $ W_t \subseteq W_0 $: For any trajectories satisfying $ (B\mathbf{\ U\ }\widehat{Z})\vee \Square(B\wedge (\bigwedge_{i\in I} \Diamond R^i) $, it satisfies $  (B\mathbf{\ U\ }Z)\vee \Square(B\wedge (\bigwedge_{i\in I} \Diamond R^i) $, so directly we have $ W_t\subseteq W_0 $. 
 	
 	Next, prove $ W_t\subseteq \widehat{W}_k, \forall k $ by induction: Since $ W_t\subseteq W_0 $, $ Z_t^i =\widehat{Z}\cup (B\cap R^i\cap \text{Pre}_{\exists,\forall}^{T,U-U_d}(W_t)) \subseteq \widehat{Z}_0^i$. Hence $ \text{Win}_{\exists,\forall}^{T,U-U_d}(B\mathbf{\ U\ }Z_t^i)\subseteq  \text{Win}_{\exists,\forall}^{T,U-U_d}(B\mathbf{\ U\ }\widehat{Z}_0^i) $ (proven by induction: show that $ X_k $ in \eqref{patch-until} for $ Z_t^i $ is contained by $ X_k $ in \eqref{patch-until} for $ \widehat{Z}_0^i $, for all $ k $). Then, $ W_t = \bigcap_{i\in I} \text{Win}_{\exists,\forall}^{T,U-U_d} (B\mathbf{\ U\ } Z_{t}^i)\subseteq  \bigcap_{i\in I} \text{Win}_{\exists,\forall}^{T,U-U_d}(B\mathbf{\ U\ }\widehat{Z}_0^i)  = \widehat{W}_0$, which is the base case. Assume that $ W_t\subseteq \widehat{W}_k $. Then we have $ Z_t^i \subseteq \widehat{Z}_{k+1}^i $ and $ W_t\subseteq \widehat{W}_{k+1} $ for the same arguments in the base case. Hence by induction, $ W_t^i \subseteq \widehat{W}_{k}, \forall k $. 
 	
-	Finally prove $ \widehat{W}_{k} $ converges by induction: $ \widehat{Z}_0^i \subseteq Z_{\infty}^i $. Hence $ \widehat{W}_0 =\bigcap_{i\in I} \text{Win}_{\exists,\forall}^{T,U-U_d}(B\mathbf{\ U\ }\widehat{Z}_0^i)\subseteq \bigcap_{i\in I} \text{Win}_{\exists,\forall}^{T,U}(B\mathbf{\ U\ }Z_{\infty}^i) = W_0 $, which is the base case. Assume that $ \widehat{W}_{k+1} \subseteq \widehat{W}_k $.  Then $ \widehat{Z}_{k+1}^i\subseteq \widehat{Z}_{k}^i  $ and $ \widehat{W}_{k+1} =\bigcap_{i\in I} \text{Win}_{\exists,\forall}^{T,U-U_d}(B\mathbf{\ U\ }\widehat{Z}_{k+1}^i)\subseteq \bigcap_{i\in I} \text{Win}_{\exists,\forall}^{T,U}(B\mathbf{\ U\ }\widehat{Z}_{k}^i) = \widehat{W}_k $. By induction argument, $ \{\widehat{W}_k\} $ is a decreasing sequence of finite sets, which converges surely.
-\end{proof}
+	Finally prove $ \widehat{W}_{k} $ converges by induction: $ \widehat{Z}_0^i \subseteq Z_{\infty}^i $. Hence $ \widehat{W}_0 =\bigcap_{i\in I} \text{Win}_{\exists,\forall}^{T,U-U_d}(B\mathbf{\ U\ }\widehat{Z}_0^i)\subseteq \bigcap_{i\in I} \text{Win}_{\exists,\forall}^{T,U}(B\mathbf{\ U\ }Z_{\infty}^i) = W_0 $, which is the base case. Assume that $ \widehat{W}_{k+1} \subseteq \widehat{W}_k $.  Then $ \widehat{Z}_{k+1}^i\subseteq \widehat{Z}_{k}^i  $ and $ \widehat{W}_{k+1} =\bigcap_{i\in I} \text{Win}_{\exists,\forall}^{T,U-U_d}(B\mathbf{\ U\ }\widehat{Z}_{k+1}^i)\subseteq \bigcap_{i\in I} \text{Win}_{\exists,\forall}^{T,U}(B\mathbf{\ U\ }\widehat{Z}_{k}^i) = \widehat{W}_k $. By induction argument, $ \{\widehat{W}_k\} $ is a decreasing sequence of finite sets, which converges surely. \QEDB
 
 Now we are ready to modify controller in \eqref{win-phi}, since we have all the patching operators it requires. 
 
 Assume that $ W $ and $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ are the winning set and controller resulting from the operator $
-\text{Win}_{\exists, \forall}^{T,U}\left(\Square A \wedge \Diamond \Square B \wedge \left( \bigwedge_{i\in I} \Square \Diamond R^i\right)\right)$. Assuming that $ \vert \mathcal{K}\vert = n $. For patching purpose, we need some extra information: the lists of winning sets and controllers returned by $\text{Pre}_{\exists,\forall}^{T,U}(V_k)$ in \eqref{win-phi}, i.e. $ [\mathcal{V}_1(k),\mathcal{K}_1(k)]=\text{Pre}_{\exists,\forall}^{T,U}(V_k)$;  the lists of winning sets and controllers returned by $ \text{PGPre}_{\exists,\forall}^{T}(V_k, B) $ in \eqref{win-phi}, i.e. $ [\mathcal{V}_2(k), \mathcal{K}_2(k)]= \text{PGPre}_{\exists,\forall}^{T}(V_k, B)$ ($ k=1,..., n $) ; the controller $ \mathcal{C}_{Inv} $ returned by $ \text{\text{Win}}^{T,U}_{\exists, \forall} ((A\mathbf{U}\emptyset)\vee \Square (A\wedge \Diamond Q)) $ in the first line of \eqref{win-phi}. To restrict action space to $ \widehat{U} = U-U_d $, the patching operator for \eqref{win-phi} is 
+\text{Win}_{\exists, \forall}^{T,U}\left(\Square A \wedge \Diamond \Square B \wedge \left( \bigwedge_{i\in I} \Square \Diamond R^i\right)\right)$. Assuming that $ \vert \mathcal{K}\vert = n $. For patching purpose, we need some extra information: the lists of winning sets and controllers returned by $\text{Pre}_{\exists,\forall}^{T,U}(V_k)$ in \eqref{win-phi}, i.e. $ [\mathcal{V}_1(k),\mathcal{K}_1(k)]=\text{Pre}_{\exists,\forall}^{T,U}(V_k)$;  the lists of winning sets and controllers returned by $ \text{PGPre}_{\exists,\forall}^{T}(V_k, B) $ in \eqref{win-phi}, i.e. $ [\mathcal{V}_2(k), \mathcal{K}_2(k)]= \text{PGPre}_{\exists,\forall}^{T}(V_k, B)$ ($ k=1,..., n $) ; the controller $ \mathcal{C}_{Inv} $ returned by $ \text{\text{Win}}^{T,U}_{\exists, \forall} ((A\mathbf{U}\emptyset)\vee \Square (A\wedge \Diamond Q)) $ in the first line of \eqref{win-phi}. To restrict action space to $ \widehat{U} = U-U_d $, the patching operator for \eqref{win-phi} is
+{\small
 \begin{align}
 &[\widehat{V}_\infty, \widehat{\mathcal{C}}]=\overline{\text{Win}}_{\exists, \forall,(\phi)}^{T,U}(\mathcal{C},\mathcal{C}_{Inv},\mathcal{V}_1,\mathcal{K}_1,\mathcal{V}_2,\mathcal{K}_2,U_d)\\
 =&\begin{cases}\widehat{V}_{\text{inv}} = \overline{\text{Win}}^{T,U}_{\exists, \forall,(\psi)} (\mathcal{C}_{Inv},\emptyset,\emptyset,U_d)\\
@@ -639,6 +634,7 @@ Restrict~ synthesis~ to~ \widehat{V}_{\text{inv}}\\
 \widehat{V}_\infty = \widehat{V}_k, \widehat{\mathcal{C}} = (\widehat{\mathcal{V}},\widehat{\mathcal{K}},x) 
 \end{cases}\label{patch-final}
 \end{align}
+}
 
 The modified winning set $ \widehat{V}_{\infty} $ and controller $ \widehat{\mathcal{C}} $ will be equal to outputs resulting from \\
 \noindent$ \text{Win}_{\exists, \forall}^{T,U-U_d}\left(\Square A \wedge \Diamond \Square B \wedge \left( \bigwedge_{i\in I} \Square \Diamond R^i\right)\right) $. 
@@ -647,18 +643,11 @@ The same as \eqref{patch-until}, the patching algorithm has two parts: one for m
 \begin{theorem}
 	$ \widehat{V}_\infty $ and $ \widehat{\mathcal{C}} $ returned by \eqref{patch-final} are the same as outputs resulting from
 \begin{displaymath}
-	\text{Win}_{\exists, \forall}^{T,U-U_d}\left(\Square A \wedge \Diamond \Square B \wedge \left( \bigwedge_{i\in I} \Square \Diamond R^i\right)\right)
+	\text{Win}_{\exists, \forall}^{T,U-U_d}\left(\Square A \wedge \Diamond \Square B \wedge \left( \bigwedge_{i\in I} \Square \Diamond R^i\right)\right).
 \end{displaymath} \label{thm:phi}
 \end{theorem}
-
-
-
-\begin{proof}
-	
-	The correctness of $ \widehat{V}_{\text{inv}} $ is guaranteed by Theorem \ref{thm:interm}.
-	For $ k\leq n $, the correctness of $ \widehat{V}_{k} $ is guaranteed by Theorem \ref{thm:pre}, \ref{thm:pg} and \ref{thm:interm}. Assume that $ V^t_k $ and $ V_k $ are intermediate results in \eqref{win-phi} with action space $ U-U_d $ and $ U $ respectively. For $ k > n$, the correctness is guaranteed by  \eqref{patch-pre}, \eqref{patch-pg} and \eqref{patch-interm} as long as $ V^t_{k} \subseteq V_n $. We can prove it in the same way as the proof of \eqref{patch-until}. For simplicity, we can apply Theorem 1 instead:  Assume that $ V_k^t $ converges to $ V_{\infty}^t $ and $ V_k $ converges to $ V_{\infty} $. By Theorem \ref{thm: 1}, we have $ V^t_{\infty}\subseteq V_{\infty} = V_n $. Next, prove that $ \{V^t_k\} $ is a monotonic increasing sequence of sets by induction. $ \emptyset = V^t_0 \subseteq V^t_1 $. Assume that $ V^t_{k-1}\subseteq V^t_{k}$. Then it is not hard to see that $ Z^t_k \subseteq Z^t_{k+1} $, and $ V^t_k = \text{Win}_{\exists,\forall}^{T} ((B \mathbf{\ U\ }Z_{k}) \vee \Square (B\wedge ( \bigwedge_{i\in I}\Diamond R^i))\subseteq \text{Win}_{\exists,\forall}^{T} ((B \mathbf{\ U\ }Z_{k+1}) \vee \Square (B\wedge ( \bigwedge_{i\in I}\Diamond R^i))=V^t_{k+1} $ (this must be true otherwise \eqref{patch-interm} can't be correct). So $ V^t_k \subseteq V_n, \forall k $. 
-	
-\end{proof}
+\emph{Proof:} The correctness of $ \widehat{V}_{\text{inv}} $ is guaranteed by Theorem \ref{thm:interm}.
+	For $ k\leq n $, the correctness of $ \widehat{V}_{k} $ is guaranteed by Theorem \ref{thm:pre}, \ref{thm:pg} and \ref{thm:interm}. Assume that $ V^t_k $ and $ V_k $ are intermediate results in \eqref{win-phi} with action space $ U-U_d $ and $ U $ respectively. For $ k > n$, the correctness is guaranteed by  \eqref{patch-pre}, \eqref{patch-pg} and \eqref{patch-interm} as long as $ V^t_{k} \subseteq V_n $. We can prove it in the same way as the proof of \eqref{patch-until}. For simplicity, we can apply Theorem 1 instead:  Assume that $ V_k^t $ converges to $ V_{\infty}^t $ and $ V_k $ converges to $ V_{\infty} $. By Theorem \ref{thm: 1}, we have $ V^t_{\infty}\subseteq V_{\infty} = V_n $. Next, prove that $ \{V^t_k\} $ is a monotonic increasing sequence of sets by induction. $ \emptyset = V^t_0 \subseteq V^t_1 $. Assume that $ V^t_{k-1}\subseteq V^t_{k}$. Then it is not hard to see that $ Z^t_k \subseteq Z^t_{k+1} $, and $ V^t_k = \text{Win}_{\exists,\forall}^{T} ((B \mathbf{\ U\ }Z_{k}) \vee \Square (B\wedge ( \bigwedge_{i\in I}\Diamond R^i))\subseteq \text{Win}_{\exists,\forall}^{T} ((B \mathbf{\ U\ }Z_{k+1}) \vee \Square (B\wedge ( \bigwedge_{i\in I}\Diamond R^i))=V^t_{k+1} $ (this must be true otherwise \eqref{patch-interm} can't be correct). So $ V^t_k \subseteq V_n, \forall k $. \QEDB
 
 
 \section{EXAMPLE}
@@ -802,7 +791,7 @@ We illustrated the efficiency of our method on a example of hopping { \color{pur
 \section{Appendix}
 \textbf{Proof of \eqref{patch-inv}}:
 
-\begin{proof}
+\emph{Proof:}
 	Assume that $ Y_t $ and $ \mathcal{C}_t $ are the winning set and controller resulting from $ \text{Inv}_{\exists}^{D,G} (\widehat{Z}) $. Here we're going to prove that $ Y_t=\widehat{Y}$. Once we have $ Y_t=\widehat{Y}$, it is easy to check that $ T(\mathcal{C}_t) = T(\widehat{\mathcal{C}}) $.
 	
 	By \eqref{win-inv}, the winning set $ Y $ of $ \text{Inv}_{\exists}^{D,G} (Z) $ is the largest subset of $ (G\cap B) - Z  $ satisfying the convergence condition w.r.t $ Z $, i.e. $ Y \subseteq Pre^{T,D}_{\exists, \forall}(Y\cup Z) $, so is $ Y_t $ w.r.t. $ \widehat{Z} $.
@@ -811,6 +800,5 @@ We illustrated the efficiency of our method on a example of hopping { \color{pur
 	
 	Next, we want to show that $ Y_t \subseteq Y_{\infty} $. It's equivalent to show that $ \Delta Y_k\cap Y_t = \emptyset $, since $ Y_t\subseteq Y_0 $ and $ Y_k = Y_0 - \bigcup_{i\in \{1,2,...,k\}} \Delta Y_k$. Obviously $ \Delta Y_0\cap (Y_t\cup \widehat{Z}) = \emptyset $. Assume that $ \Delta Y_k \cap (Y_t\cup \widehat{Z}) = \emptyset $, then $ \text{Pre}_{\exists,\forall}^{T,D} (Y_t\cup \widehat{Z}) \cap \text{Pre}_{\forall, \exists}^{T_{\text{Inv}}^k,D}(\Delta Y_k) = \emptyset$ by definition of $ Pre $ in \eqref{eqn:pre} and the fact that $ \rightarrow_{T_{\text{Inv}}^k}\subseteq \rightarrow_{T} $. For $ Y_t \subseteq \text{Pre}_{\exists,\forall}^{T,D} (Y_t\cup \widehat{Z}) $ and $ \Delta Y_{k+1} = \text{Pre}_{\forall, \exists}^{T_{\text{Inv}}^k,D}(\Delta Y_k) $, $ Y_t\cap \Delta Y_{k+1} = \emptyset $. Hence by induction argument, $ Y_t \cap \Delta Y_k = \emptyset, \forall k $. Thus, $ Y_t\subseteq Y_{\infty} $. 
 	
-	The last step is to show that $ Y_{\infty} $ satisfies the convergence condition over $ \widehat{Z} $. By definitions of $ T_{\text{Inv}}^k $, $ \Delta Y_{k+1}= Y_k \cap \text{Pre}_{\forall,\exists}^{T, D}(\Delta Y_k)$. Then by the additivity of $ \text{Pre}^{T,D}_{\forall,\exists} $ (i.e. for any $ X_1 $ and $ X_2 $, $ \text{Pre}_{\forall,\exists}^{T,D} (X_1\cup X_2)=\text{Pre}_{\forall,\exists}^{T,D} (X_1)\cup \text{Pre}_{\forall,\exists}^{T,D} (X_2) $), it is easy to check that redefining fourth line in \eqref{patch-inv} by $ \Delta Y_{k+1} = \Delta Y_k \cup (Y_k \cap \text{Pre}_{\forall,\exists}^{T, D}(\Delta Y_k)) $ gives the same result.  By the new definition of $ \Delta Y_k $ and the fact $ Y_k \cap \widehat{Z} = \emptyset $, $ \Delta Y_k = Q-(Y_k\cup \widehat{Z}) $. $ \Delta Y_k $ converges surely since it increases each iteration and is contained by a finite set $ Q $. Once $ \Delta Y_k $ converges, $ Y_k \cap \text{Pre}_{\forall,\exists}^{T, D}(\Delta Y_k)\subseteq \Delta Y_k $. $ Y_k $ and $ \Delta Y_k $ are disjoint, so $ Y_k \cap \text{Pre}_{\forall,\exists}^{T, D}(\Delta Y_k) = \emptyset $, i.e.  $ Y_k \cap \text{Pre}_{\forall,\exists}^{T, D}(Q-(Y_k\cup \widehat{Z})) = \emptyset $. It says that $ \forall s_1 \in Y_k$, not $\forall u\in D, \exists s_2\in Q, (s1,u,s2)\in \rightarrow_{T} $ and $s_2\in (Q-(Y_k\cup \widehat{Z}))$, i.e. $ \forall s_1 \in Y_k, \exists u\in D, \forall s_2 \in Q,  (s_1,u,s_2)\not\in \rightarrow_{T}$ or $ s_2\in (Y_k\cup \widehat{Z})$. That implies that $ Y_k\subseteq \text{Pre}_{\exists,\forall}^{T,D}(Y_k\cup \widehat{Z}) $. Therefore $ Y_{\infty}\subseteq Y_t $ following the same arguments in step one.
-\end{proof}
+	The last step is to show that $ Y_{\infty} $ satisfies the convergence condition over $ \widehat{Z} $. By definitions of $ T_{\text{Inv}}^k $, $ \Delta Y_{k+1}= Y_k \cap \text{Pre}_{\forall,\exists}^{T, D}(\Delta Y_k)$. Then by the additivity of $ \text{Pre}^{T,D}_{\forall,\exists} $ (i.e. for any $ X_1 $ and $ X_2 $, $ \text{Pre}_{\forall,\exists}^{T,D} (X_1\cup X_2)=\text{Pre}_{\forall,\exists}^{T,D} (X_1)\cup \text{Pre}_{\forall,\exists}^{T,D} (X_2) $), it is easy to check that redefining fourth line in \eqref{patch-inv} by $ \Delta Y_{k+1} = \Delta Y_k \cup (Y_k \cap \text{Pre}_{\forall,\exists}^{T, D}(\Delta Y_k)) $ gives the same result.  By the new definition of $ \Delta Y_k $ and the fact $ Y_k \cap \widehat{Z} = \emptyset $, $ \Delta Y_k = Q-(Y_k\cup \widehat{Z}) $. $ \Delta Y_k $ converges surely since it increases each iteration and is contained by a finite set $ Q $. Once $ \Delta Y_k $ converges, $ Y_k \cap \text{Pre}_{\forall,\exists}^{T, D}(\Delta Y_k)\subseteq \Delta Y_k $. $ Y_k $ and $ \Delta Y_k $ are disjoint, so $ Y_k \cap \text{Pre}_{\forall,\exists}^{T, D}(\Delta Y_k) = \emptyset $, i.e.  $ Y_k \cap \text{Pre}_{\forall,\exists}^{T, D}(Q-(Y_k\cup \widehat{Z})) = \emptyset $. It says that $ \forall s_1 \in Y_k$, not $\forall u\in D, \exists s_2\in Q, (s1,u,s2)\in \rightarrow_{T} $ and $s_2\in (Q-(Y_k\cup \widehat{Z}))$, i.e. $ \forall s_1 \in Y_k, \exists u\in D, \forall s_2 \in Q,  (s_1,u,s_2)\not\in \rightarrow_{T}$ or $ s_2\in (Y_k\cup \widehat{Z})$. That implies that $ Y_k\subseteq \text{Pre}_{\exists,\forall}^{T,D}(Y_k\cup \widehat{Z}) $. Therefore $ Y_{\infty}\subseteq Y_t $ following the same arguments in step one. \QEDB
 \fi
