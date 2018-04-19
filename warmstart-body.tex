@@ -151,9 +151,9 @@ Given $\widehat{D} \subseteq D$, a simple controller $ \mathcal{C} $ \textbf{res
 	\label{def:cont}
 \end{definition}
 
-Overall, a controller is {\color{teal} an ordered } tree structure with controllers at each node and simple controllers at the leaf nodes. The list $\mathcal{K}$ for each controller (each non-leaf node in the tree) denotes the children of that controller in the tree. Winning sets and controllers for specifications in the form of \eqref{phi} are computed iteratively via fixed-point based algorithm \eqref{win-phi} given in Appendix \ref{app:basic-alg}.
+%Winning sets and controllers, consistent with Definition \ref{def:winset} and \ref{def:cont}, for specifications in the form of \eqref{phi} are computed iteratively via fixed-point based algorithm \eqref{win-phi} given in Appendix \ref{app:basic-alg}. Other fixed-point based algorithms for specifications different from \eqref{phi} are  called by \eqref{win-phi} internally (although our interest is only in the specification in the form of \eqref{phi}), whose winning sets and controllers are also consistent with Definition \ref{def:winset} and \ref{def:cont}, stored as sub-controllers in the output controller of \eqref{win-phi}. 
 
-Note that although we are only interested in the specification in the form of \eqref{phi}, to compute its winning set and controller, several fixed-point based algorithms for specifications not in the form of \eqref{phi} are called by \eqref{win-phi} internally. The output winning sets and controllers of those fixed-point algorithms are consistent with Definition \ref{def:winset} and \ref{def:cont}, which are usually stored as sub-controllers in the output controller of \eqref{win-phi}. 
+Overall, a controller is {\color{teal} an ordered } tree structure with controllers at each node and simple controllers at the leaf nodes. The list $\mathcal{K}$ for each controller (each non-leaf node in the tree) denotes the children of that controller in the tree. Winning sets and controllers for specifications in the form of \eqref{phi} are computed iteratively via fixed-point based algorithm \eqref{win-phi} given in Appendix \ref{app:basic-alg}.
 
 %\begin{remark}
 %	The definition of controller defines the implementation of a control strategy obtained by fixed-point operators discussed in the following. For \eqref{win-phi}, \eqref{win-interm}, \eqref{win-until} and \eqref{win-inv}, the number of sub-controllers in each controller is proportional to the number of iterations when the corresponding fixed-point operator converges. Simple controllers are smallest elements in a controller, i.e. the ones given by \eqref{eqn:pre} and \eqref{win-inv}. 
@@ -339,7 +339,10 @@ In this section, we formally define the problem of interest. %{\color{blue}it is
 	Given an AFTS $ T = (Q,U,\rightarrow_T,G,AP,h_Q) $, an LTL specification $ \phi = \Square A \wedge \Diamond \Square B \wedge \left( \bigvee_{i\in I} \Square \Diamond R^i\right) $, the winning set $ W_{\phi} $ and controller $ \mathcal{C}_{\phi} $, if a set of actions $ U_d\subseteq U $ in $ T $ is unavailable, find the new winning set and a controller with an algorithm that exploits the knowledge of $ W_{\phi} $ and $ \mathcal{C}_{\phi} $.\label{prob}
 \end{problem}
 
-In Section \ref{sec:method}, we show that each fixed-point based algorithm \eqref{win-phi}-\eqref{win-inv} 
+
+Recall that the winning set and controller for specification $ \phi $ are constructed via fixed-point based algorithm \eqref{win-phi}, whose data structures are consistent with Definition \ref{def:winset} and \ref{def:cont}.
+
+In Section \ref{sec:method}, we show that each fixed-point based algorithm \eqref{win-interm}-\eqref{win-inv} has a corresponding patching algorithms which could restricts its existing winning set and controller to a smaller action space and a strong specification\footnote{For specifications $ \phi $ and $ \psi $, ``$ \phi $ is stronger than $ \psi $"  means that whenever $ \phi $ is satisfied, $ \psi $ is satisfied.}.
 
 \section{PATCHING METHOD}
 \label{sec:method}
