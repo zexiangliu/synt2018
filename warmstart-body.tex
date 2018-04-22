@@ -349,7 +349,11 @@ Furthermore, since there is an order between the nodes in each layer of the tree
 Before presenting the patching methods, we state a property of controller implementations that roughly shows that the controllers contain all the relevant information needed for patching. We start with a definition of strategy containment.
 
 \begin{definition}
-	For two control strategies $ \mu_1 $ and $ \mu_2 $ corresponding to winning set $ W_1 $ and $ W_2 $ {\color{purple} over sets $D_1$ and $D_2$ ? (to avoid mentioning winning sets here)} ({\color{teal}a control strategy only takes inputs in the winning set, how to deal with this problem?}), we say that $ \mu_2 $ contains $ \mu_1$, denoted by $ \mu_{1} \subseteq \mu_{2}$, if $ \mu_{1} (\{(s_i,a_i)\}_{i=1}^{n-1}, s_n) $ is a subset of $ \mu_{2}(\{(s_i,a_i)\}_{i=1}^{n-1}, s_n) $, for all feasible $ n $ and all transition trajectories $ q =(s_1,a_1),(s_2,a_2),...,(s_{n-1},a_{n-1}) $ satisfying $ s_1\in W_{1} $, $ a_k \in \mu_{1} (\{(s_i,a_i)\}_{i=1}^{k-1}, s_k) $.
+	For two control strategies $ \mu_1 $ and $ \mu_2 $
+	%winning set $ W_1 $ and $ W_2 $
+	 {\color{purple} over sets $D_1$ and $D_2$\footnote{In this work, $ D_1 $ and $ D_2 $ are always equal to the winning sets corresponding to $ \mu_1 $ and $ \mu_2 $. In general, they could be larger than the winning sets dependent on the type of specification.}}
+	 	% (to avoid mentioning winning sets here)} ({\color{teal}a control strategy only takes inputs in the winning set, how to deal with this problem?})
+  	 , we say that $ \mu_2 $ contains $ \mu_1$, denoted by $ \mu_{1} \subseteq \mu_{2}$, if $ \mu_{1} (\{(s_i,a_i)\}_{i=1}^{n-1}, s_n) $ is a subset of $ \mu_{2}(\{(s_i,a_i)\}_{i=1}^{n-1}, s_n) $, for all feasible $ n $ and all transition trajectories $ q =(s_1,a_1),(s_2,a_2),...,(s_{n-1},a_{n-1}) $ satisfying {\color{purple}$ s_1\in D_{1} $}, $ a_k \in \mu_{1} (\{(s_i,a_i)\}_{i=1}^{k-1}, s_k) $.
 \end{definition}
 
 Consider an AFTS $ T = (Q,U,\rightarrow_T,G,AP,h_Q) $ and {\color{blue} an} LTL specification $ \phi = \Square A \wedge \Diamond \Square B \wedge \left( \bigwedge_{i\in I} \Square \Diamond R^i\right) $. Compute its winning set \eqref{win-phi} and the winning control strategy $ \mu_{\phi} $ (or controller $ \mathcal{C}_{\phi} $) via fixed-point operators. Now disable some actions $ U_d \subseteq U$, i.e. having a new AFTS $ \widehat{T} = (Q,U-U_d,\rightarrow_T,G,AP,h_Q) $, and re-compute the winning set and control strategy, denoted by $ \widehat{W}_{\phi} $ and $ \widehat{\mu}_{\phi} $ (or controller $ \widehat{\mathcal{C}}_{\phi} $), via the same fixed-point operator. Then, we have the following theorem:
@@ -379,7 +383,7 @@ If $ C_{\phi} $ is implemented to contain all the possible control strategies, T
 	By Definition \ref{def:TC}, $ A(\mathcal{C}) $ can be easily constructed from the simple controller $ \mathcal{C} $ and the AFTS $ T $. Conversely, $ \mathcal{C} $ can be constructed from $ A(\mathcal{C}) $ by $ \mathcal{C} = \{(s,D(s)):s\in W,D(s)\not=\emptyset\} $, where $ D(s)=\{u:(s,u,s_2)\in \rightarrow_{A(\mathcal{C})}\} $.\label{rmk:conv}
 \end{remark}
 %{\color{blue} don't abbreviate "not", write "do not", "does not", etc.}
-{\color{teal}Since $ A(\mathcal{C}) $ contains the transition information for all state-action pairs in $ \mathcal{C} $, it's easier to search invalid transitions in $ A(\mathcal{C}) $ than $ \mathcal{C} $ after some actions become unavailable. Also, the conversion between  $ \mathcal{C} $ and $ A(\mathcal{C}) $ is straightforward according to Remark \ref{rmk:conv}.} For those reasons, we modify a simple controller $ \mathcal{C} $ by modifying its corresponding FTS $ A(\mathcal{C}) $ and then converting $ A(\mathcal{C}) $ to $ \mathcal{C} $. Several operations applied to the FTS $ A(\mathcal{C}) $ are defined in Table \ref{tab:oper}.  {\color{purple} Not clear}
+{\color{teal}Since $ A(\mathcal{C}) $ contains the transition information for all state-action pairs in $ \mathcal{C} $, it's easier to search invalid transitions in $ A(\mathcal{C}) $ than $ \mathcal{C} $ after some actions become unavailable. Also, the conversion between  $ \mathcal{C} $ and $ A(\mathcal{C}) $ is straightforward according to Remark \ref{rmk:conv}.} For those reasons, we modify a simple controller $ \mathcal{C} $ by modifying its corresponding FTS $ A(\mathcal{C}) $ and then converting $ A(\mathcal{C}) $ to $ \mathcal{C} $. Several operations applied to the FTS $ A(\mathcal{C}) $ are defined in Table \ref{tab:oper}, with which we are ready to modify simple controllers resulting from \eqref{eqn:pre} and \eqref{win-inv}, i.e. $ \text{Pre}_{\exists,\forall}^{T, U}(V) $ and $ \text{Inv}_{\exists}^{D,G}(Z,B) $. %{\color{purple} Not clear}
 
 %Assume the AFTS $ T = (Q,U,\rightarrow_T, G, AP, h_Q) $ is the abstraction of the system that needs to be controlled. Assume that $ A(\mathcal{C})=(Q_{\mathcal{C}}, U_{\mathcal{C}},\rightarrow_{A(\mathcal{C})})$ is a transition system corresponding to a simple controller $ \mathcal{C} $. 
 
@@ -395,7 +399,7 @@ If $ C_{\phi} $ is implemented to contain all the possible control strategies, T
 %A(\mathcal{C})\cup E
 %\end{displaymath}
 
-%WNote that since $ E \subseteq Q\times U\times Q $, $ E $ may contain states and actions which do not exists in $ Q_{\mathcal{C}}\subseteq Q $ and $ U_{\mathcal{C}}\subseteq U $. Then just assume that $ Q_{\mathcal{C}} $ and $ U_{\mathcal{C}} $ will enlarge automatically, which is easy to implement in the code.
+%Note that since $ E \subseteq Q\times U\times Q $, $ E $ may contain states and actions which do not exists in $ Q_{\mathcal{C}}\subseteq Q $ and $ U_{\mathcal{C}}\subseteq U $. Then just assume that $ Q_{\mathcal{C}} $ and $ U_{\mathcal{C}} $ will enlarge automatically, which is easy to implement in the code.
 
 %\emph{null node seeking}: return the set $\{s_1\in Q_{A(\mathcal{C})}: \not\exists (s_1,a,s_2)\in \rightarrow_{A(\mathcal{C})},\forall a\in U_{A(\mathcal{C})}, \forall s_2 \in Q_{A(\mathcal{C})}\} $, i.e. all the nodes whose out-degree is zero, written as
 %\begin{displaymath}
@@ -422,11 +426,9 @@ If $ C_{\phi} $ is implemented to contain all the possible control strategies, T
 	\label{tab:oper}
 \end{table*}
 
-Now we are ready to modify simple controllers returned by \eqref{eqn:pre} and \eqref{win-inv}:
+Suppose the AFTS $ T = (Q,U,\rightarrow_T, G, AP, h_Q) $ is the abstraction of the system that needs to be controlled. 
 
-Assume the AFTS $ T = (Q,U,\rightarrow_T, G, AP, h_Q) $ is the abstraction of the system that needs to be controlled. 
-
-Assume that  $ W $ and $ \mathcal{C} $ are the winning set and controller returned by $ \text{Pre}_{\exists,\forall}^{T, U}(V) $. Given $ \widehat{V}= V-\Delta V $ and $ \widehat{U} = U-U_d $, we want to modify $ W $ and $ \mathcal{C} $ to be the winning set and controller for $ \text{Pre}_{\exists,\forall}^{T,\widehat{U}}(\widehat{V}) $. Intuitively if we can find all the invalid transitions $ (s_1,u,s_2) $ in $ A(\mathcal{C}) $ due to $ u\in U_d $ or $ s_2\in\Delta V $, and remove them from $ A(\mathcal{C}) $, that would result in a controller that works for the modified problem setting. Motivated by this idea, the patching operator for \eqref{eqn:pre} is:
+Suppose that  $ W $ and $ \mathcal{C} $ are the winning set and controller resulting from $ \text{Pre}_{\exists,\forall}^{T, U}(V) $. Given $ \widehat{V}= V-\Delta V $ and $ \widehat{U} = U-U_d $, we want to modify $ W $ and $ \mathcal{C} $ to be the winning set and controller resulting from $ \text{Pre}_{\exists,\forall}^{T,\widehat{U}}(\widehat{V}) $. Intuitively if we can find all the invalid transitions $ (s_1,u,s_2) $ in $ A(\mathcal{C}) $ due to $ u\in U_d $ or $ s_2\in\Delta V $, and remove them from $ A(\mathcal{C}) $, that would result in a controller that works for the modified problem setting. Motivated by this idea, the patching operator for \eqref{eqn:pre} is:
 
 \begin{align}
 &[\widehat{W},\widehat{\mathcal{C}}]=\overline{\text{Pre}}_{\exists,\forall}^{T, U}(\mathcal{C},\Delta V,U_d)\\
@@ -449,7 +451,8 @@ where $ \widehat{\mathcal{C}} $ is converted from $ T(\widehat{\mathcal{C}}) $. 
 	
 	By \eqref{patch-pre}, transitions in $ T(\widehat{\mathcal{C}}) $ can only take actions in $ \widehat{U} $ and transit to states in $ \widehat{V} $, which implies that $ \rightarrow_{T(\widehat{\mathcal{C}})}\subseteq \rightarrow_{T(\mathcal{C}_t)} $. \QEDB 
 
-Next, assume that $ Y $ and $ \mathcal{C} $ are the winning set and controller resulting from $ \text{Inv}_{\exists}^{D,G}(Z,B) $. Denote the set of unavailable actions with $ U_d $. If $ D\cap U_d \not= \emptyset$, the winning set would be empty by definition of progress group (see\cite{Nilsson2017}). Given $ \widehat{Z} \subseteq Z $ and $U_d$ such that $ D\cap U_d=\emptyset $, we want to modify $ Y $ and $ \mathcal{C} $ to be the winning set and controller for $ \text{Inv}_{\exists}^{D,G}(\widehat{Z}, B) $. As proven later that the modified winning set $\widehat{Y}$ is contained by $ Y\cup (\Delta Z\cap G\cap B) $. Also, $ \text{Inv}_{\exists}^{D,G}(Z,B) $ computation in \eqref{win-inv} is a contraction algorithm in the sense that $ \{Y_k\}_{k=1}^{\infty} $ is a monotonic decreasing sequence whose limit is the winning set. Combining these two facts, we can warm-start the contraction algorithm in \eqref{win-inv} with $ Y_0=Y\cup (\Delta Z\cap G\cap B)$ instead of $ Q $. Motivated by that idea, the patching operator is
+
+Suppose that $ Y $ and $ \mathcal{C} $ are the winning set and controller resulting from $ \text{Inv}_{\exists}^{D,G}(Z,B) $. Denote the set of unavailable actions with $ U_d $. If $ D\cap U_d \not= \emptyset$, the winning set would be empty by definition of progress group (see\cite{Nilsson2017}). Given $ \widehat{Z} \subseteq Z $ and $U_d$ such that $ D\cap U_d=\emptyset $, we want to modify $ Y $ and $ \mathcal{C} $ to be the winning set and controller for $ \text{Inv}_{\exists}^{D,G}(\widehat{Z}, B) $. As proven later that the modified winning set $\widehat{Y}$ is contained by $ Y\cup (\Delta Z\cap G\cap B) $. Also, $ \text{Inv}_{\exists}^{D,G}(Z,B) $ computation in \eqref{win-inv} is a contraction algorithm in the sense that $ \{Y_k\}_{k=1}^{\infty} $ is a monotonic decreasing sequence whose limit is the winning set. Combining these two facts, we can warm-start the contraction algorithm in \eqref{win-inv} with $ Y_0=Y\cup (\Delta Z\cap G\cap B)$ instead of $ Q $. Motivated by that idea, the patching operator is
 
 \begin{align}
 &[\widehat{Y},\widehat{\mathcal{C}}]=\overline{Inv}_{\exists}^{D,G}(Y,\mathcal{C},Z,\widehat{Z}) \\
