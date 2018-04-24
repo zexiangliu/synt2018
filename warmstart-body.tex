@@ -356,24 +356,28 @@ Before presenting the patching methods, we state a property of controller implem
   	 , we say that $ \mu_2 $ contains $ \mu_1$, denoted by $ \mu_{1} \subseteq \mu_{2}$, if $ \mu_{1} (\{(s_i,a_i)\}_{i=1}^{n-1}, s_n) $ is a subset of $ \mu_{2}(\{(s_i,a_i)\}_{i=1}^{n-1}, s_n) $, for all feasible $ n $ and all transition trajectories $ q =(s_1,a_1),(s_2,a_2),...,(s_{n-1},a_{n-1}) $ satisfying {\color{purple}$ s_1\in D_{1} $}, $ a_k \in \mu_{1} (\{(s_i,a_i)\}_{i=1}^{k-1}, s_k) $.
 \end{definition}
 
-Given an AFTS $ T = (Q,U,\rightarrow_T,G,AP,h_Q) $ and {\color{blue} an} LTL specification $ \phi $, compute its winning set $ W_{\phi} $ and the winning control strategy $ \mu_{\phi} $  via one of the fixed-point based algorithms. Now disable the set of actions $ U_d \subseteq U$ in the AFTS $ T $, which results in one new AFTS $ \widehat{T} = (Q,U-U_d,\rightarrow_{\widehat{T}},G,AP,h_Q) $, and re-compute the winning set and control strategy, denoted by $ \widehat{W}_{\phi} $ and $ \widehat{\mu}_{\phi} $, over $ \widehat{T} $ via the same algorithm. Then, we have the following theorem:
+
+Given an AFTS $ T = (Q,U,\rightarrow_T,G,AP,h_Q) $ and {\color{blue} an} LTL specification $ \phi $, compute its winning set $ W_{\phi} $ and the winning control strategy $ \mu_{\phi} $  via one of the fixed-point based algorithms. Now disable the set of actions $ U_d \subseteq U$ in the AFTS $ T $, which results in one new AFTS $ \widehat{T} = (Q,U-U_d,\rightarrow_{\widehat{T}},G,AP,h_Q) $, and re-compute the winning set and control strategy, denoted by $ \widehat{W}_{\phi} $ and $ \widehat{\mu}_{\phi} $, for a specification the same as or stronger than $ \phi $ over $ \widehat{T} $ via the same algorithm. Then, we have the following theorem:
 
 
 
 \begin{theorem}
-	For $ W_{\phi}, \mu_{\phi}, \widehat{W}_{\phi}, \widehat{\mu}_{\phi} $ defined above, we have $ \widehat{W}_{\phi} \subseteq W_{\phi}  $ and $ \widehat{\mu}_{\phi} \subseteq \mu_{\phi}$\label{thm: 1}.
+	For $ W_{\phi}, \mu_{\phi}, \widehat{W}_{\phi}, \widehat{\mu}_{\phi} $ defined above, we have (i) $ \widehat{W}_{\phi} \subseteq W_{\phi} $ (ii) $ \widehat{\mu}_{\phi}\subseteq \mu_\phi $ if $ \mu_{\phi} $ and $ \widehat{\mu}_{\phi} $ are implemented by simple controllers. 
+	\label{thm: 1} 
 \end{theorem}
 
-\emph{Proof:} (i) For any state $ s\in \widehat{W}_{\phi} $, if the system $ \widehat{T} $ starting from $ s $ could be controlled under an infinite sequence of actions and satisfy the specification $ \phi $, we can apply the same sequence of actions over $ T $ and get the same trajectory. That implies $ s\in W_{\phi} $, because the winning sets resulting from the fixed-point based algorithms in Appendix \ref{app:basic-alg} are proven to be sound and complete in \cite{Nilsson2017}. Therefore, $ \widehat{W}_{\phi}\subseteq W_{\phi} $. (ii) any control strategy in $ \widehat{T} $ works in $ T $ by construction, which implies $ \widehat{\mu}_{\phi} \subseteq \mu_{\phi}$.
+\emph{Proof:} (i) For any state $ s\in \widehat{W}_{\phi} $, if the system $ \widehat{T} $ starting from $ s $ could be controlled under an infinite sequence of actions and satisfy the specification $ \phi $, we can apply the same sequence of actions over $ T $ and get the same trajectory. That implies $ s\in W_{\phi} $, because the winning sets resulting from the fixed-point based algorithms are sound and complete\footnote{Proofs of The soundness and completeness of \eqref{win-phi}, \eqref{win-interm} and \eqref{win-inv} are given in the Appendix A of \cite{Nilsson2017}. The soundness and completeness of \eqref{win-pgpre}, \eqref{win-inv} and \eqref{eqn:pre} are trivial.}. Therefore, $ \widehat{W}_{\phi}\subseteq W_{\phi} $. (ii) Given the winning set $ W $, $ Pre_{\exists,\forall}^{T,U}(W)$ restricted to $ W $ gives the simple controller. By the definition of $ Pre^{T,U}_{\exists,\forall} $ in \eqref{eqn:pre}, the control strategies implemented in the simple controller are sound and complete as long as $ W $ is sound and complete. Thus control strategies $ \widehat{\mu}_\phi $ and $ \mu_\phi $ are sound and complete. Since $ \widehat{\mu}_\phi $ has a smaller action space with the same or a stronger specification than $ \mu_\phi $, every sequence of actions given by $ \widehat{\mu}_\phi $ works for $ T $ too and should be given by $ \mu_\phi $ due to the completeness. That implies that $ \widehat{\mu}_\phi \subseteq \mu_\phi $.
 %$\qedhere$
 
-In our context, controllers are the implementations of control strategies (see Definition \ref{def:cont}). If $ C_{\phi} $ is implemented to contain all the possible control strategies, Theorem \ref{thm: 1} says that {\color{teal}given the same sequence of inputs, the outputs of $ \widehat{\mathcal{C}}_{\phi} $ should be contained by the outputs of $ \mathcal{C}_{\phi} $}, which implies there is a possibility to obtain $ \widehat{\mathcal{C}}_{\phi} $ by patching the existing controller $ \mathcal{C}_{\phi} $. %{\color{purple} I have mixed feeling about this last remark; "contain all the information" is a vague notion}
+Theorem \ref{thm: 1} says that the winning set of the existing controller always shrinks after a set of actions are disabled, which agrees with our intuition. Furthermore, it shows the containment relationship in simple controllers before and after changes in the action space, which reveals the possibility of patching the simple controllers instead of re-synthesizing them. This is significant because according to the data structure in Definition \ref{def:cont}, a controller is always built on simple controllers, i.e. the leaf nodes in the tree structure. If we can patch the leaf nodes, it's possible to patch the parent nodes of the leaves, and so forth. 
+
+In Section \ref{sec:patch-simple}, we will firstly discuss the patching algorithms for the simple controllers, and then in Section \ref{sec:patch-cont} we'll show how to patch the other nodes built on the leaf nodes, and finally patch the root node, i.e the controller resulting from \eqref{win-phi}. 
+
+%In our context, controllers are the implementations of control strategies (see Definition \ref{def:cont}). If $ C_{\phi} $ is implemented to contain all the possible control strategies, Theorem \ref{thm: 1} says that {\color{teal}given the same sequence of inputs, the outputs of $ \widehat{\mathcal{C}}_{\phi} $ should be contained by the outputs of $ \mathcal{C}_{\phi} $}, which implies there is a possibility to obtain $ \widehat{\mathcal{C}}_{\phi} $ by patching the existing controller $ \mathcal{C}_{\phi} $. %{\color{purple} I have mixed feeling about this last remark; "contain all the information" is a vague notion}
 
 
 %From the perspective of implementation, a controller $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ is a data structure that organizes simple controllers in a hierarchy way. The partially ordered sets $ \mathcal{V} $  and internal variable are only used during execution. So the basic step for patching a controller is to modify its simple controllers, which are discussed in Section \ref{sec:patch-simple}. 
 
-
-As we mentioned in Section \ref{sec:prob}, two critical steps for the success of patching is: (i) patch simple controllers (ii) retrieve the inputs for the original fixed-point based algorithms. Recall the 
 
 \subsection{Patching Simple Controllers}
 \label{sec:patch-simple}
@@ -489,7 +493,7 @@ In regards to the patching operator in \eqref{patch-inv}, we have the following 
 Given a simple controller $ \mathcal{C} $ and new synthesis settings, both \eqref{patch-pre} and \eqref{patch-inv} try to find $ T(\widehat{\mathcal{C}}) $ inside $ A(\mathcal{C}) $. However, if we re-synthesize the new simple controller from scratch, \eqref{eqn:pre} and \eqref{win-inv} would try to find $ A(\mathcal{C}) $ in the whole AFTS $ T $, which in general might need more computation cost, as we demonstrate via simulations. However, in the worst case, there might not be any computational gains.
 
 \subsection{Patching General Controllers}
-
+\label{sec:patch-cont}
 %\begin{assumption}
 %	A fixed-point patching operators has access to outputs and inputs of the corresponding fixed-point operator, as well as all the intermediate winning sets and controllers of the fixed-point operators generated at each iterative step. 
 %\end{assumption}
