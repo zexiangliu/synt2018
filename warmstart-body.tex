@@ -352,7 +352,7 @@ Before presenting the patching methods, we state a property of controller implem
 \begin{definition}
 	For two control strategies $ \mu_1 $ and $ \mu_2 $
 	%winning set $ W_1 $ and $ W_2 $
-	 {\color{purple} over sets $D_1$ and $D_2$\footnote{In this work, $ D_1 $ and $ D_2 $ are always equal to the winning sets corresponding to $ \mu_1 $ and $ \mu_2 $. In general, they could be larger than the winning sets, which depends on the type of specification.}}
+	 {\color{purple} over sets $D_1$ and $D_2$\footnote{In this work, $ D_1 $ and $ D_2 $ are always equal to the winning sets corresponding to $ \mu_1 $ and $ \mu_2 $. In general, they could be larger than the winning sets, depending on the type of specification.}}
 	 	% (to avoid mentioning winning sets here)} ({\color{teal}a control strategy only takes inputs in the winning set, how to deal with this problem?})
   	 , we say that $ \mu_2 $ contains $ \mu_1$, denoted by $ \mu_{1} \subseteq \mu_{2}$, if $ \mu_{1} (\{(s_i,a_i)\}_{i=1}^{n-1}, s_n) $ is a subset of $ \mu_{2}(\{(s_i,a_i)\}_{i=1}^{n-1}, s_n) $, for all feasible $ n $ and all transition trajectories $ q =(s_1,a_1),(s_2,a_2),...,(s_{n-1},a_{n-1}) $ satisfying {\color{purple}$ s_1\in D_{1} $}, $ a_k \in \mu_{1} (\{(s_i,a_i)\}_{i=1}^{k-1}, s_k) $.
 \end{definition}
@@ -374,7 +374,6 @@ For algorithms \eqref{win-phi}, \eqref{win-interm}, \eqref{win-until}, \eqref{wi
 \end{theorem}
 
 \emph{Proof:} (a) For algorithms \eqref{win-phi}, \eqref{win-interm} and \eqref{win-until}: the winning sets are sound and complete, proven in \cite{Nilsson2017}. For any state $ s\in \widehat{W}_{\phi} $, if the system $ \widehat{T} $ starting from $ s $ could be controlled under an infinite sequence of actions and satisfy the specification $ \phi $, the same sequence of actions can be applied over $ T $ to get the same trajectory. Thus by completeness, $ s\in W_{\phi} $, and then $ \widehat{W}_{\phi}\subseteq W_{\phi} $. (b) For algorithm \eqref{win-pgpre}: Using Theorem \ref{thm: inv-set}, it can be easily proven by induction. (c) The case for \eqref{eqn:pre} is trivial. \QEDB
-
 
 %Theorem \ref{thm: 1} says that the the domain of the existing controller always shrinks after a set of actions are disabled, which agrees with our intuition. Furthermore, it shows the containment relationship in simple controllers before and after changes in the action space, which reveals the possibility of patching the simple controllers instead of re-synthesizing them. 
 
