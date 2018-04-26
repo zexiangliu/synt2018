@@ -12,7 +12,7 @@ A key challenge in control synthesis is scalability. The scalability depends bot
 
 The problem of incrementally modifying an existing controller, i.e., ``patching" a controller, as opposed to re-synthesizing from scratch, has been studied for different control synthesis techniques, specifically in the context of robotics applications \cite{Livingston,Livingston2014,wong2014correct}. Livingston et al. \cite{Livingston} study a patching method for two player games with the specifications given by the GR(1) fragment of LTL and the control strategies synthesized by a $ \mu $-calculus based method. Assuming that changes in system and environment only break an existing controller locally, they re-synthesize a controller only for the affected nodes and replace the broken part with the new one. When ``localness" assumption or estimation of the affected states fails, the performance of this method could degrade to the case that does synthesis from scratch. This method is also extended to handle changes in the specification such as addition of new goal regions \cite{Livingston2014}. Wong et al. \cite{wong2014correct} also consider GR(1) specifications with corresponding symbolic controller synthesis techniques and develop recovery mechanisms when the environment assumptions become invalid during execution. 
 
-This paper also considers the problem of patching controllers. Different from the existing literature mentioned above, we work with synthesis problems where there exists an explicit transition system to be controlled and the modification required is due to some of the control actions becoming unavailable. The loss of control actions is relevant in the case of actuator faults and also in the context of stabilizing a hopping {\color{purple} walking} robot on a constrained surface, as described later. Another difference is the class of specifications considered: the LTL fragment we use includes persistence requirements, which are not expressible within the GR(1) fragment, and is amenable to fixed-point based control synthesis techniques operating directly on the transition system (see e.g., \cite{wolff2013efficient,Nilsson2017}). Our main contribution is to propose a novel \emph{controller implementation}, a data structure consisting of a partially ordered set of controllers corresponding to simple fixed-points in the synthesis algorithm,  that captures all the information required for modification when some of the actions become unavailable. We then present patching techniques using this data structure that modify it appropriately to compute the new controller. The proposed patching techniques are in a sense similar to warm-starting techniques in optimization, where an existing solution (not too far away from the expected new solution) is used to initialize an optimization algorithm. Similarly, we use an existing controller to initialize the synthesis algorithm for finding a controller for the new problem. 
+This paper also considers the problem of patching controllers. Different from the existing literature mentioned above, we work with synthesis problems where there exists an explicit transition system to be controlled and the modification required is due to some of the control actions becoming unavailable. The loss of control actions is relevant in the case of actuator faults and also in the context of stabilizing a walking robot on a constrained surface, as described later. Another difference is the class of specifications considered: the LTL fragment we use includes persistence requirements, which are not expressible within the GR(1) fragment, and is amenable to fixed-point based control synthesis techniques operating directly on the transition system (see e.g., \cite{wolff2013efficient,Nilsson2017}). Our main contribution is to propose a novel \emph{controller implementation}, a data structure consisting of a partially ordered set of controllers corresponding to simple fixed-points in the synthesis algorithm,  that captures all the information required for modification when some of the actions become unavailable. We then present patching techniques using this data structure that modify it appropriately to compute the new controller. The proposed patching techniques are in a sense similar to warm-starting techniques in optimization, where an existing solution (not too far away from the expected new solution) is used to initialize an optimization algorithm. Similarly, we use an existing controller to initialize the synthesis algorithm for finding a controller for the new problem. 
 
 %, but they consider a different type of LTL fragment $ GR(1) $ and control strategies synthesized by $ \mu $-calculus based method. Assuming that changes in system and environment only break an existing controller locally, they re-synthesize a controller only for the affected nodes and replace the broken part with the new one. When ``localness" assumption or estimation of the affected states fails, the performance of this method could degrade to the case that does synthesis from scratch.
 
@@ -30,19 +30,19 @@ This paper also considers the problem of patching controllers. Different from th
 %(there two other papers)
 
 % Paragraph 4: Motivation
-We demonstrate the proposed approach on a push recovery example for a 1D hopping {\color{purple}} robot. The potential control actions for the robot are the feasible foot placements. However, if there are ground constraints, e.g., holes, obstacles, on which the robot is not allowed to step, the available action set reduces. Such constraints might not be available a priori, hence, it is of interest to design many controllers for different sets of ground constraints. In addition, if one wants to use 1D push recovery controllers to navigate a 2D surface with constraints, it is again possible (albeit some conservatism) to consider a large number of 1D ground constraint profiles and corresponding family of 1D controllers for the 2D navigation task. Our results for this example show that up to an order of magnitude {\color{purple} two orders of magnitude?} speed-up can be achieved if the controllers for constrained surface are generated by patching the controller for the unconstrained surface.  
+We demonstrate the proposed approach on a push recovery example for a 1D walking robot model. The potential control actions for the robot are the feasible foot placements. However, if there are ground constraints, e.g., holes, obstacles, on which the robot is not allowed to step, the available action set reduces. Such constraints might not be available a priori, hence, it is of interest to design many controllers for different sets of ground constraints. In addition, if one wants to use 1D push recovery controllers to navigate a 2D surface with constraints, it is again possible (albeit some conservatism) to consider a large number of 1D ground constraint profiles and corresponding family of 1D controllers for the 2D navigation task. Our results for this example show that up to  two orders of magnitude speed-up can be achieved if the controllers for constrained surface are generated by patching the controller for the unconstrained surface.  
 
 %Motivation: Talk more about the hoping robot. Mention actuator faults (losing and actuator)
 
 %Paragraph 5: 
 
-The paper is organized as follows: In Section \ref{sec:pre}, we give the problem statement and the background knowledge about fixed-point based control synthesis. Section \ref{sec:method} presents the main algorithm that warm-starts a control synthesis from an existing controller, and the proof of soundness and completeness. We use a simple running example in Sections \ref{sec:pre} and \ref{sec:example} to illustrate how the method works before presenting an example on control synthesis for a hopping {\color{purple} walking} robot in Section \ref{sec:example} that shows the time efficiency and potential applicability of our method.
+The paper is organized as follows: In Section \ref{sec:pre}, we give the problem statement and the background knowledge about fixed-point based control synthesis. Section \ref{sec:method} presents the main algorithm that warm-starts a control synthesis from an existing controller, and the proof of soundness and completeness. We use a simple running example in Sections \ref{sec:pre} and \ref{sec:example} to illustrate how the method works before presenting an example on control synthesis for a  walking robot in Section \ref{sec:example} that shows the time efficiency and potential applicability of our method.
 
 \section{PRELIMINARIES}
 \label{sec:pre}
 \subsection{Notation}
 
-For two sets $ A $ and $ B $, the set difference is denoted by $ A-B $; the Cartesian product is denoted by $ A\times B $. A function or a map $ F: C\rightarrow D $ {\color{purple} corresponds to  the set} $ \{(c,F(c)):c\in C, F(c)\in D \} $. A list $ \mathcal{V}=[x_1,...,x_n] $ is a totally ordered set, where $ \mathcal{V}(i) $ refers to its $ i $th-order element. To assign $ x_i $ to be the $ i $th element in	 $ \mathcal{V} $, we write $ \mathcal{V}(i) = x_i $. %{\color{purple} Not sure it is really useful to define functions or maps here, the terms are barely used in the rest of the document (function x4, map x1)} 
+For two sets $ A $ and $ B $, the set difference is denoted by $ A-B $; the Cartesian product is denoted by $ A\times B $. A function or a map $ F: C\rightarrow D $ corresponds to  the set $ \{(c,F(c)):c\in C, F(c)\in D \} $. A list $ \mathcal{V}=[x_1,...,x_n] $ is a totally ordered set, where $ \mathcal{V}(i) $ refers to its $ i $th-order element. To assign $ x_i $ to be the $ i $th element in	 $ \mathcal{V} $, we write $ \mathcal{V}(i) = x_i $. %{\color{purple} Not sure it is really useful to define functions or maps here, the terms are barely used in the rest of the document (function x4, map x1)} 
 
 \subsection{Augmented Finite Transition Systems}
 
@@ -70,14 +70,14 @@ Linear Temporal Logic (LTL) is utilized to describe the desired behaviors of an 
 %	\item $ \neg \phi , \phi \vee \psi, \bigcirc \phi $ and $ \phi \mathbf{\ U\ } \psi $ for LTL formulas $ \phi $ and $ \psi $. 
 %\end{itemize}
 
-{\color{teal}\emph{ Syntax of LTL} \cite{baier2008principles}: The LTL formula over a finite set of atomic propositions $ AP $ can be formed according to the grammar:}
+{\color{black}\emph{ Syntax of LTL} \cite{baier2008principles}: The LTL formula over a finite set of atomic propositions $ AP $ can be formed according to the grammar:}
 \begin{displaymath}
 \phi := True\ \vert\ p\ \vert\ \phi_1 \vee \phi_2\ \vert\ \neg \phi\ \vert\ \bigcirc \phi\ \vert\ \phi_1 \mathbf{\ U\ }\phi_2
 \end{displaymath}
 %{\color{blue}what is the numbering vi, v, etc. below?} 
 where $ p\in AP $, $ \phi_1 $ and $ \phi_2 $ are also LTL formulas. The other operators can be derived as follows: $ \phi_1 \wedge \phi_2 = \neg (\neg \phi_1 \vee \neg \phi_2) $, $ \phi_1 \implies \phi_2 = \neg \phi_1 \vee \phi_2 $, $ \Diamond \phi = True \mathbf{\ U\ } \phi $, $ \Square \phi = \neg \Diamond \neg \phi $.
 
-{\color{teal}\emph{Semantics of LTL} \cite{Nilsson2017}:} An $\omega$-word is an infinite sequence in $ 2^{AP}$.  The satisfaction of an LTL specification $ \phi $ at step $i$ by an $\omega$-word $ w = w(0)w(1)w(2)\dots $, written as $ (w,i) \models \phi $, is defined inductively as follows:
+{\color{black}\emph{Semantics of LTL} \cite{Nilsson2017}:} An $\omega$-word is an infinite sequence in $ 2^{AP}$.  The satisfaction of an LTL specification $ \phi $ at step $i$ by an $\omega$-word $ w = w(0)w(1)w(2)\dots $, written as $ (w,i) \models \phi $, is defined inductively as follows:
 \begin{itemize}
 	\item For $ \phi = p \in AP $, $ (w,i)\models p $ iff $ p\in w(i) $ 
 	\item $ (w,i)\models \neg \phi $ iff $ (w,i)\not\models \phi $
@@ -89,8 +89,8 @@ where $ p\in AP $, $ \phi_1 $ and $ \phi_2 $ are also LTL formulas. The other op
 An $\omega$-word $ w $ satisfies $ \phi $ if and only if $ (w,0)\models \phi $, written as $ w \models \phi $. 
 
 
-{\color{purple} Given a trajectory $\{s(n)\}_{n=0}^{\infty} $ }
-of an AFTS, the \textit{$\omega$-word} corresponding to {\color{purple} $\{s(n)\}_{n=0}^{\infty} $} is {\color{purple} $\{h_Q(s(n))\}_{n=0}^{\infty}$}, where $ h_Q $ is the labeling function of the AFTS.  Given a LTL specification $ \phi $, we say that {\color{purple} $\{s(n)\}_{n=0}^{\infty} \models \phi $} if and only if {\color{purple} $\{h_Q(s(n))\}_{n=0}^{\infty} \models \phi $}.
+{\color{black} Given a trajectory $\{s(n)\}_{n=0}^{\infty} $ }
+of an AFTS, the \textit{$\omega$-word} corresponding to {\color{black} $\{s(n)\}_{n=0}^{\infty} $} is {\color{black} $\{h_Q(s(n))\}_{n=0}^{\infty}$}, where $ h_Q $ is the labeling function of the AFTS.  Given a LTL specification $ \phi $, we say that {\color{black} $\{s(n)\}_{n=0}^{\infty} \models \phi $} if and only if {\color{black} $\{h_Q(s(n))\}_{n=0}^{\infty} \models \phi $}.
 
 \subsection{Control Synthesis and Fixed-Point Operators}
 \label{sec:contsyn}
@@ -129,7 +129,7 @@ For a given LTL specification, one can talk about the ``best'' control strategy 
 and the set of initial states for which such a strategy is defined, i.e. the winning set.
 
 \begin{definition}
-	The \textbf{winning set} of the specification $ \phi $ over an AFTS $T = \{Q,U,\rightarrow_T,G,AP,h_Q\}$, written as $ W_{\phi} $, is the largest subset of $ Q $ such that if the system $ T $ is initially in $ W_{\phi} $, the specification can be enforced.\label{def:winset}
+	The \textbf{winning set} for a specification $ \phi $ over an AFTS $T = \{Q,U,\rightarrow_T,G,AP,h_Q\}$, written as $ W_{\phi} $, is the largest subset of $ Q $ such that if the system $ T $ is initially in $ W_{\phi} $, the specification can be enforced.\label{def:winset}
 \end{definition}
 
 Note that a control strategy as in definition \ref{def:cs} can require infinite memory. However for LTL specifications, it is known that there exists a finite memory control strategy corresponding to the winning set. In particular, for the specifications of the form \eqref{phi}, we define a data structure, which we call \emph{controller}, to implement a control strategy in a specific way. This data structure will be crucial for the patching algorithms developed
@@ -145,7 +145,7 @@ in Section~\ref{sec:method}.
 Given $\widehat{D} \subseteq D$, a simple controller $ \mathcal{C} $ \textbf{restricted to} $ \widehat{D} $ means that the domain of $ \mathcal{C} $ is restricted to $\widehat{D}$.
 
 \begin{definition}
-	For the AFTS $ T=\{Q,U,\rightarrow_T,G,AP,h_Q\} $, a \textbf{controller} $ \mathcal{C} $ is a tuple $ (\mathcal{V},\mathcal{K},x) $, where $ \mathcal{V} $ is a list of subsets of $ Q $, $ \mathcal{K} $ is a list of controllers or simple controllers, {\color{purple} which we refer to as} sub-controllers of $ \mathcal{C} $, and $ x $ is an internal variable that indicates the index of sub-controllers executed last time. {\color{teal}Set the initial values of the internal variable $ x $ as $ 1 $ (but not necessarily). The execution of controller and update rules of $ x $ refers to Definition \ref{def:exec}.}
+	For the AFTS $ T=\{Q,U,\rightarrow_T,G,AP,h_Q\} $, a \textbf{controller} $ \mathcal{C} $ is a tuple $ (\mathcal{V},\mathcal{K},x) $, where $ \mathcal{V} $ is a list of subsets of $ Q $, $ \mathcal{K} $ is a list of controllers or simple controllers, {\color{black} which we refer to as} sub-controllers of $ \mathcal{C} $, and $ x $ is an internal variable that indicates the index of sub-controllers executed last time. %{\color{teal}Set the initial values of the internal variable $ x $ as $ 1 $ (but not necessarily). The execution of controller and update rules of $ x $ refers to Definition \ref{def:exec}.}
 	
 	%({\color{purple} Same remark as with the simple controllers: no need for a connection to winning sets here.} {\color{teal} the transition graph of $ x $ is totally equivalent to  Definition \ref{def:exec}+$ \mathcal{V} $ in $ \mathcal{C} $ and its sub-controllers.} {\color{purple} Yes you reacted before I removed the comment myself ;})
 	\label{def:cont}
@@ -239,7 +239,7 @@ Overall, a controller is a tree structure with controllers at each node and simp
 % %all the fixed points are ultimately defined in terms of $\text{Pre}_{\exists,\forall}^{T,U}$, so it is enough to extract control strategies during calls to this operator and map the results into higher-level fixed points together with internal variables that control a hierarchy of partial reachability objectives.}
 
 \begin{definition} \textbf{Execution of controllers}:
-	In the execution time, a controller $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ acts as a function that maps the current state in $ Q $ to a set of feasible actions in $ U $, for the AFTS $ T = (Q,U,\rightarrow_T, G,AP,h_Q)$. Given the current state $ s $, the output $ \mathcal{C}(s) $ is determined in two steps:
+	In the execution time, a controller $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ acts as a function that maps the current state in $ Q $ to a set of feasible actions in $ U $, for the AFTS $ T = (Q,U,\rightarrow_T, G,AP,h_Q)$. Initially the internal variables are set to $ 1 $. Given the current state $ s $, the output $ \mathcal{C}(s) $ is determined in two steps:
 	\begin{itemize}
 		\item[(i)] update the internal variable $ x $ of $ \mathcal{C} $: 
 		\begin{itemize}
@@ -316,11 +316,11 @@ Overall, a controller is a tree structure with controllers at each node and simp
 		%\centering
 		%\includegraphics[width=0.8\linewidth]{pic/xupdate-full}
 		\caption{ %{\color{purple} Same comment as on the previous version: it would be nice to see both transition graphs (before/after) side by side. Also: why do you show $x_1^0$ in the two bottom transitions; it could make the reader think that the transitions depend on the values of other internal variables, but it's not the case. The transition to children controllers is relatively clear to me, so I would simpy remove the value of other internal variables in each subgraph.}{\color{teal} the only change on the graph comes from changes in $ \mathcal{V} $ in each sub-controller.} 
-			The transition graph here is a visual illustration of the update rules of $ x $ in Definition \ref{def:exec}. (a) corresponds to the example \ref{ex:exec} (b) corresponds to the example in Section \ref{sec:example1}. $s $ is the current state of the system in Figure \ref{fig:eg1}. At each execution time, each internal variable transits from its current node to one of the neighbor node once the transition condition on the edge is satisfied. If no transition condition is satisfied, internal variable remains unchanged. Update $ x$ first, and then $ x^0 $, and lastly $ x_0^1 $ and $x^1_1 $.} 
+			The transition graph here is a visual illustration of the update rules of $ x $ in Definition \ref{def:exec}. (a) corresponds to the example \ref{ex:exec}. (b) corresponds to the example in Section \ref{sec:example1}. $s $ is the current state of the system in Figure \ref{fig:eg1}. At each execution time, each internal variable transits from its current node to one of the neighbor node once the transition condition on the edge is satisfied. If no transition condition is satisfied, internal variable remains unchanged. Update $ x$ first, and then $ x^0 $, and lastly $ x_0^1 $ and $x^1_1 $.} 
 		\label{fig:xupdate}
 	\end{figure}
 	
-	$ \mathcal{C} $, $ \mathcal{C}_1^0 $ and $ \mathcal{C}_i^1 $ are returned by \eqref{win-phi}, \eqref{win-interm} and \eqref{win-until}. $ \mathcal{C}_i^{2,k} $ are simple controllers returned by \eqref{eqn:pre}. Each time $ \mathcal{C} $ is called, $ (x,x^0_1,x^1_1,x^1_2) $ is updated according to Definition \ref{def:exec}, and one of the simple controllers in $ \mathcal{C} $ is reached, which determines the set of feasible control inputs. The update rules for internal variables in this example \ref{ex:exec} can be illustrated by the transition graph in Figure \ref{fig:xupdate}, which is consistent with Definition \ref{def:exec}. %is determined by $ \mathcal{C}^{2,k}_{x^1_{k}} (s)$ (if $ x^0 = k  $).
+	$ \mathcal{C} $, $ \mathcal{C}_1^0 $ and $ \mathcal{C}_i^1 $ result from \eqref{win-phi}, \eqref{win-interm} and \eqref{win-until}. $ \mathcal{C}_i^{2,k} $ are simple controllers returned by \eqref{eqn:pre}. Each time $ \mathcal{C} $ is called, $ (x,x^0_1,x^1_1,x^1_2) $ is updated according to Definition \ref{def:exec}, and one of the simple controllers in $ \mathcal{C} $ is reached, which determines the set of feasible control inputs. The update rules for internal variables in this example \ref{ex:exec} can be illustrated by the transition graph in Figure \ref{fig:xupdate}, which is consistent with Definition \ref{def:exec}. %is determined by $ \mathcal{C}^{2,k}_{x^1_{k}} (s)$ (if $ x^0 = k  $).
 	
 	For example, initialize the internal variables to be $ (1,1,1,1) $. Let's start from $ s_1 $ and run $ \mathcal{C}(s_1) $: The updated internal variables would be $ (1,2,1,2) $, after $ \mathcal{C}(s_1), \mathcal{C}^0_1(s_1)$, $ \mathcal{C}^1_2(s_1) $ and $ \mathcal{C}^{2,1}_2(s_1) $ are called recursively. The set of feasible actions is $ \{b\}= \mathcal{C}^{2,1}_2(s_1) $. Under action $ b $, the system in Figure \ref{fig:eg1} transits to $ s_2 $. Now run $ \mathcal{C}(s_2) $. The internal variable would be updated to $ (1,2,1,1) $. The set of feasible actions is$ \{d,f\}=\mathcal{C}^{2,1}_1(s_2) $. Let's keep doing this and always take the first action in the output of $ \mathcal{C} $ at each execution. The trajectory under control of $\mathcal{C} $ would be $ s_1,s_2,s_4,s_2,s_1,...$, where the sequence of actions is $ b,d,e,c,... $. The trajectory visits $ A $ and $ B $ in turn, satisfying the given specification.
 	
@@ -339,15 +339,16 @@ In this section, we formally define the problem of interest. %{\color{blue}it is
 	Given an AFTS $ T = (Q,U,\rightarrow_T,G,AP,h_Q) $, an LTL specification $ \phi = \Square A \wedge \Diamond \Square B \wedge \left( \bigvee_{i\in I} \Square \Diamond R^i\right) $, the winning set $ W_{\phi} $ and controller $ \mathcal{C}_{\phi} $, if a set of actions $ U_d\subseteq U $ in $ T $ is unavailable, find the new winning set and a controller with an algorithm that exploits the knowledge of $ W_{\phi} $ and $ \mathcal{C}_{\phi} $.\label{prob}
 \end{problem}
 
-Recall that the controller in Definition \ref{def:cont} has a tree structure whose nodes consist of controllers (non-leaf nodes) and simple controllers (leaf nodes): all those non-leaf nodes are computed by fixed-point based algorithms for some intermediate specifications (different from \eqref{phi}; see Appendix \ref{app:basic-alg}); all the leaf nodes are computed by algorithm \eqref{eqn:pre} or \eqref{win-inv}. In Section \ref{sec:method}, we show that each algorithm mentioned above has a corresponding patching algorithm which could restrict an existing controller resulting from it to a smaller action space with a stronger specification \footnote{In general, for specifications $ \phi $ and $ \psi $, ``$ \phi $ is stronger than $ \psi $"  means that whenever $ \phi $ is satisfied, $ \psi $ is satisfied. Here a stronger specification always refers that the target set $ Z $ in the specification of a fixed-point based algorithm shrinks (if its specification has such a term, see Section \ref{sec:method}).}. It allows us to offer a solution to Problem \ref{prob} by patching the sub-controllers of a controller resulting from algorithm \eqref{win-phi} one by one.
+Recall that a controller in Definition \ref{def:cont} has a tree structure whose nodes consist of controllers (non-leaf nodes) and simple controllers (leaf nodes): the non-leaf nodes are computed by algorithm \eqref{win-interm}, \eqref{win-until} and \eqref{win-pgpre}; the leaf nodes are computed by algorithm \eqref{eqn:pre} and \eqref{win-inv}. Except for \eqref{win-phi}, each algorithm in the appendix corresponds to one underlying specification, specified by its input parameters. In Section \ref{sec:method}, we show that each algorithm in the appendix has a corresponding patching algorithm which restricts an existing controller resulting from it to a smaller action space with a stronger specification \footnote{In general, for specifications $ \phi $ and $ \psi $, ``$ \phi $ is stronger than $ \psi $"  means that whenever $ \phi $ is satisfied, $ \psi $ is satisfied. Here a stronger specification always refers that the target set $ Z $ in the specification of a fixed-point based algorithm shrinks (if its specification has such a term, see Section \ref{sec:method}).}. It allows us to offer a solution to Problem \ref{prob} by patching the sub-controllers of a controller resulting from algorithm \eqref{win-phi} one by one.
 
-Furthermore, since there is an order between the nodes in each layer of the tree structure (recall that $ \mathcal{K} $ is a list), they need to be modified in the order they are generated in the original algorithms. Also, the inputs for each fixed-point based algorithm needs to be retrieved. So to patch a controller resulting from a specific fixed-point based algorithm, we basically re-run that algorithm, but replace the fixed-point based algorithms it calls internally to be their corresponding patching algorithms with the original inputs, changed term in specification and the existing controller of that node. Obviously the correctness of this patching algorithm depends on the correctness of the patching algorithms called by it. In the end, we show that as long as we can patch leaf nodes (simple controllers) and retrieve the original inputs for each fixed-point based algorithm correctly, the winning set corresponding to the modified controller is exactly the same as the winning set resulting from re-synthesizing the controller.
+Furthermore, since there is an order between the nodes in each layer of the tree structure (recall that $ \mathcal{K} $ is a list), they need to be patched in the order that they are generated. Also, for those nodes, their corresponding specifications, specified by the inputs of the algorithm generating that controller, need to be retrieved in order to figure out the invalid parts after changes in the action space. So to patch a controller resulting from a specific fixed-point based algorithm, we basically re-run that algorithm (so that we can easily retrieve the input parameters used for generating those node controllers), but replace the algorithms called internally to be their corresponding patching algorithms whose input parameters are the retrieved inputs, changes in the specification due to the disabled actions and the existing controller of that node. In this way, the correctness of that patching algorithm totally depends on the correctness of the patching algorithms it called internally. In the end, we show that as long as we can patch leaf nodes (simple controllers) and retrieve the original inputs for each fixed-point based algorithm correctly, the winning set corresponding to the modified controller is exactly the same as the winning set resulting from re-synthesizing a new controller.
 
 \section{PATCHING METHOD}
 \label{sec:method}
 
-Before presenting the patching methods, we state a property of controller implementations that roughly shows that the controllers contain all the relevant information needed for patching. We start with a definition of strategy containment.
+Before presenting the patching methods, we state a property of controller implementations that roughly shows that the controllers contain all the relevant information needed for patching. %We start with a definition of strategy containment.
 
+\iffalse
 \begin{definition}
 	For two control strategies $ \mu_1 $ and $ \mu_2 $
 	%winning set $ W_1 $ and $ W_2 $
@@ -355,23 +356,29 @@ Before presenting the patching methods, we state a property of controller implem
 	 	% (to avoid mentioning winning sets here)} ({\color{teal}a control strategy only takes inputs in the winning set, how to deal with this problem?})
   	 , we say that $ \mu_2 $ contains $ \mu_1$, denoted by $ \mu_{1} \subseteq \mu_{2}$, if $ \mu_{1} (\{(s_i,a_i)\}_{i=1}^{n-1}, s_n) $ is a subset of $ \mu_{2}(\{(s_i,a_i)\}_{i=1}^{n-1}, s_n) $, for all feasible $ n $ and all transition trajectories $ q =(s_1,a_1),(s_2,a_2),...,(s_{n-1},a_{n-1}) $ satisfying {\color{purple}$ s_1\in D_{1} $}, $ a_k \in \mu_{1} (\{(s_i,a_i)\}_{i=1}^{k-1}, s_k) $.
 \end{definition}
+\fi
 
-
-Given an AFTS $ T = (Q,U,\rightarrow_T,G,AP,h_Q) $ and {\color{blue} an} LTL specification $ \phi $, compute its winning set $ W_{\phi} $ and the winning control strategy $ \mu_{\phi} $  via one of the fixed-point based algorithms. Now disable the set of actions $ U_d \subseteq U$ in the AFTS $ T $, which results in one new AFTS $ \widehat{T} = (Q,U-U_d,\rightarrow_{\widehat{T}},G,AP,h_Q) $, and re-compute the winning set and control strategy, denoted by $ \widehat{W}_{\phi} $ and $ \widehat{\mu}_{\phi} $, for a specification the same as or stronger than $ \phi $ over $ \widehat{T} $ via the same algorithm. Then, we have the following theorem:
-
-
+Given an AFTS $ T = (Q,U,\rightarrow_T,G,AP,h_Q) $ and {\color{blue} an} LTL specification $ \phi $, compute its winning set $ W_{\phi} $ and the winning control strategy $ \mathcal{C}_{\phi} $  via the corresponding algorithm listed in Appendix \ref{app:basic-alg}. Now disable the set of actions $ U_d \subseteq U$ in the AFTS $ T $, which results in one new AFTS $ \widehat{T} = (Q,U-U_d,\rightarrow_{\widehat{T}},G,AP,h_Q) $, and re-compute the winning set and controller, denoted by $ \widehat{W}_{\phi} $ and $ \widehat{\mathcal{C}}_{\phi} $, for a specification the same as or stronger than $ \phi $ over $ \widehat{T} $ via the same algorithm. Here a stronger specification always refers that input parameter $ Z $ of algorithm \eqref{win-interm}, \eqref{win-pgpre}, \eqref{win-until} and  \eqref{win-inv} shrinks to a smaller set $ \widehat{Z}\subseteq Z $ (the other parameters keep the same) after $ U_d $ is removed from the action space. Typically $ Z $ is the target set we want to reach, which shrinks due to the unavailable actions. Then, we have the following theorems:
 
 \begin{theorem}
-	For $ W_{\phi}, \mu_{\phi}, \widehat{W}_{\phi}, \widehat{\mu}_{\phi} $ defined above, we have (i) $ \widehat{W}_{\phi} \subseteq W_{\phi} $ (ii) $ \widehat{\mu}_{\phi}\subseteq \mu_\phi $ if $ \mu_{\phi} $ and $ \widehat{\mu}_{\phi} $ are implemented by simple controllers. 
+For algorithm \eqref{win-inv}, we have $ ( \widehat{W}_{\phi}\cup \widehat{Z}) \subseteq ( W_\phi \cup Z) $.\label{thm: inv-set}
+\end{theorem}
+
+\emph{Proof:} $ W_\phi $ (resp. $ \widehat{W}_\phi $) resulting from algorithm \eqref{win-inv} is the largest subset of $ G\cap B-Z$ (resp. $ G\cap B -\widehat{Z} $) where $ B\  \mathbf{U}\ Z $ (resp. $ B\ \mathbf{U}\ \widehat{Z} $) can be enforced. It's easy to check that \eqref{win-inv} is sound and complete, i.e. the winning set contains all the feasible states and no spurious states. Because $ \widehat{Z} \subseteq Z $, $ B\mathbf{U} Z $ can be enforced for any state in $ \widehat{W}_\phi $. Thus by completeness, $ \widehat{W}_\phi - Z \subseteq W_\phi$. Furthermore, $ (\widehat{W}_\phi-Z) \cup Z = \widehat{W}_\phi \cup Z \subseteq W_\phi \cup Z$. For $ \widehat{Z}\subseteq Z $, $ \widehat{W}_\phi \cup \widehat{Z} \subseteq \widehat{W}_\phi \cup Z \subseteq  W_\phi \cup Z $. \QEDB
+
+\begin{theorem}
+For algorithms \eqref{win-phi}, \eqref{win-interm}, \eqref{win-until}, \eqref{win-pgpre} and \eqref{eqn:pre}, we have $ \widehat{W}_\phi \subseteq W_\phi $.
+
+%	For $ W_{\phi}, \mu_{\phi}, \widehat{W}_{\phi}, \widehat{\mu}_{\phi} $ defined above, we have (i) $ \widehat{W}_{\phi} \subseteq W_{\phi} $ (ii) $ \widehat{\mu}_{\phi}\subseteq \mu_\phi $ if $ \mu_{\phi} $ and $ \widehat{\mu}_{\phi} $ are implemented by simple controllers. 
 	\label{thm: 1} 
 \end{theorem}
 
-\emph{Proof:} (i) For any state $ s\in \widehat{W}_{\phi} $, if the system $ \widehat{T} $ starting from $ s $ could be controlled under an infinite sequence of actions and satisfy the specification $ \phi $, we can apply the same sequence of actions over $ T $ and get the same trajectory. That implies $ s\in W_{\phi} $, because the winning sets resulting from the fixed-point based algorithms are sound and complete\footnote{Proofs of The soundness and completeness of \eqref{win-phi}, \eqref{win-interm} and \eqref{win-inv} are given in the Appendix A of \cite{Nilsson2017}. The soundness and completeness of \eqref{win-pgpre}, \eqref{win-inv} and \eqref{eqn:pre} are trivial.}. Therefore, $ \widehat{W}_{\phi}\subseteq W_{\phi} $. (ii) Given the winning set $ W $, $ Pre_{\exists,\forall}^{T,U}(W)$ restricted to $ W $ gives the simple controller. By the definition of $ Pre^{T,U}_{\exists,\forall} $ in \eqref{eqn:pre}, the control strategies implemented in the simple controller are sound and complete as long as $ W $ is sound and complete. Thus control strategies $ \widehat{\mu}_\phi $ and $ \mu_\phi $ are sound and complete. Since $ \widehat{\mu}_\phi $ has a smaller action space with the same or a stronger specification than $ \mu_\phi $, every sequence of actions given by $ \widehat{\mu}_\phi $ works for $ T $ too and should be given by $ \mu_\phi $ due to the completeness. That implies that $ \widehat{\mu}_\phi \subseteq \mu_\phi $.
-%$\qedhere$
+\emph{Proof:} (a) For algorithms \eqref{win-phi}, \eqref{win-interm} and \eqref{win-until}: the winning sets are sound and complete, proven in \cite{Nilsson2017}. For any state $ s\in \widehat{W}_{\phi} $, if the system $ \widehat{T} $ starting from $ s $ could be controlled under an infinite sequence of actions and satisfy the specification $ \phi $, the same sequence of actions can be applied over $ T $ to get the same trajectory. Thus by completeness, $ s\in W_{\phi} $, and then $ \widehat{W}_{\phi}\subseteq W_{\phi} $. (b) For algorithm \eqref{win-pgpre}: Using Theorem \ref{thm: inv-set}, it can be easily proven by induction. (c) The case for \eqref{eqn:pre} is trivial. \QEDB
 
-Theorem \ref{thm: 1} says that the winning set of the existing controller always shrinks after a set of actions are disabled, which agrees with our intuition. Furthermore, it shows the containment relationship in simple controllers before and after changes in the action space, which reveals the possibility of patching the simple controllers instead of re-synthesizing them. This is significant because according to the data structure in Definition \ref{def:cont}, a controller is always built on simple controllers, i.e. the leaf nodes in the tree structure. If we can patch the leaf nodes, it's possible to patch the parent nodes of the leaves, and so forth. 
 
-In Section \ref{sec:patch-simple}, we will firstly discuss the patching algorithms for the simple controllers, and then in Section \ref{sec:patch-cont} we'll show how to patch the other nodes built on the leaf nodes, and finally patch the root node, i.e the controller resulting from \eqref{win-phi}. 
+%Theorem \ref{thm: 1} says that the the domain of the existing controller always shrinks after a set of actions are disabled, which agrees with our intuition. Furthermore, it shows the containment relationship in simple controllers before and after changes in the action space, which reveals the possibility of patching the simple controllers instead of re-synthesizing them. 
+
+If we fix the specification to be in the form of \eqref{phi}, Theorem \ref{thm: inv-set} and \ref{thm: 1} say that the winning sets of the controller and its nodes for $ U_d $ disabled are bounded by winning sets of the controller and its nodes for $ U_d $ not disabled (or by the union of winning sets and $ Z $ for simpler controllers resulting from \eqref{win-inv}), which is the basis for our warm-starting synthesis method. Based on this fact, it's enough to search the feasible control strategies inside the existing controllers, i.e. patching the existing controllers, instead of re-synthesizing from scratch, for they contains the control strategies for a larger winning set than we need. Furthermore, in the following two sections, we show that all the feasible control strategies for the new problem setting can be obtained by patching the existing controllers.
 
 %In our context, controllers are the implementations of control strategies (see Definition \ref{def:cont}). If $ C_{\phi} $ is implemented to contain all the possible control strategies, Theorem \ref{thm: 1} says that {\color{teal}given the same sequence of inputs, the outputs of $ \widehat{\mathcal{C}}_{\phi} $ should be contained by the outputs of $ \mathcal{C}_{\phi} $}, which implies there is a possibility to obtain $ \widehat{\mathcal{C}}_{\phi} $ by patching the existing controller $ \mathcal{C}_{\phi} $. %{\color{purple} I have mixed feeling about this last remark; "contain all the information" is a vague notion}
 
@@ -381,6 +388,7 @@ In Section \ref{sec:patch-simple}, we will firstly discuss the patching algorith
 
 \subsection{Patching Simple Controllers}
 \label{sec:patch-simple}
+A controller is a tree structure built on simple controllers, i.e. the leaf nodes in the tree structure. Thus we need to patch the leaf nodes firstly, and then patch their parent nodes, and so forth.  In this section, we discuss the patching algorithms for the simple controllers, and then in the following section we'll show how to patch the other nodes built on the leaf nodes, and the controller resulting from \eqref{win-phi}. 
 
 \begin{definition}
 	Given a simple controller $ \mathcal{C} $ over an AFTS $T = (Q,U,\rightarrow_T, G,AP,h_Q) $, a \textbf{finite transition system} (FTS) corresponding to $ \mathcal{C} $ is $A(\mathcal{C}) = (Q_C, U_C, \rightarrow_{A(\mathcal{C})})$ %{\color{purple} I'm not sure $T(C)$ is the best notation, since $T$ is usually our AFTS; A(C)?}
@@ -453,14 +461,10 @@ where $ \widehat{\mathcal{C}} $ is converted from $ T(\widehat{\mathcal{C}}) $. 
 	$ \widehat{W} $ and $ \widehat{\mathcal{C}} $ returned by \eqref{patch-pre} are the same as the outputs resulting from $ \text{Pre}_{\exists,\forall}^{T,\widehat{U}}(\widehat{V})$.	\label{thm:pre}
 \end{theorem}
 
-\emph{Proof:} Let's assume that $ \text{Pre}_{\exists,\forall}^{T,\widehat{U}}(\widehat{V}) $ returns $ W_t $ and $ \mathcal{C}_t $. It's enough to show that $ T(\widehat{\mathcal{C}})= T(\mathcal{C}_t)$, i.e. $ \rightarrow_{T(\widehat{\mathcal{C}})} = \rightarrow_{T(\mathcal{C}_t)} $. 
-	
-	By \eqref{eqn:pre} and Definition \ref{def:TC}, it is obvious that $ \rightarrow_{T(\mathcal{C}_t)} \subseteq \rightarrow_{A(\mathcal{C})}$ for $ \widehat{V}\subseteq V $ and $ \widehat{U}\subseteq U $. The set of transitions $ S = (*,U_d,*)\cup E $ is only related to states in $ \Delta V $ or actions in $ U_d $, so $\rightarrow_{T(\mathcal{C}_t)}$ and $ S $ are disjoint. $ \rightarrow_{T(\widehat{\mathcal{C}})}= \rightarrow_{A(\mathcal{C})}-S$. Thus $ \rightarrow_{T(\mathcal{C}_t)}\subseteq \rightarrow_{T(\widehat{\mathcal{C}})}$ 
-	
-	By \eqref{patch-pre}, transitions in $ T(\widehat{\mathcal{C}}) $ can only take actions in $ \widehat{U} $ and transit to states in $ \widehat{V} $, which implies that $ \rightarrow_{T(\widehat{\mathcal{C}})}\subseteq \rightarrow_{T(\mathcal{C}_t)} $. \QEDB 
+\emph{Proof:} Let's assume that $ \text{Pre}_{\exists,\forall}^{T,\widehat{U}}(\widehat{V}) $ returns $ W_t $ and $ \mathcal{C}_t $. It's enough to show that $ T(\widehat{\mathcal{C}})= T(\mathcal{C}_t)$, i.e. $ \rightarrow_{T(\widehat{\mathcal{C}})} = \rightarrow_{T(\mathcal{C}_t)} $. By \eqref{eqn:pre} and Definition \ref{def:TC}, it is obvious that $ \rightarrow_{T(\mathcal{C}_t)} \subseteq \rightarrow_{A(\mathcal{C})}$ for $ \widehat{V}\subseteq V $ and $ \widehat{U}\subseteq U $. The set of transitions $ S = (*,U_d,*)\cup E $ is only related to states in $ \Delta V $ or actions in $ U_d $, so $\rightarrow_{T(\mathcal{C}_t)}$ and $ S $ are disjoint. $ \rightarrow_{T(\widehat{\mathcal{C}})}= \rightarrow_{A(\mathcal{C})}-S$. Thus $ \rightarrow_{T(\mathcal{C}_t)}\subseteq \rightarrow_{T(\widehat{\mathcal{C}})}$. By \eqref{patch-pre}, transitions in $ T(\widehat{\mathcal{C}}) $ can only take actions in $ \widehat{U} $ and transit to states in $ \widehat{V} $, which implies that $ \rightarrow_{T(\widehat{\mathcal{C}})}\subseteq \rightarrow_{T(\mathcal{C}_t)} $. \QEDB 
 
 
-Suppose that $ Y $ and $ \mathcal{C} $ are the winning set and controller resulting from $ \text{Inv}_{\exists}^{D,G}(Z,B) $. Denote the set of unavailable actions with $ U_d $. If $ D\cap U_d \not= \emptyset$, the winning set would be empty by definition of progress group (see\cite{Nilsson2017}). Given $ \widehat{Z} \subseteq Z $ and $U_d$ such that $ D\cap U_d=\emptyset $, we want to modify $ Y $ and $ \mathcal{C} $ to be the winning set and controller for $ \text{Inv}_{\exists}^{D,G}(\widehat{Z}, B) $. As proven later that the modified winning set $\widehat{Y}$ is contained by $ Y\cup (\Delta Z\cap G\cap B) $. Also, $ \text{Inv}_{\exists}^{D,G}(Z,B) $ computation in \eqref{win-inv} is a contraction algorithm in the sense that $ \{Y_k\}_{k=1}^{\infty} $ is a monotonic decreasing sequence whose limit is the winning set. Combining these two facts, we can warm-start the contraction algorithm in \eqref{win-inv} with $ Y_0=Y\cup (\Delta Z\cap G\cap B)$ instead of $ Q $. Motivated by that idea, the patching operator is
+Suppose that $ Y $ and $ \mathcal{C} $ are the winning set and controller resulting from $ \text{Inv}_{\exists}^{D,G}(Z,B) $, and $ U_d $ is a set of actions unavailable. If $ D\cap U_d \not= \emptyset$, the winning set is empty by the definition of progress group (see\cite{Nilsson2017}). Given $ \widehat{Z} \subseteq Z $ and $D$ such that $ D\cap U_d=\emptyset $, we want to modify $ Y $ and $ \mathcal{C} $ to be the winning set and controller for $ \text{Inv}_{\exists}^{D,G}(\widehat{Z}, B) $.  The modified winning set $\widehat{Y}$ is contained by $ Y\cup (\Delta Z\cap G\cap B) $. Also, $ \text{Inv}_{\exists}^{D,G}(Z,B) $ computation in \eqref{win-inv} is a contraction algorithm in the sense that $ \{Y_k\}_{k=1}^{\infty} $ is a monotonic decreasing sequence whose limit is the winning set. Combining these two facts, we can warm-start the contraction algorithm in \eqref{win-inv} with $ Y_0=Y\cup (\Delta Z\cap G\cap B)$ instead of $ Q $. Motivated by that idea, the patching operator is
 
 \begin{align}
 &[\widehat{Y},\widehat{\mathcal{C}}]=\overline{Inv}_{\exists}^{D,G}(Y,\mathcal{C},Z,\widehat{Z}) \\
@@ -468,16 +472,16 @@ Suppose that $ Y $ and $ \mathcal{C} $ are the winning set and controller result
 Y_0 = Y\cup (\Delta Z\cap G \cap B)\\
 \Delta Y_0 = Q - (Y_0 \cup \widehat{Z})\\
 T_0  = A(\mathcal{C})\cup E_0\\
-{\color{purple} k=0}\\
+{\color{black} k=0}\\
 %while \ Y_{k+1}\not= Y_k:\\
-{\color{purple} repeat:}\\
+{\color{black} repeat:}\\
 \end{cases}
 \begin{cases}
 \ \ \ \ \Delta Y_{k+1} = \text{Pre}_{\forall,\exists}^{T_k,D}(\Delta Y_k) \\
 \ \ \ \ T_{k+1} = T_{k}\backslash (\Delta Y_{k+1},*,*)\\
 \ \ \ \ Y_{k+1} = Y_k- \Delta Y_{k+1}\\
-\ \ \ \ {\color{purple} k=k+1}\\
-{\color{purple} until \ Y_k = Y_{k-1}}\\
+\ \ \ \ {\color{black} k=k+1}\\
+{\color{black} until \ Y_k = Y_{k-1}}\\
 \widehat{Y}=Y_k,\ T(\widehat{\mathcal{C}}) = T_{k}
 \end{cases}\label{patch-inv}
 \end{align}
@@ -490,7 +494,7 @@ In regards to the patching operator in \eqref{patch-inv}, we have the following 
 \end{theorem}
 
 
-Given a simple controller $ \mathcal{C} $ and new synthesis settings, both \eqref{patch-pre} and \eqref{patch-inv} try to find $ T(\widehat{\mathcal{C}}) $ inside $ A(\mathcal{C}) $. However, if we re-synthesize the new simple controller from scratch, \eqref{eqn:pre} and \eqref{win-inv} would try to find $ A(\mathcal{C}) $ in the whole AFTS $ T $, which in general might need more computation cost, as we demonstrate via simulations. However, in the worst case, there might not be any computational gains.
+Given a simple controller $ \mathcal{C} $ and new synthesis settings, both \eqref{patch-pre} and \eqref{patch-inv} try to find $ T(\widehat{\mathcal{C}}) $ inside $ A(\mathcal{C}) $. However, if we re-synthesize the new simple controller from scratch, \eqref{eqn:pre} and \eqref{win-inv} would try to find $ A(\mathcal{C}) $ in the whole AFTS $ T $, which in general needs more computation cost, demonstrated by the simulation results in Section \ref{sec:example}. However, in the worst case, there might not be any computational gains.
 
 \subsection{Patching General Controllers}
 \label{sec:patch-cont}
@@ -498,9 +502,9 @@ Given a simple controller $ \mathcal{C} $ and new synthesis settings, both \eqre
 %	A fixed-point patching operators has access to outputs and inputs of the corresponding fixed-point operator, as well as all the intermediate winning sets and controllers of the fixed-point operators generated at each iterative step. 
 %\end{assumption}
 
-Based on the patching operators defined in the previous section, we are able to modify the winning sets and controllers resulting from \eqref{win-phi}, \eqref{win-interm}, \eqref{win-until}, \eqref{win-pgpre}. Then in Theorem \ref{thm:phi} we show that the patching algorithm for \eqref{win-phi} offers a solution to the Problem \ref{prob} in Section \ref{sec:prob}.
+Based on the patching operators defined in the previous section, we are able to modify the winning sets and controllers resulting from \eqref{win-phi}, \eqref{win-interm}, \eqref{win-until}, \eqref{win-pgpre} and finally in Theorem \ref{thm:phi} we show that the patching algorithm for \eqref{win-phi} offers a solution to the Problem \ref{prob} in Section \ref{sec:prob}.
 
-The intuition behind the patching algorithms for existing controllers are similar: All the fixed-point operators considered in this section are either expanding algorithms  (\eqref{win-phi}, \eqref{win-until},\eqref{win-pgpre}) or contraction algorithm \eqref{win-interm} in the sense that $ \{W_k\}_{k=0}^\infty $ (or $ Z_k, X_k,V_k $ depending on  which fixed-point operator we consider) is a monotonic sequence in $ 2^Q $ whose limit is the winning set. Also, it is easy to see that the modified winning set would be contained by the original one. Motivated by those facts, our patching algorithm warm-starts the expanding or contraction process in the original algorithm based on patching the existing winning sets and controllers.
+The basic idea behind the patching algorithms are the same: All the fixed-point operators considered in this section are either expanding algorithms  (\eqref{win-phi}, \eqref{win-until},\eqref{win-pgpre}) or contraction algorithm \eqref{win-interm} in the sense that $ \{W_k\}_{k=0}^\infty $ (or $ Z_k, X_k,V_k $ depending on  which fixed-point operator we consider) is a monotonic sequence in $ 2^Q $ whose limit is the winning set. Also, it is easy to see that the modified winning set would be contained by the original one. Motivated by those facts, our patching algorithm warm-starts the expanding or contraction process in the original algorithm based on patching the existing winning sets and controllers.
 
 
 Assume that $ Z $ and $ \mathcal{C} = (\mathcal{V},\mathcal{K},x) $ are the winning set and controller resulting from  $ \text{PGPre}_{\exists,\forall}^{T} (Z,B)$. Given $ \widehat{Z}\subseteq Z $,  $ \widehat{U}\subseteq U $, we want to modify $ Z $ and $ \mathcal{C} $ to be the winning set and controller for $ \text{PGPre}_{\exists, \forall}^{T,\widehat{U}}(\widehat{Z},B)$. The patching operator is:
@@ -517,7 +521,7 @@ for\ U\in 2^U:\\
 \begin{cases}
 \ \ \ \ \ \ else:\ \widehat{\mathcal{V}}(k)=\emptyset, \widehat{\mathcal{K}}(k) = \emptyset\\
 \ \ \ \ \ \  Z_\infty = Z_\infty\cup \mathcal{V}(k),\ \widehat{Z}_{\infty} = \widehat{Z}_{\infty} \cup \widehat{\mathcal{V}}(k)\\
-\ \ \ \ \ \ {\color{purple} k = k+1}\\
+\ \ \ \ \ \ {\color{black} k = k+1}\\
 Remove\ all\ \emptyset\ in\ \widehat{\mathcal{V}}\ and \ \widehat{\mathcal{K}},\ \ 
 \widehat{\mathcal{C}} = (\widehat{\mathcal{V}},\widehat{\mathcal{K}},x)
 \end{cases}\label{patch-pg}
@@ -528,7 +532,7 @@ Remove\ all\ \emptyset\ in\ \widehat{\mathcal{V}}\ and \ \widehat{\mathcal{K}},\
 	$ \widehat{Z}_\infty $ and $ \widehat{\mathcal{C}} $ returned by \eqref{patch-pg} are the same as outputs resulting from $ \text{PGPre}_{\exists, \forall}^{T,\widehat{U}}(\widehat{Z},B)$.	\label{thm:pg}
 \end{theorem}
 
-\emph{Proof:} Guaranteed by Theorem \ref{thm:inv}, $ \widehat{Z}_\infty $ and $ \widehat{\mathcal{V}}(k) $ in \eqref{patch-pg} will be equal to $ Z_{\infty} $ and $ \mathcal{V}(k) $ in \eqref{win-pgpre} when $ \text{PGPre}^{T,\widehat{U}}_{\exists,\forall}(\widehat{Z},B) $ is called, for all $ k $. \QEDB
+\emph{Proof:} By theorem \ref{thm:inv}, the results of \eqref{patch-pg} keep the same if we replace $ \overline{Inv}_{\exists}^{U,G}(\mathcal{V}(k),\mathcal{K}(k),Z_\infty, \widehat{Z}_\infty)$ in \eqref{patch-pg} with $ Inv_\exists^{U,G}(\widehat{Z}_{\infty}) $. After the replacement, the algorithm \eqref{patch-pg} is the same as the algorithm \eqref{win-pgpre}. Therefore, their outputs must be the same. \QEDB
 
 
 Assume that $ X_\infty $ and $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ are the winning set and controller resulting from $ \text{Win}_{\exists,\forall}^{T,U}(B\mathbf{\ U\ }Z) $. Assume $ \vert \mathcal{K}\vert = 2n $, i.e. \eqref{win-until} converges in $ n $ steps. Then, given $ \widehat{Z}\subseteq Z $ and $ \widehat{U}= U-U_d $, to get the winning set and controller for $ \text{Win}_{\exists,\forall}^{T,\widehat{U}}(B\mathbf{\ U\ }\widehat{Z}) $, the patching operator is
@@ -538,8 +542,8 @@ Assume that $ X_\infty $ and $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ are the
 =&\begin{cases}
 X_0 = \emptyset, \widehat{X}_0 = \emptyset, \Delta X = \emptyset, \ \widehat{\mathcal{V}}=\{\},\ \widehat{\mathcal{K}}=\{\}\\
 %{\color{purple} remove: } for ~ k\in \{0,2,...,n-1\}\ and\ \widehat{X}_{k+1}\not=\widehat{X}_k:\\
-{\color{purple} k = 0}\\
-{\color{purple} repeat:}\\
+{\color{black} k = 0}\\
+{\color{black} repeat:}\\
 \ \ \ \ [\widehat{\mathcal{V}}(2k+1),\widehat{\mathcal{K}}(2k+1)] =\\ \ \ \ \ \ \ \ \ \  \overline{\text{Pre}}_{\exists,\forall}^{T,U}(\mathcal{K}(2k+1),X_{k}-\widehat{X}_{k}, U_d)\\
 \ \ \ \ E_k = Z\cup (B\cap \mathcal{V}(2k+1))\\
 \ \ \ \  \widehat{E}_k =  Z\cup (B\cap \widehat{\mathcal{V}}(2k+1))\\
@@ -548,30 +552,33 @@ X_0 = \emptyset, \widehat{X}_0 = \emptyset, \Delta X = \emptyset, \ \widehat{\ma
 \ \ \ \ \widehat{X}_{k+1} =\widehat{Z}\cup (B\cap \widehat{\mathcal{V}}(2k+1)) \cup \widehat{\mathcal{V}}(2k+2)\\
 \end{cases}
 \begin{cases}
-\ \ \ \ {\color{purple} k = k +1}\\
-{\color{purple} until \ k = n \ or \ \widehat{X}_{k}=\widehat{X}_{k-1}}\\
+\ \ \ \ {\color{black} k = k +1}\\
+{\color{black} until \ k = n \ or \ \widehat{X}_{k}=\widehat{X}_{k-1}}\\
 %{\color{purple} remove: }for~k\geq n\ and\ \widehat{X}_{k+1}\not=\widehat{X}_k:	\\
-{\color{purple} while \ \widehat{X}_{k}\not=\widehat{X}_{k-1}:}\\
+{\color{black} while \ \widehat{X}_{k}\not=\widehat{X}_{k-1}:}\\
 \ \ \ \ [\widehat{\mathcal{V}}(2k+1),\widehat{\mathcal{K}}(2k+1)] = \\ \ \ \ \ \ \ \ \ \overline{\text{Pre}}_{\exists,\forall}^{T,U}(\mathcal{K}(2n-1),X_{n}-\widehat{X}_{k}, U_d)\\
 \ \ \ \ \widehat{E}_k =  Z\cup (B\cap \widehat{\mathcal{V}}(2k+1))\\
 \ \ \ \ [\widehat{\mathcal{V}}(2k+2),\widehat{\mathcal{K}}(2k+2)] =\\ 
 \ \ \ \ \ \ \ \ \overline{\text{PGPre}}_{\exists,\forall}^{T,U}(\mathcal{K}(2n),E_n, \widehat{E}_k,U_d)\\
 \ \ \ \ \widehat{X}_{k+1} =\widehat{Z}\cup (B\cap \widehat{\mathcal{V}}(2k+1)) \cup \widehat{\mathcal{V}}(2k+2)\\
-\ \ \ \ {\color{purple} k=k+1}\\
+\ \ \ \ {\color{black} k=k+1}\\
 \widehat{X}_\infty = \widehat{X}_k,\ \widehat{\mathcal{C}} = (\widehat{\mathcal{V}},\widehat{\mathcal{K}},x)
 \end{cases} \label{patch-until}
 \end{split}
 \end{align}
-The above patch algorithm has two parts: part one modifies the existing sub-controllers for $ k\leq n $; part two adds new sub-controllers by modifying the $ n $th existing sub-controller until convergence. The winning set $ \widehat{X}_{\infty} $, and controller $ \widehat{\mathcal{C}} $ would be equal to the outputs of \eqref{win-until} with input parameters $ \widehat{U},B,\widehat{Z} $. 
+{\color{red} for 1-n modify existing controllers, for k >n add duplicated controllers and modify them.}
+
+The patch algorithm has two parts: part one modifies the existing sub-controllers for $ k\leq n $; part two adds new sub-controllers by modifying the $ n $th existing sub-controller until convergence. The winning set $ \widehat{X}_{\infty} $, and controller $ \widehat{\mathcal{C}} $ would be equal to the outputs of \eqref{win-until} with input parameters $ \widehat{U},B,\widehat{Z} $. 
 
 \begin{theorem}
 	$ \widehat{X}_\infty $ and $ \widehat{\mathcal{C}} $ returned by \eqref{patch-until} are the same as outputs resulting from $ \text{Win}_{\exists,\forall}^{T,\widehat{U}}(B\mathbf{\ U\ }\widehat{Z}). $\label{thm:until}	
 \end{theorem}
 
-\emph{Proof:}
-	Let's denote $ X_k $ in \eqref{win-until} with inputs $ \widehat{U},B,\widehat{Z} $ as $ X_k^t $. 	To show the soundness and completeness of \eqref{patch-until}, it is enough to show that $ \widehat{X}_k $ in \eqref{patch-until} is equal to $ X_k^t $, for all $ k $. 
-	
-	For $ k< n $, $ \widehat{X}_k = X_k^t $ is guaranteed by the correctness of \eqref{patch-pre} and \eqref{patch-pg}. 
+\emph{Proof:} Similar to the proof of Theorem \ref{thm:pg}, we want to  replace all the $ \overline{Pre} $ and $ \overline{PGPre} $ terms with $ \overline{} $
+
+
+Define $ X_k^t $ to be the $ X_k $ appearing in \eqref{win-until} with inputs $ \widehat{U},B,\widehat{Z} $.
+To show the results of patching and results of re-synthesizing are the same, it is enough to show that the $ \widehat{X}_k $ in \eqref{patch-until} and $ X_k^t $ are equal for all $ k $. For $ k< n $, $ \widehat{X}_k = X_k^t $ guaranteed by Theorem \ref{thm:pre} and \ref{thm:pg}. 
 	
 	For $ k\geq n $, it is enough to show that $ X^t_k \subseteq X_n $, then the correctness again is guaranteed by \eqref{patch-pre} and \eqref{patch-pg}. According to \eqref{win-pgpre}, it is easy to show that $ \text{PGPre}_{\exists,\forall}^{T,U-U_d}(Z_1,B)\subseteq \text{PGPre}_{\exists,\forall}^{T,U}(Z_1,B)\subseteq \text{PGPre}_{\exists,\forall}^{T,U}(Z_2,B) $ for $ Z_1\subseteq Z_2 $. Prove by induction:  $ X_0^t = X_0 $. Assume that $ X_k^t \subseteq X_k $. Then $ \text{PGPre}^{T,U-U_d}_{\exists,\forall}(X^t_{k},B) \subseteq \text{PGPre}^{T,U-U_d}_{\exists,\forall}(X_{k},B)$. It's trivial that $ Pre^{T,U-U_d}_{\exists,\forall}(X^t_{k},B) \subseteq Pre^{T,U-U_d}_{\exists,\forall}(X_{k},B)$. Hence, $ X^t_{k+1}\subseteq X_{k+1} $. By induction argument, $ X_{k}^t\subseteq X_{k+1} \forall k$. But since $ \forall k>n, X_k=X_n $. $ X^t_k \subseteq X_n, \forall k>n $. \QEDB
 
@@ -584,16 +591,16 @@ Z_{\infty}^i = Z\cup (B\cap R^i\cap \text{Pre}_{\exists, \forall}^{T,U}(W_0))\\
 \widehat{Z}_{0}^i = \widehat{Z}\cup (B\cap R^i\cap \text{Pre}_{\exists, \forall}^{T,U-U_d}(W_0))\\
 [X^i_0,\widehat{\mathcal{K}}(i)] = \overline{\text{Win}}^{T,U}_{\exists,\forall, (B\mathbf{U}Z)}(\widehat{\mathcal{K}}(i),Z_\infty^i,\widehat{Z}_0^i, U_d)\\
 \widehat{W}_{0} = \bigcap_{i\in I} X^i_0\\
-{\color{purple} k=0}
+{\color{black} k=0}
 \end{cases}
 \begin{cases}
-%{\color{purple} remove:} while\ \widehat{W}_{k+1}\not=\widehat{W}_k:\\
-{\color{purple} repeat:}\\
+%{\color{black} remove:} while\ \widehat{W}_{k+1}\not=\widehat{W}_k:\\
+{\color{black} repeat:}\\
 \ \ \ \ \widehat{Z}_{k+1}^i = \widehat{Z} \cup (B\cap R^i\cap \text{Pre}_{\exists, \forall}^{T,U-U_d}(\widehat{W}_k))\\
 \ \ \ \ [X^i_{k+1},\widehat{\mathcal{K}}(i)]=\overline{\text{Win}}^{T,U}_{\exists,\forall,(B\mathbf{U}Z)}(\widehat{\mathcal{K}}(i),\widehat{Z}_k^i,\widehat{Z}_{k+1}^i, U_d)\\
 \ \ \ \ \widehat{W}_{k+1} = \bigcap_{i\in I} X^i_{k+1}\\
-\ \ \ \ {\color{purple} k = k+1}\\
-{\color{purple} until \ \widehat{W}_{k}=\widehat{W}_{k-1}}\\
+\ \ \ \ {\color{black} k = k+1}\\
+{\color{black} until \ \widehat{W}_{k}=\widehat{W}_{k-1}}\\
 \widehat{W}_\infty = \widehat{W}_k,\ \widehat{\mathcal{C}}=(\widehat{\mathcal{V}},\widehat{\mathcal{K}},x)
 \end{cases}\label{patch-interm}
 \end{align}
@@ -622,9 +629,9 @@ Assume that $ W $ and $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ are the winnin
 =&\begin{cases}\widehat{V}_{\text{inv}} = \overline{\text{Win}}^{T,U}_{\exists, \forall,(\psi)} (\mathcal{C}_{Inv},\emptyset,\emptyset,U_d)\\
 Restrict~ synthesis~ to~ \widehat{V}_{\text{inv}}\\
 \widehat{V}_0 = \emptyset,\ \mathcal{V}(0)=\emptyset,\ \widehat{\mathcal{V}}=\{\},\ \widehat{\mathcal{K}}=\{\}\\
-{\color{purple} k=0}\\
-%{\color{purple} remove:} for~k\in \{0,1,2,...,n-1\}\ and\ \widehat{V}_{k+1}\not=\widehat{V}_k:\\
-{\color{purple} repeat:}\\
+{\color{black} k=0}\\
+%{\color{black} remove:} for~k\in \{0,1,2,...,n-1\}\ and\ \widehat{V}_{k+1}\not=\widehat{V}_k:\\
+{\color{black} repeat:}\\
 \ \ \ \ \widehat{Z}_{k+1}^1 =  \overline{\text{Pre}}_{\exists,\forall}^{T,U}(\mathcal{K}_1(k+1),\mathcal{V}(k)-\widehat{V}_k,U_d)\\
 \ \ \ \ \widehat{Z}_{k+1}^2 = \overline{\text{PGPre}}_{\exists,\forall}^{T,U} ( \mathcal{K}_2(k+1),\mathcal{V}(k), \widehat{V}_k,U_d)\\
 \ \ \ \ Z_{k+1}=\mathcal{V}_1(k+1)\cup\mathcal{V}_2(k+1),\  \widehat{Z}_{k+1} = \widehat{Z}_{k+1}^1\bigcup\widehat{Z}_{k+1}^2  \\
@@ -633,17 +640,17 @@ Restrict~ synthesis~ to~ \widehat{V}_{\text{inv}}\\
 \ \ \ \ \widehat{\mathcal{V}}(k+1)=\widehat{V}_{k+1}\\
 \end{cases}
 \begin{cases}
-\ \ \ \ {\color{purple} k = k+1}\\
-{\color{purple} until \ k=n \ or \ \widehat{V}_{k}=\widehat{V}_{k-1} }\\
-%{\color{purple} remove:} for~ k\geq n\ and\ \widehat{V}_{k+1}\not=\widehat{V}_k:\\
-{\color{purple} while \ \widehat{V}_{k}\not=\widehat{V}_{k-1}:}\\
+\ \ \ \ {\color{black} k = k+1}\\
+{\color{black} until \ k=n \ or \ \widehat{V}_{k}=\widehat{V}_{k-1} }\\
+%{\color{black} remove:} for~ k\geq n\ and\ \widehat{V}_{k+1}\not=\widehat{V}_k:\\
+{\color{black} while \ \widehat{V}_{k}\not=\widehat{V}_{k-1}:}\\
 \ \ \ \ \widehat{Z}_{k+1}^1 =  \overline{\text{Pre}}_{\exists,\forall}^{T,U}(\mathcal{K}_1(n),\mathcal{V}(n-1)-\widehat{V}_k,U_d)\\
 \ \ \ \ \widehat{Z}_{k+1}^2 = \overline{\text{PGPre}}_{\exists,\forall}^{T,U} ( \mathcal{K}_2(n),\mathcal{V}(n-1), \widehat{V}_k,U_d)\\
 \ \ \ \ \widehat{Z}_{k+1} = \widehat{Z}_{k+1}^1\bigcup\widehat{Z}_{k+1}^2  \\
 \ \ \ \ [\widehat{V}_{k+1},\widehat{\mathcal{K}}(k+1)]=\\
 \ \ \ \ \ \ \ \ \overline{\text{Win}}_{\exists,\forall,(\psi)}^{T, U}(\mathcal{K}(n),Z_{n},\widehat{Z}_{k+1},U_d)\\
 \ \ \ \ \widehat{\mathcal{V}}(k+1)=\widehat{V}_{k+1}\\
-\ \ \ \ {\color{purple} k = k+1}\\
+\ \ \ \ {\color{black} k = k+1}\\
 \widehat{V}_\infty = \widehat{V}_k, \widehat{\mathcal{C}} = (\widehat{\mathcal{V}},\widehat{\mathcal{K}},x) 
 \end{cases}\label{patch-final}
 \end{align}
@@ -688,18 +695,17 @@ For the transition system in Figure \ref{fig:eg1}, take the controller we get in
 
 Let the system start from $ s_1 $ and initialize internal variables as $ (1,1,1,1) $. Only one trajectory is available under control of $\widehat{\mathcal{C}} $, i.e. $ s_1,s_2,s_3,s_2,s_1,...$, where the sequence of actions is $ b,f,g,c,... $ according to the controller execution rules in Definition \ref{def:exec}. The trajectory doesn't visit $ s_4 $, for the system is not able to jump to $ A $ from $ s_4 $ after action $ e $ is removed.
 
-\subsection{Case study: 1D Hopping {\color{purple} Walking} Robot}
+\subsection{Case study: 1D {\color{black} Walking} Robot }
 
 \begin{figure}
 	\centering
 	\includegraphics[width=0.5\linewidth]{pic/hop-rob}
-	\caption{Hopping {\color{purple} Simple model of one-legged 1D} robots with point foot {\color{purple} walking} on a ground with holes. {\color{purple} Remark: the linear-inverted pendulum model assumes that the center of mass remains at a fixed height, so this figure can be a bit misleading. But so is the term "hopping", 
-			so maybe we should just call it "1D walking robot".}}
+	\caption{{\color{black} Simple model of one-legged 1D} robots with point foot {\color{black} walking} on a ground with holes. %{\color{purple} Remark: the linear-inverted pendulum model assumes that the center of mass remains at a fixed height, so this figure can be a bit misleading. But so is the term "walking", so maybe we should just call it "1D walking robot".}
+	}	
 	\label{fig:hoprob}
 \end{figure}
 
-{\color{purple} We consider a model of one-legged 1D walking robot moving on a straight line, called the Linear Inverted Pendulum Model (LIPM, see \cite{kajita20013d}). This is a very simplified model of dynamics of a walking robot, but it is used by many algorithms of bipedal walking control (e.g. \cite{englsberger2011bipedal}). It consists in a point-mass robot with a massless leg moving along a line at a constant height above the ground. We do not restrict the extension of the leg nor the velocity of the leg motion (the replacement of the foot is instantaneous). The dynamics of the model are: }
-Consider a hopping robot moving in a straight line. The robot model is approximated by  Linear Inverted Pendulum Model (LIPM) as follows:
+{\color{black} We consider a model of one-legged 1D walking robot moving on a straight line, called the Linear Inverted Pendulum Model (LIPM, see \cite{kajita20013d}). This is a very simplified model of dynamics of a walking robot, but it is used by many algorithms of bipedal walking control (e.g. \cite{englsberger2011bipedal}). It consists in a point-mass robot with a massless leg moving along a line at a constant height above the ground. We do not restrict the extension of the leg nor the velocity of the leg motion (the replacement of the foot is instantaneous). The dynamics of the model are: }
 \begin{align}
 \begin{bmatrix}
 \dot{x}\\
@@ -714,9 +720,9 @@ v
 0\\-g/h_0
 \end{bmatrix} u \label{eqn: model}
 \end{align}
-where $x$ is the {\color{purple} horizontal position of the} center of mass (CoM) of the robot, $v$ is the velocity of CoM and $ u $ is {\color{purple} the horizontal position of the foot.} that the robot foot will step on. 
+where $x$ is the {\color{black} horizontal position of the} center of mass (CoM) of the robot, $v$ is the velocity of CoM and $ u $ is {\color{black} the horizontal position of the foot.} that the robot foot will step on. 
 
-{\color{purple} We consider } The state space $ Q = [-2.5,2.5]\times [-4,4] $ with action space $ U = [-3.5,3.5] $. Discretize $ Q $ and $ U $ uniformly with grid size $ 0.1 $ and $ 0.2 $, and compute the transitions between discretized grids over-approximately  using the method described in \cite{Liu2014,Sun2014}. Finally we get a AFTS with states indexed $ [1:4000] $, actions $ [1:35] $ and $ 187594 $ valid transitions, which is the abstraction of the hopping {\color{purple} walking} robot. 
+{\color{black} We consider } the state space $ Q = [-2.5,2.5]\times [-4,4] $ with action space $ U = [-3.5,3.5] $. Discretize $ Q $ and $ U $ uniformly with grid size $ 0.1 $ and $ 0.2 $, and compute the transitions between discretized grids over-approximately  using the method described in \cite{Liu2014,Sun2014}. Finally we get a AFTS with states indexed $ [1:4000] $, actions $ [1:35] $ and $ 187594 $ valid transitions, which is the abstraction of the walking robot. 
 
 The specification for the control synthesis is 
 \begin{align}
@@ -783,7 +789,7 @@ Now imagine that some holes on the ground are detected, as shown in Figure \ref{
 
 The experiment environment is MATLAB R2017a with CPU Intel Core  i7-6820 HQ.
 
-We choose unavailable actions $ U_d= [1],[1:5],...,[1:25] $ for the hopping { \color{purple} walking} robot abstraction and compute the controllers via fixed-point operator \eqref{win-phi} and the patching operater \eqref{patch-final} respectively.  The experiment results in Table \ref{tab: exper} make a comparison between the time of synthesizing from scratch ($ t_{syn} $) with the time of patching existing controllers ($ t_{pat} $), which shows that our patching methods can shorten the synthesis time significantly. Figure \ref{fig:winset} shows the winning sets for each $ U_d $, which shrink to the right part in the state space as $ U_d $ (region of holes) grows.
+We choose unavailable actions $ U_d= [1],[1:5],...,[1:25] $ for the { \color{black} walking} robot abstraction and compute the controllers via fixed-point operator \eqref{win-phi} and the patching operator \eqref{patch-final} respectively.  The experiment results in Table \ref{tab: exper} make a comparison between the time of synthesizing from scratch ($ t_{syn} $) with the time of patching existing controllers ($ t_{pat} $), which shows that our patching methods can shorten the synthesis time significantly. Figure \ref{fig:winset} shows the winning sets for each $ U_d $, which shrink to the right part in the state space as $ U_d $ (region of holes) grows.
 
 To further show the time efficiency, we randomly choose $ U_d $ with size $n = 1,5,...,25 $, and synthesize the controllers for each $ U_d $ via \eqref{win-phi} and \eqref{patch-final}. Table \ref{tab: exper2}, compares the average time used by the two algorithms for each $ n $. The time for our patching algorithm is less than $ 3\% $ of the time for re-synthesizing on average.
 
@@ -794,11 +800,11 @@ For practical applications in robot control, if we have the controller for the c
 \section{CONCLUSION}
 In this paper, we proposed an implementation (data structure) for a controller synthesized by fixed-point based control synthesis techniques in \cite{Nilsson2017}. For an existing controller with such a structure, a patching algorithm was developed to modify it for the case that some actions in the original problem setting become unavailable. Furthermore we proved that the winning set resulting from our patching algorithm was exactly the same as the winning set resulting from synthesizing a new controller from scratch. 
 
-We illustrated the efficiency of our method on a example of hopping { \color{purple} walking} robot. The controller was synthesized for the robot described by a Linear Inverted Pendulum Model with hole constraints on the surface. We firstly synthesized a controller for a smooth surface without holes, and then patched it for the cases that holes existed using our method. Under the same specification, the time used by our method was only $ 1.4\%-7\% $ of the time used for synthesis from scratch and less than $ 3\% $ on average. 
+We illustrated the efficiency of our method on a example of walking robot. The controller was synthesized for the robot described by a Linear Inverted Pendulum Model with hole constraints on the surface. We firstly synthesized a controller for a smooth surface without holes, and then patched it for the cases that holes existed using our method. Under the same specification, the time used by our method was only $ 1.4\%-7\% $ of the time used for synthesis from scratch and less than $ 3\% $ on average. 
 
 {\color{purple} Maybe mention that since in some cases a small change of the action set results in a completely different strategy, we expect that in the worst case, our warm-start method does not bring any speed-up. This is similar to classical warm-up techniques in control: there is no guarantee on the speed-up. And then mention that in future work, although we know that getting formal guarantees on a speed-up in average would be hard (since it highly depends on the type of problem), we wish to conduct a finer study of how much speed-up we can expect to achieve with the proposed warm-up, for instance by studying its effect on "random systems and random specifications}
 
-%The current work is to apply this method on the control synthesis of hopping robot on a 2D space. If we force the robot to move in 1D and find a finite set of profiles, this method is able to speed up our synthesis process. Besides, it would be interesting to extend this method for the cases that the specification in \eqref{phi} changes or a set of transitions instead of actions in an AFTS is removed. There is a possibility to do these extension as long as Theorem 1 holds.
+%The current work is to apply this method on the control synthesis of walking robot on a 2D space. If we force the robot to move in 1D and find a finite set of profiles, this method is able to speed up our synthesis process. Besides, it would be interesting to extend this method for the cases that the specification in \eqref{phi} changes or a set of transitions instead of actions in an AFTS is removed. There is a possibility to do these extension as long as Theorem 1 holds.
 
 \iffalse
 \section{Appendix}
