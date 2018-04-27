@@ -301,13 +301,13 @@ Overall, a controller is a tree structure with controllers at each node and simp
 	
 	\begin{figure}
 		\centering
-		\begin{subfigure}[b]{0.4\textwidth}
+		\begin{subfigure}[b]{1\textwidth}
 				\centering
 				\includegraphics[width=0.7\linewidth]{pic/xupdate}
 				\label{fig:xupdate1}
 				\caption{no action disabled}
 		\end{subfigure}
-		\begin{subfigure}[b]{0.4\textwidth}
+		\begin{subfigure}[b]{1\textwidth}
 			\centering
 			\includegraphics[width=0.7\linewidth]{pic/xupdate2}
 			\label{fig:xupdate2}
@@ -339,9 +339,9 @@ In this section, we formally define the problem of interest. %{\color{blue}it is
 	Given an AFTS $ T = (Q,U,\rightarrow_T,G,AP,h_Q) $, an LTL specification $ \phi = \Square A \wedge \Diamond \Square B \wedge \left( \bigvee_{i\in I} \Square \Diamond R^i\right) $, the winning set $ W_{\phi} $ and controller $ \mathcal{C}_{\phi} $, if a set of actions $ U_d\subseteq U $ in $ T $ is unavailable, find the new winning set and a controller with an algorithm that exploits the knowledge of $ W_{\phi} $ and $ \mathcal{C}_{\phi} $.\label{prob}
 \end{problem}
 
-Recall that a controller in Definition \ref{def:cont} has a tree structure whose nodes consist of controllers (non-leaf nodes) and simple controllers (leaf nodes): the non-leaf nodes are computed by algorithm \eqref{win-interm}, \eqref{win-until} and \eqref{win-pgpre}; the leaf nodes are computed by algorithm \eqref{eqn:pre} and \eqref{win-inv}. Except for \eqref{win-phi}, each algorithm in the appendix corresponds to one underlying specification, specified by its input parameters. In Section \ref{sec:method}, we show that each algorithm in the appendix has a corresponding patching algorithm which restricts an existing controller resulting from it to a smaller action space with a stronger specification \footnote{In general, for specifications $ \phi $ and $ \psi $, ``$ \phi $ is stronger than $ \psi $"  means that whenever $ \phi $ is satisfied, $ \psi $ is satisfied. Here a stronger specification always refers that the target set $ Z $ in the specification of a fixed-point based algorithm shrinks (if its specification has such a term, see Section \ref{sec:method}).}. It allows us to offer a solution to Problem \ref{prob} by patching the sub-controllers of a controller resulting from algorithm \eqref{win-phi} one by one.
+Recall that a controller in Definition \ref{def:cont} has a tree structure whose nodes consist of controllers (non-leaf nodes) and simple controllers (leaf nodes): the non-leaf nodes are computed by algorithm \eqref{win-interm}, \eqref{win-until} and \eqref{win-pgpre}; the leaf nodes are computed by algorithm \eqref{eqn:pre} and \eqref{win-inv}. Except for \eqref{win-phi}, each algorithm in the appendix corresponds to one underlying specification, specified by its input parameters. In Section \ref{sec:method}, we show that each algorithm in the appendix has a corresponding patching algorithm which restricts an existing controller resulting from it to a smaller action space for a stronger specification \footnote{In general, for specifications $ \phi $ and $ \psi $, ``$ \phi $ is stronger than $ \psi $"  means that whenever $ \phi $ is satisfied, $ \psi $ is satisfied. Here a stronger specification always refers that the target set $ Z $ in the specification of a fixed-point based algorithm shrinks (if its specification has such a term, see Section \ref{sec:method}).}. It allows us to offer a solution to Problem \ref{prob} by patching the sub-controllers of a controller resulting from algorithm \eqref{win-phi} one by one.
 
-Furthermore, since there is an order between the nodes in each layer of the tree structure (recall that $ \mathcal{K} $ is a list), they need to be patched in the order that they are generated. Also, for those nodes, their corresponding specifications, specified by the inputs of the algorithm generating that controller, need to be retrieved in order to figure out the invalid parts after changes in the action space. So to patch a controller resulting from a specific fixed-point based algorithm, we basically re-run that algorithm (so that we can easily retrieve the input parameters used for generating those node controllers), but replace the algorithms called internally to be their corresponding patching algorithms whose input parameters are the retrieved inputs, changes in the specification due to the disabled actions and the existing controller of that node. In this way, the correctness of that patching algorithm totally depends on the correctness of the patching algorithms it called internally. In the end, we show that as long as we can patch leaf nodes (simple controllers) and retrieve the original inputs for each fixed-point based algorithm correctly, the winning set corresponding to the modified controller is exactly the same as the winning set resulting from re-synthesizing a new controller.
+Furthermore, since there is an order between the nodes in each layer of the tree structure (recall that $ \mathcal{K} $ is a list), they need to be patched in the order that they are generated. Also, for those nodes, their corresponding specifications, specified by the inputs of the algorithms generating them, need to be retrieved in order to figure out the invalid parts after changes in the action space. So to patch a controller resulting from a specific fixed-point based algorithm, we basically re-run that algorithm (so that we can easily retrieve the input parameters used for generating those node controllers), but replace the algorithms called internally to be their corresponding patching algorithms whose input parameters are the retrieved inputs, changes in the specification due to the disabled actions and the existing controller of that node. In this way, the correctness of that patching algorithm totally depends on the correctness of the patching algorithms it called internally. In the end, we show that as long as we can patch leaf nodes (simple controllers) and retrieve the original inputs for each fixed-point based algorithm correctly, the winning set corresponding to the modified controller is exactly the same as the winning set resulting from re-synthesizing a new controller.
 
 \section{PATCHING METHOD}
 \label{sec:method}
@@ -377,7 +377,7 @@ For algorithms \eqref{win-phi}, \eqref{win-interm}, \eqref{win-until}, \eqref{wi
 
 %Theorem \ref{thm: 1} says that the the domain of the existing controller always shrinks after a set of actions are disabled, which agrees with our intuition. Furthermore, it shows the containment relationship in simple controllers before and after changes in the action space, which reveals the possibility of patching the simple controllers instead of re-synthesizing them. 
 
-If we fix the specification to be in the form of \eqref{phi}, Theorem \ref{thm: inv-set} and \ref{thm: 1} say that the winning sets of the controller and its nodes for $ U_d $ disabled are bounded by winning sets of the controller and its nodes for $ U_d $ not disabled (or by the union of winning sets and $ Z $ for simpler controllers resulting from \eqref{win-inv}), which is the basis for our warm-starting synthesis method. Based on this fact, it's enough to search the feasible control strategies inside the existing controllers, i.e. patching the existing controllers, instead of re-synthesizing from scratch, for they contains the control strategies for a larger winning set than we need. Furthermore, in the following two sections, we show that all the feasible control strategies for the new problem setting can be obtained by patching the existing controllers.
+If we fix the specification to be in the form of \eqref{phi}, Theorem \ref{thm: inv-set} and \ref{thm: 1} say that the winning sets of the controller and its nodes after $ U_d $ is disabled are bounded by winning sets of the controller and its nodes before $ U_d $ is disabled (or by the union of winning sets and $ Z $ for simpler controllers resulting from \eqref{win-inv}), which is the basis for our warm-starting synthesis method. Based on this fact, it's possible to search the feasible control strategies inside the existing controllers, i.e. patching the existing controllers, instead of re-synthesizing from scratch, for they contain the control strategies for a larger winning set than we need. Actually, we show that all the feasible control strategies for the new problem setting can be obtained by patching the existing controllers in the next two sections.
 
 %In our context, controllers are the implementations of control strategies (see Definition \ref{def:cont}). If $ C_{\phi} $ is implemented to contain all the possible control strategies, Theorem \ref{thm: 1} says that {\color{teal}given the same sequence of inputs, the outputs of $ \widehat{\mathcal{C}}_{\phi} $ should be contained by the outputs of $ \mathcal{C}_{\phi} $}, which implies there is a possibility to obtain $ \widehat{\mathcal{C}}_{\phi} $ by patching the existing controller $ \mathcal{C}_{\phi} $. %{\color{purple} I have mixed feeling about this last remark; "contain all the information" is a vague notion}
 
@@ -398,7 +398,7 @@ A controller is a tree structure built on simple controllers, i.e. the leaf node
 	By Definition \ref{def:TC}, $ A(\mathcal{C}) $ can be easily constructed from the simple controller $ \mathcal{C} $ and the AFTS $ T $. Conversely, $ \mathcal{C} $ can be constructed from $ A(\mathcal{C}) $ by $ \mathcal{C} = \{(s,D(s)):s\in W,D(s)\not=\emptyset\} $, where $ D(s)=\{u:(s,u,s_2)\in \rightarrow_{A(\mathcal{C})}\} $.\label{rmk:conv}
 \end{remark}
 %{\color{blue} don't abbreviate "not", write "do not", "does not", etc.}
-{\color{teal}Since $ A(\mathcal{C}) $ contains the transition information for all state-action pairs in $ \mathcal{C} $, it's easier to search invalid transitions in $ A(\mathcal{C}) $ than $ \mathcal{C} $ after some actions become unavailable. Also, the conversion between  $ \mathcal{C} $ and $ A(\mathcal{C}) $ is straightforward according to Remark \ref{rmk:conv}.} For those reasons, we modify a simple controller $ \mathcal{C} $ by modifying its corresponding FTS $ A(\mathcal{C}) $ and then converting $ A(\mathcal{C}) $ to $ \mathcal{C} $. Several operations applied to the FTS $ A(\mathcal{C}) $ are defined in Table \ref{tab:oper}, with which we are ready to modify simple controllers resulting from \eqref{eqn:pre} and \eqref{win-inv}, i.e. $ \text{Pre}_{\exists,\forall}^{T, U}(V) $ and $ \text{Inv}_{\exists}^{D,G}(Z,B) $. %{\color{purple} Not clear}
+{\color{teal} $ A(\mathcal{C}) $ contains the transitions behind the state-action pairs in $ \mathcal{C} $, so that we can search invalid transitions in $ A(\mathcal{C}) $ after some actions become unavailable. Also, by Remark \ref{rmk:conv}, it's easy to transfer between  $ \mathcal{C} $ and $ A(\mathcal{C}) $.} Therefore, we patch a simple controller $ \mathcal{C} $ by modifying its corresponding FTS $ A(\mathcal{C}) $ and then transferring $ A(\mathcal{C}) $ to $ \mathcal{C} $. Several operations applied to the FTS $ A(\mathcal{C}) $ are defined in Table \ref{tab:oper}, with which we are ready to modify simple controllers resulting from \eqref{eqn:pre} and \eqref{win-inv}, i.e. $ \text{Pre}_{\exists,\forall}^{T, U}(V) $ and $ \text{Inv}_{\exists}^{D,G}(Z,B) $. %{\color{purple} Not clear}
 
 %Assume the AFTS $ T = (Q,U,\rightarrow_T, G, AP, h_Q) $ is the abstraction of the system that needs to be controlled. Assume that $ A(\mathcal{C})=(Q_{\mathcal{C}}, U_{\mathcal{C}},\rightarrow_{A(\mathcal{C})})$ is a transition system corresponding to a simple controller $ \mathcal{C} $. 
 
@@ -443,8 +443,8 @@ A controller is a tree structure built on simple controllers, i.e. the leaf node
 
 Suppose the AFTS $ T = (Q,U,\rightarrow_T, G, AP, h_Q) $ is the abstraction of the system that needs to be controlled. 
 
-Suppose that  $ W $ and $ \mathcal{C} $ are the winning set and controller resulting from $ \text{Pre}_{\exists,\forall}^{T, U}(V) $. Given $ \widehat{V}= V-\Delta V $ and $ \widehat{U} = U-U_d $, we want to modify $ W $ and $ \mathcal{C} $ to be the winning set and controller resulting from $ \text{Pre}_{\exists,\forall}^{T,\widehat{U}}(\widehat{V}) $. Intuitively if we can find all the invalid transitions $ (s_1,u,s_2) $ in $ A(\mathcal{C}) $ due to $ u\in U_d $ or $ s_2\in\Delta V $, and remove them from $ A(\mathcal{C}) $, that would result in a controller that works for the modified problem setting. Motivated by this idea, the patching operator for \eqref{eqn:pre} is:
-
+Suppose that  $ W $ and $ \mathcal{C} $ are the winning set and controller resulting from $ \text{Pre}_{\exists,\forall}^{T, U}(V) $. Given $ \widehat{V}= V-\Delta V $ and $ \widehat{U} = U-U_d $, we want to modify $ W $ and $ \mathcal{C} $ to be the winning set and controller resulting from $ \text{Pre}_{\exists,\forall}^{T,\widehat{U}}(\widehat{V}) $. Intuitively if we can find all the invalid transitions $ (s_1,u,s_2) $ in $ A(\mathcal{C}) $ due to $ u\in U_d $ or $ s_2\in\Delta V $, and remove them from $ A(\mathcal{C}) $, that would result in a controller that works for the new problem setting. Motivated by this idea, the patching operator for \eqref{eqn:pre} is:
+{\small
 \begin{align}
 &[\widehat{W},\widehat{\mathcal{C}}]=\overline{\text{Pre}}_{\exists,\forall}^{T, U}(\mathcal{C},\Delta V,U_d)\\
 =&\begin{cases} 
@@ -453,7 +453,7 @@ E =  \widehat{Pre}^{T_0,U-U_d}_{\exists,\exists}(\Delta V)\\
 T(\widehat{\mathcal{C}}) = T_{0}\backslash E\\
 \widehat{W} = \{s_1: \exists u, \exists s_2 s.t. (s_1,u, s_2)\in \rightarrow_{T(\widehat{\mathcal{C}})} \}
 \end{cases}\label{patch-pre}
-\end{align}
+\end{align}}
 where $ \widehat{\mathcal{C}} $ is converted from $ T(\widehat{\mathcal{C}}) $. $ \widehat{W} $ and $ \widehat{\mathcal{C}} $ are the modified winning set and controller.
 
 \begin{theorem}
@@ -464,8 +464,7 @@ where $ \widehat{\mathcal{C}} $ is converted from $ T(\widehat{\mathcal{C}}) $. 
 
 
 Suppose that $ Y $ and $ \mathcal{C} $ are the winning set and controller resulting from $ \text{Inv}_{\exists}^{D,G}(Z,B) $, and $ U_d $ is a set of actions unavailable. If $ D\cap U_d \not= \emptyset$, the winning set is empty by the definition of progress group (see\cite{Nilsson2017}). Given $ \widehat{Z} \subseteq Z $ and $D$ such that $ D\cap U_d=\emptyset $, we want to modify $ Y $ and $ \mathcal{C} $ to be the winning set and controller for $ \text{Inv}_{\exists}^{D,G}(\widehat{Z}, B) $.  The modified winning set $\widehat{Y}$ is contained by $ Y\cup (\Delta Z\cap G\cap B) $. Also, $ \text{Inv}_{\exists}^{D,G}(Z,B) $ computation in \eqref{win-inv} is a contraction algorithm in the sense that $ \{Y_k\}_{k=1}^{\infty} $ is a monotonic decreasing sequence whose limit is the winning set. Combining these two facts, we can warm-start the contraction algorithm in \eqref{win-inv} with $ Y_0=Y\cup (\Delta Z\cap G\cap B)$ instead of $ Q $. Motivated by that idea, the patching operator is
-
-\begin{align}
+{\small\begin{align}
 &[\widehat{Y},\widehat{\mathcal{C}}]=\overline{Inv}_{\exists}^{D,G}(Y,\mathcal{C},Z,\widehat{Z}) \\
 =&\begin{cases}
 Y_0 = Y\cup (\Delta Z\cap G \cap B)\\
@@ -483,7 +482,7 @@ T_0  = A(\mathcal{C})\cup E_0\\
 {\color{black} until \ Y_k = Y_{k-1}}\\
 \widehat{Y}=Y_k,\ T(\widehat{\mathcal{C}}) = T_{k}
 \end{cases}\label{patch-inv}
-\end{align}
+\end{align}}
 where $ \Delta Z = Z - \widehat{Z} $, $ E_0 = \{(s_1,a,s_2)\in \rightarrow_{T}: s_1\in Y_0, a\in D, s_2 \in Q\} $, $ \text{Pre}_{\forall,\exists}^{T_k,D}(\Delta Y_k) = \{q_1: \forall u\in D, \exists q_2\in \Delta Y_k, s.t.\ (q_1, u, q_2) \in \rightarrow_{T_k} \} $. $ \widehat{Y} $ is the modified winning set, and the controller $ \widehat{\mathcal{C}} $ can be recovered from $ T(\widehat{\mathcal{C}}) $.
 
 In regards to the patching operator in \eqref{patch-inv}, we have the following result, proof of which is given in Appendix \ref{app:pr-31}:
@@ -491,8 +490,6 @@ In regards to the patching operator in \eqref{patch-inv}, we have the following 
 \begin{theorem}
 	$ \widehat{Y} $ and $ \widehat{\mathcal{C}} $ returned by \eqref{patch-inv} are the same as the outputs resulting from $ \text{Inv}_{\exists}^{D,G}(\widehat{Z},B) $.	\label{thm:inv}
 \end{theorem}
-
-
 Given a simple controller $ \mathcal{C} $ and new synthesis settings, both \eqref{patch-pre} and \eqref{patch-inv} try to find $ T(\widehat{\mathcal{C}}) $ inside $ A(\mathcal{C}) $. However, if we re-synthesize the new simple controller from scratch, \eqref{eqn:pre} and \eqref{win-inv} would try to find $ A(\mathcal{C}) $ in the whole AFTS $ T $, which in general needs more computation cost, demonstrated by the simulation results in Section \ref{sec:example}. However, in the worst case, there might not be any computational gains.
 
 \subsection{Patching General Controllers}
@@ -501,13 +498,13 @@ Given a simple controller $ \mathcal{C} $ and new synthesis settings, both \eqre
 %	A fixed-point patching operators has access to outputs and inputs of the corresponding fixed-point operator, as well as all the intermediate winning sets and controllers of the fixed-point operators generated at each iterative step. 
 %\end{assumption}
 
-Based on the patching operators defined in the previous section, we are able to modify the winning sets and controllers resulting from \eqref{win-phi}, \eqref{win-interm}, \eqref{win-until}, \eqref{win-pgpre} and finally in Theorem \ref{thm:phi} we show that the patching algorithm for \eqref{win-phi} offers a solution to the Problem \ref{prob} in Section \ref{sec:prob}.
+In the section we are going to patch all the non-leaf nodes, i.e  the controllers resulting from \eqref{win-interm}, \eqref{win-until}, \eqref{win-pgpre}, and the root node, i.e. the controller result from \eqref{win-phi}, and finally Theorem \ref{thm:phi} shows that the patching algorithm for \eqref{win-phi} offers a solution to the Problem \ref{prob} in Section \ref{sec:prob}.
 
-The basic idea behind the patching algorithms are the same: All the fixed-point operators considered in this section are either expanding algorithms  (\eqref{win-phi}, \eqref{win-until},\eqref{win-pgpre}) or contraction algorithm \eqref{win-interm} in the sense that $ \{W_k\}_{k=0}^\infty $ (or $ Z_k, X_k,V_k $ depending on  which fixed-point operator we consider) is a monotonic sequence in $ 2^Q $ whose limit is the winning set. Also, it is easy to see that the modified winning set would be contained by the original one. Motivated by those facts, our patching algorithm warm-starts the expanding or contraction process in the original algorithm based on patching the existing winning sets and controllers.
+%The basic idea behind the patching algorithms are the same: All the fixed-point operators considered in this section are either expanding algorithms  (\eqref{win-phi}, \eqref{win-until},\eqref{win-pgpre}) or contraction algorithm \eqref{win-interm} in the sense that $ \{W_k\}_{k=0}^\infty $ (or $ Z_k, X_k,V_k $ depending on  which fixed-point operator we consider) is a monotonic sequence in $ 2^Q $ whose limit is the winning set. Also, it is easy to see that the modified winning set would be contained by the original one. Motivated by those facts, our patching algorithm warm-starts the expanding or contraction process in the original algorithm based on patching the existing winning sets and controllers.
 
 
 Assume that $ Z $ and $ \mathcal{C} = (\mathcal{V},\mathcal{K},x) $ are the winning set and controller resulting from  $ \text{PGPre}_{\exists,\forall}^{T} (Z,B)$. Given $ \widehat{Z}\subseteq Z $,  $ \widehat{U}\subseteq U $, we want to modify $ Z $ and $ \mathcal{C} $ to be the winning set and controller for $ \text{PGPre}_{\exists, \forall}^{T,\widehat{U}}(\widehat{Z},B)$. The patching operator is:
-\begin{align}
+{\small\begin{align}
 \begin{split}
 &[\widehat{Z}_{\infty},\widehat{\mathcal{C}}]=\overline{\text{PGPre}}_{\exists,\forall}^{T,U} (\mathcal{C},Z,\widehat{Z},U_d)\\
 &= \begin{cases}
@@ -525,7 +522,7 @@ Remove\ all\ \emptyset\ in\ \widehat{\mathcal{V}}\ and \ \widehat{\mathcal{K}},\
 \widehat{\mathcal{C}} = (\widehat{\mathcal{V}},\widehat{\mathcal{K}},x)
 \end{cases}\label{patch-pg}
 \end{split}
-\end{align}
+\end{align}}
 
 \begin{theorem}
 	$ \widehat{Z}_\infty $ and $ \widehat{\mathcal{C}} $ returned by \eqref{patch-pg} are the same as outputs resulting from $ \text{PGPre}_{\exists, \forall}^{T,\widehat{U}}(\widehat{Z},B)$.	\label{thm:pg}
@@ -535,7 +532,7 @@ Remove\ all\ \emptyset\ in\ \widehat{\mathcal{V}}\ and \ \widehat{\mathcal{K}},\
 
 
 Assume that $ X_\infty $ and $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ are the winning set and controller resulting from $ \text{Win}_{\exists,\forall}^{T,U}(B\mathbf{\ U\ }Z) $. Assume $ \vert \mathcal{K}\vert = 2n $, i.e. \eqref{win-until} converges in $ n $ steps. Then, given $ \widehat{Z}\subseteq Z $ and $ \widehat{U}= U-U_d $, to get the winning set and controller for $ \text{Win}_{\exists,\forall}^{T,\widehat{U}}(B\mathbf{\ U\ }\widehat{Z}) $, the patching operator is
-\begin{align}
+{\small\begin{align}
 \begin{split}
 &[\widehat{X}_\infty, \widehat{\mathcal{C}}]=\overline{\text{Win}}^{T, U}_{\exists,\forall, (B\mathbf{\ U\ }Z)}(\mathcal{C},Z,\widehat{Z}, U_d)\\
 =&\begin{cases}
@@ -564,25 +561,17 @@ X_0 = \emptyset, \widehat{X}_0 = \emptyset, \Delta X = \emptyset, \ \widehat{\ma
 \widehat{X}_\infty = \widehat{X}_k,\ \widehat{\mathcal{C}} = (\widehat{\mathcal{V}},\widehat{\mathcal{K}},x)
 \end{cases} \label{patch-until}
 \end{split}
-\end{align}
-{\color{red} for 1-n modify existing controllers, for k >n add duplicated controllers and modify them.}
+\end{align}}
 
-The patch algorithm has two parts: part one modifies the existing sub-controllers for $ k\leq n $; part two adds new sub-controllers by modifying the $ n $th existing sub-controller until convergence. The winning set $ \widehat{X}_{\infty} $, and controller $ \widehat{\mathcal{C}} $ would be equal to the outputs of \eqref{win-until} with input parameters $ \widehat{U},B,\widehat{Z} $. 
-
+In the algorithm \eqref{patch-until}, for $ k <n $, we patch the $ (2k+1) $th and $ (2k+2) $th existing sub-controllers in $ \mathcal{K} $. If the winning set doesn't converge in $ n $ iterations, for $ k\geq n $, we duplicate the last two existing sub-controllers to the tail of $ \mathcal{K} $, and patch them to enlarge the winning set until convergence. 
 \begin{theorem}
 	$ \widehat{X}_\infty $ and $ \widehat{\mathcal{C}} $ returned by \eqref{patch-until} are the same as outputs resulting from $ \text{Win}_{\exists,\forall}^{T,\widehat{U}}(B\mathbf{\ U\ }\widehat{Z}). $\label{thm:until}	
 \end{theorem}
 
-\emph{Proof:} Similar to the proof of Theorem \ref{thm:pg}, we want to  replace all the $ \overline{Pre} $ and $ \overline{PGPre} $ terms with $ \overline{} $
+\emph{Proof:} Similar to the proof of Theorem \ref{thm:pg}, we can replace all the $ \overline{Pre}_{\exists,\forall}^{T,U} $ and $ \overline{PGPre}_{\exists,\forall}^{T,U} $ terms with $ \overline{Pre}_{\exists,\forall}^{T,\widehat{U}}(\widehat{X}_k) $ and $PGPre_{\exists,\forall}^{T,\widehat{U}}(\widehat{E_k},B)$. Theorem \ref{thm:pre} and \ref{thm:pg} guarantee that the replacements are equivalent, but we need to verify: (i) $ \widehat{X}_k \subseteq X_k $ and $ \widehat{E}_k \subseteq E_k $ for $ k < n $, and (ii) $ \widehat{X}_k \subseteq X_n $ and $ \widehat{E}_k \subseteq E_n $. Both (i) and (ii) can be easily checked using induction argument and Theorem \ref{thm: 1} ( base case: $ \widehat{X}_0\subseteq X_0 $ and $ \widehat{E}_1\subseteq E_1 $). After the equivalent replacements, algorithm \eqref{patch-until} and algorithm \eqref{win-until} become the same. Thus their outputs must be the same. \QEDB
 
-
-Define $ X_k^t $ to be the $ X_k $ appearing in \eqref{win-until} with inputs $ \widehat{U},B,\widehat{Z} $.
-To show the results of patching and results of re-synthesizing are the same, it is enough to show that the $ \widehat{X}_k $ in \eqref{patch-until} and $ X_k^t $ are equal for all $ k $. For $ k< n $, $ \widehat{X}_k = X_k^t $ guaranteed by Theorem \ref{thm:pre} and \ref{thm:pg}. 
-	
-	For $ k\geq n $, it is enough to show that $ X^t_k \subseteq X_n $, then the correctness again is guaranteed by \eqref{patch-pre} and \eqref{patch-pg}. According to \eqref{win-pgpre}, it is easy to show that $ \text{PGPre}_{\exists,\forall}^{T,U-U_d}(Z_1,B)\subseteq \text{PGPre}_{\exists,\forall}^{T,U}(Z_1,B)\subseteq \text{PGPre}_{\exists,\forall}^{T,U}(Z_2,B) $ for $ Z_1\subseteq Z_2 $. Prove by induction:  $ X_0^t = X_0 $. Assume that $ X_k^t \subseteq X_k $. Then $ \text{PGPre}^{T,U-U_d}_{\exists,\forall}(X^t_{k},B) \subseteq \text{PGPre}^{T,U-U_d}_{\exists,\forall}(X_{k},B)$. It's trivial that $ Pre^{T,U-U_d}_{\exists,\forall}(X^t_{k},B) \subseteq Pre^{T,U-U_d}_{\exists,\forall}(X_{k},B)$. Hence, $ X^t_{k+1}\subseteq X_{k+1} $. By induction argument, $ X_{k}^t\subseteq X_{k+1} \forall k$. But since $ \forall k>n, X_k=X_n $. $ X^t_k \subseteq X_n, \forall k>n $. \QEDB
-
-Assume that $ W $ and $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ are the winning set and controller resulting from $\text{Win}_{\exists,\forall}^{T,U}((B\mathbf{\ U\ }Z)\vee \Square(B\wedge (\bigwedge_{i\in I} \Diamond R^i)) $. Given that $ \widehat{Z}\subseteq Z $ and $ \widehat{U}\subseteq U $, modify $ W $ and $ \mathcal{C} $ for $\text{Win}_{\exists,\forall}^{T,U}((B\mathbf{\ U\ }\widehat{Z})\vee \Square(B\wedge (\bigwedge_{i\in I} \Diamond R^i)) $. The patching operator for \eqref{win-interm} is 
-\begin{align}
+Assume that $ W $ and $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ are the winning set and controller resulting from $\text{Win}_{\exists,\forall}^{T,U}((B\mathbf{\ U\ }Z)\vee \Square(B\wedge (\bigwedge_{i\in I} \Diamond R^i)) $. Given that $ \widehat{Z}\subseteq Z $ and $ \widehat{U}\subseteq U $, patch $ W $ and $ \mathcal{C} $ for $\text{Win}_{\exists,\forall}^{T,U}((B\mathbf{\ U\ }\widehat{Z})\vee \Square(B\wedge (\bigwedge_{i\in I} \Diamond R^i)) $. The patching operator for \eqref{win-interm} is 
+{\small\begin{align}
 &[\widehat{W}_{\infty},\widehat{\mathcal{C}}]=\overline{\text{Win}}^{T, U}_{\exists,\forall (\psi)} (\mathcal{C},Z,\widehat{Z},U_d)\\
 =&\begin{cases}
 W_0 = \mathcal{V}(1),\widehat{\mathcal{V}}=\mathcal{V},\widehat{\mathcal{K}}=\mathcal{K}\\
@@ -603,22 +592,15 @@ Z_{\infty}^i = Z\cup (B\cap R^i\cap \text{Pre}_{\exists, \forall}^{T,U}(W_0))\\
 \widehat{W}_\infty = \widehat{W}_k,\ \widehat{\mathcal{C}}=(\widehat{\mathcal{V}},\widehat{\mathcal{K}},x)
 \end{cases}\label{patch-interm}
 \end{align}
-
+}
 \begin{theorem}
 	$ \widehat{W}_\infty $ and $ \widehat{\mathcal{C}} $ returned by \eqref{patch-until} are the same as outputs resulting from $\text{Win}_{\exists,\forall}^{T,\widehat{U}}((B\mathbf{\ U\ }\widehat{Z})\vee \Square(B\wedge (\bigwedge_{i\in I} \Diamond R^i)) $. \label{thm:interm}	
 \end{theorem}
 
 
-\emph{Proof:}
-	Assume that $ W_t $ is the winning set of \eqref{win-interm} with input parameters $ U-U_d $, $ B $, $ C_i $ and $ \widehat{Z} $. To show that $ W_t=\widehat{W}_\infty $, it is enough to show that $ W_t\subseteq \widehat{W}_\infty $, i.e. $ \widehat{W}_\infty $ is a larger winning set than $ W_t $. Then by the completeness of \eqref{win-interm}, $ W_t=\widehat{W}_\infty $. 
-	
-	First of all, prove that $ W_t \subseteq W_0 $: For any trajectories satisfying $ (B\mathbf{\ U\ }\widehat{Z})\vee \Square(B\wedge (\bigwedge_{i\in I} \Diamond R^i) $, it satisfies $  (B\mathbf{\ U\ }Z)\vee \Square(B\wedge (\bigwedge_{i\in I} \Diamond R^i) $, so directly we have $ W_t\subseteq W_0 $. 
-	
-	Next, prove $ W_t\subseteq \widehat{W}_k, \forall k $ by induction: Since $ W_t\subseteq W_0 $, $ Z_t^i =\widehat{Z}\cup (B\cap R^i\cap \text{Pre}_{\exists,\forall}^{T,U-U_d}(W_t)) \subseteq \widehat{Z}_0^i$. Hence $ \text{Win}_{\exists,\forall}^{T,U-U_d}(B\mathbf{\ U\ }Z_t^i)\subseteq  \text{Win}_{\exists,\forall}^{T,U-U_d}(B\mathbf{\ U\ }\widehat{Z}_0^i) $ (proven by induction: show that $ X_k $ in \eqref{patch-until} for $ Z_t^i $ is contained by $ X_k $ in \eqref{patch-until} for $ \widehat{Z}_0^i $, for all $ k $). Then, $ W_t = \bigcap_{i\in I} \text{Win}_{\exists,\forall}^{T,U-U_d} (B\mathbf{\ U\ } Z_{t}^i)\subseteq  \bigcap_{i\in I} \text{Win}_{\exists,\forall}^{T,U-U_d}(B\mathbf{\ U\ }\widehat{Z}_0^i)  = \widehat{W}_0$, which is the base case. Assume that $ W_t\subseteq \widehat{W}_k $. Then we have $ Z_t^i \subseteq \widehat{Z}_{k+1}^i $ and $ W_t\subseteq \widehat{W}_{k+1} $ for the same arguments in the base case. Hence by induction, $ W_t^i \subseteq \widehat{W}_{k}, \forall k $. 
-	
-	Finally prove $ \widehat{W}_{k} $ converges by induction: $ \widehat{Z}_0^i \subseteq Z_{\infty}^i $. Hence $ \widehat{W}_0 =\bigcap_{i\in I} \text{Win}_{\exists,\forall}^{T,U-U_d}(B\mathbf{\ U\ }\widehat{Z}_0^i)\subseteq \bigcap_{i\in I} \text{Win}_{\exists,\forall}^{T,U}(B\mathbf{\ U\ }Z_{\infty}^i) = W_0 $, which is the base case. Assume that $ \widehat{W}_{k+1} \subseteq \widehat{W}_k $.  Then $ \widehat{Z}_{k+1}^i\subseteq \widehat{Z}_{k}^i  $ and $ \widehat{W}_{k+1} =\bigcap_{i\in I} \text{Win}_{\exists,\forall}^{T,U-U_d}(B\mathbf{\ U\ }\widehat{Z}_{k+1}^i)\subseteq \bigcap_{i\in I} \text{Win}_{\exists,\forall}^{T,U}(B\mathbf{\ U\ }\widehat{Z}_{k}^i) = \widehat{W}_k $. By induction argument, $ \{\widehat{W}_k\} $ is a decreasing sequence of finite sets, which converges surely. \QEDB
+\emph{Proof:} Assume that $ W_t $ is the winning set resulting from $\text{Win}_{\exists,\forall}^{T,\widehat{U}}((B\mathbf{\ U\ }\widehat{Z})\vee \Square(B\wedge (\bigwedge_{i\in I} \Diamond R^i)) $. Similar to the proof of Theorem \ref{thm:until}, we can replace all the $ \overline{Win}^{T,U}_{\exists,\forall} $ terms in \eqref{patch-interm} to be $ Win^{T,U-U_d}_{\exists,\forall}(B\mathbf{U}\widehat{Z}_k^i) $, as long as (i) $ \widehat{Z}_0^i\subseteq Z_\infty^i $ and (ii) $ \widehat{Z}_{k+1} \subseteq \widehat{Z}_{k} $ are true. (i) is trivial. For (ii), it's enough to show that $ \widehat{W}_{k+1}\subseteq \widehat{W}_k $, which can be proven by induction. The base case: Since (i) is true, by Theorem \ref{thm:until}, we have $ X_0^i = Win_{\exists,\forall}^{T,\widehat{U}}(B\mathbf{U}\widehat{Z}) $. Then $ \widehat{W}_0 =\bigcap_{i\in I} \text{Win}_{\exists,\forall}^{T,U-U_d}(B\mathbf{\ U\ }\widehat{Z}_0^i)\subseteq \bigcap_{i\in I} \text{Win}_{\exists,\forall}^{T,U}(B\mathbf{\ U\ }Z_{\infty}^i) = W_0 $ by Theorem \ref{thm: 1}. Assume that $ \widehat{W}_{k+1} \subseteq \widehat{W}_k $.  Then $ \widehat{Z}_{k+1}^i\subseteq \widehat{Z}_{k}^i  $ and $ \widehat{W}_{k+1} =\bigcap_{i\in I} \text{Win}_{\exists,\forall}^{T,U-U_d}(B\mathbf{\ U\ }\widehat{Z}_{k+1}^i)\subseteq \bigcap_{i\in I} \text{Win}_{\exists,\forall}^{T,U}(B\mathbf{\ U\ }\widehat{Z}_{k}^i) = \widehat{W}_k $. Therefore by induction argument $ \widehat{W}_{k+1}\subseteq \widehat{W}_k $, and $ \widehat{Z}_{k+1}\subseteq \widehat{Z}_k $ for all $ k $. Then (ii) is true. After the replacements, \eqref{patch-interm} and \eqref{win-interm} are the same except that the contraction of $ W_k $ starts from the existing winning set $ W $ instead of $ Q $. We can show that $ W_t \subseteq \widehat{W}_k $ for all $ k $ by induction (base case: $ W_t \subseteq W_0$ by Theorem \ref{thm: 1}). Also $ W_t $ is the largest fixed point in $ Q $ by definition. So both \eqref{patch-interm} and \eqref{win-interm} will converge to the same fixed point $ W_t$.  \QEDB
 
-Now we are ready to modify controller in \eqref{win-phi}, since we have all the patching operators it requires. 
+Finally we are ready to patch the controller resulting from \eqref{win-phi} for specification in the form of \eqref{phi}.
 
 Assume that $ W $ and $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ are the winning set and controller resulting from the operator $
 \text{Win}_{\exists, \forall}^{T,U}\left(\Square A \wedge \Diamond \Square B \wedge \left( \bigwedge_{i\in I} \Square \Diamond R^i\right)\right)$. Assuming that $ \vert \mathcal{K}\vert = n $. For patching purpose, we need some extra information: the lists of winning sets and controllers returned by $\text{Pre}_{\exists,\forall}^{T,U}(V_k)$ in \eqref{win-phi}, i.e. $ [\mathcal{V}_1(k),\mathcal{K}_1(k)]=\text{Pre}_{\exists,\forall}^{T,U}(V_k)$;  the lists of winning sets and controllers returned by $ \text{PGPre}_{\exists,\forall}^{T}(V_k, B) $ in \eqref{win-phi}, i.e. $ [\mathcal{V}_2(k), \mathcal{K}_2(k)]= \text{PGPre}_{\exists,\forall}^{T}(V_k, B)$ ($ k=1,..., n $) ; the controller $ \mathcal{C}_{Inv} $ returned by $ \text{\text{Win}}^{T,U}_{\exists, \forall} ((A\mathbf{U}\emptyset)\vee \Square (A\wedge \Diamond Q)) $ in the first line of \eqref{win-phi}. To restrict action space to $ \widehat{U} = U-U_d $, the patching operator for \eqref{win-phi} is
@@ -665,8 +647,7 @@ The same as \eqref{patch-until}, the patching algorithm has two parts: one for m
 	\text{Win}_{\exists, \forall}^{T,U-U_d}\left(\Square A \wedge \Diamond \Square B \wedge \left( \bigwedge_{i\in I} \Square \Diamond R^i\right)\right).
 \end{displaymath} \label{thm:phi}
 \end{theorem}
-\emph{Proof:} The correctness of $ \widehat{V}_{\text{inv}} $ is guaranteed by Theorem \ref{thm:interm}.
-	For $ k\leq n $, the correctness of $ \widehat{V}_{k} $ is guaranteed by Theorem \ref{thm:pre}, \ref{thm:pg} and \ref{thm:interm}. Assume that $ V^t_k $ and $ V_k $ are intermediate results in \eqref{win-phi} with action space $ U-U_d $ and $ U $ respectively. For $ k > n$, the correctness is guaranteed by  \eqref{patch-pre}, \eqref{patch-pg} and \eqref{patch-interm} as long as $ V^t_{k} \subseteq V_n $. We can prove it in the same way as the proof of \eqref{patch-until}. For simplicity, we can apply Theorem 1 instead:  Assume that $ V_k^t $ converges to $ V_{\infty}^t $ and $ V_k $ converges to $ V_{\infty} $. By Theorem \ref{thm: 1}, we have $ V^t_{\infty}\subseteq V_{\infty} = V_n $. Next, prove that $ \{V^t_k\} $ is a monotonic increasing sequence of sets by induction. $ \emptyset = V^t_0 \subseteq V^t_1 $. Assume that $ V^t_{k-1}\subseteq V^t_{k}$. Then it is not hard to see that $ Z^t_k \subseteq Z^t_{k+1} $, and $ V^t_k = \text{Win}_{\exists,\forall}^{T} ((B \mathbf{\ U\ }Z_{k}) \vee \Square (B\wedge ( \bigwedge_{i\in I}\Diamond R^i))\subseteq \text{Win}_{\exists,\forall}^{T} ((B \mathbf{\ U\ }Z_{k+1}) \vee \Square (B\wedge ( \bigwedge_{i\in I}\Diamond R^i))=V^t_{k+1} $ (this must be true otherwise \eqref{patch-interm} can't be correct). So $ V^t_k \subseteq V_n, \forall k $. \QEDB
+\emph{Proof:} Similar to the previous proofs, we want to replace all the $ \overline{Pre}^{T,U}_{\exists,\forall} $, $ \overline{PGPre}^{T,U}_{\exists,\forall} $ and $ \overline{Win}_{\exists,\forall, (\Psi)}^{T,U} $ terms in \eqref{patch-final} to be $ Pre^{T,\widehat{U}}_{\exists,\forall}(\widehat{V}_k) $, $PGPre^{T,\widehat{U}}_{\exists,\forall}(\widehat{V}_k, Q) $ and $ Win^{T,\widehat{U}}_{\exists,\forall}((B\ \mathbf{U}\ \widehat{Z}_{k+1})\vee\Square (B\wedge (\bigwedge_{i\in I}\Diamond R^i)))) $, as long as (i) $ \widehat{V}_{k} \subseteq \mathcal{V}(k) $ and $ \widehat{Z}_{k+1}\subseteq Z_{k+1} $ for $ k = 0, 2,...,n-1 $ and (ii) $ \widehat{V}_k\subseteq \mathcal{V}(n-1) $ and $ \widehat{Z}_{k+1}\subseteq Z_n $ for $ k\geq n $. Both (i) and (ii) can be proven by induction using Theorem \ref{thm: 1}, \ref{thm:pre}, \ref{thm:pg} and \ref{thm:interm}. (First prove (i) and then use the case where $ k=n-1 $ in (i) to be the base case in the induction argument for (ii)). Also, in the first line of \eqref{patch-final} we use $ \overline{Win}_{\exists,\forall,(\Psi)}^{T,U} $ to compute $ \widehat{V}_{inv} $, which can can be replaced with $ Win_{\exists,\forall,(\Psi)}^{T,U} $ since $ \emptyset\subseteq \emptyset $. After the replacements, \eqref{patch-final} and \eqref{win-phi} become exactly the same, which implies that their outputs must be the same. \QEDB
 
 
 \section{EXAMPLE}
@@ -732,7 +713,7 @@ where $ B=[-2.5,2.5]\times[-2,2] $. It says that the CoM of the robot should alw
 Now imagine that some holes on the ground are detected, as shown in Figure \ref{fig:hoprob}, where the robot should avoid stepping. Therefore some actions need to be disabled. Once we determine which actions will be affected, we can put them in $ U_d $ and patch the existing controllers for the new action profiles.
 \begin{table}
 	\centering
-	\caption{Comparison of re-synthesis time and patching time under multiple action profiles. The first row is the set of available actions. The second row is the percentage of transitions left after $ U_d $ is disabled. The last two rows are the time used for re-synthesizing and patching.}
+	\caption{Compare the execution time of re-synthesis from scratch (row $ 3 $) and patching method (row $ 4 $) under multiple action profiles. The first row is the set of available actions. The second row is the percentage of transitions left after $ U_d $ is disabled.}
 	\begin{tabular}{lllllll}
 		\hline 
 		$ U_d $ & $ [1] $ &$ [1:5] $ & $ [1:10] $ & $ [1:15] $ & $ [1:20] $ & $ [1:25] $ \\ 
@@ -747,12 +728,13 @@ Now imagine that some holes on the ground are detected, as shown in Figure \ref{
 
 \begin{table}
 	\centering
-	\caption{Comparison of re-synthesis time and patching time under random action profiles. The first row is number of unavailable actions ($ \sharp U_d $). For each number, choose 10 random sets of unavailable actions. The last two rows are the average time used for re-synthesizing and patching.}
+	\caption{Compare the time for re-synthesis from scratch (row $ 2 $), re-synthesis from the existing winning set, i.e. restrict the state space of the AFTS to be the existing winning set and re-run \eqref{win-phi} (row $ 3 $) and our patching method (row $ 4 $) under random action profiles. The first row is number of unavailable actions ($ \sharp U_d $). For each number, choose 10 random sets of unavailable actions.}
 	\begin{tabular}{ccccccc}
 		\hline 
 		$ \sharp U_d $ & $ 1 $ &$ 5 $ & $ 10 $ & $ 15 $ & $ 20 $ & $ 25 $ \\ 
 		\hline 
 		$ t_{syn}(s) $ & $ 289.7 $ & $ 281.1 $ & $ 292.8 $ & $ 358.6 $ &  $ 367.1 $ & $ 618.1 $ \\
+		$t_{ws} (s)$ & $ 36.2 $ & $ 65.0 $ & $ 108.8 $ & $ 193.9 $ & $ 155.8 $ & $ 371.2 $\\
 		$ t_{pat}(s)$ & $ 3.2 $ & $ 4.1 $ & $ 5.1 $ & $ 7.2 $ & $ 8.3 $ & $ 17.4 $ \\ 
 		\hline 
 	\end{tabular} 
