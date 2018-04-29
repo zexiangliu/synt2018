@@ -446,7 +446,7 @@ Suppose the AFTS $ T = (Q,U,\rightarrow_T, G, AP, h_Q) $ is the abstraction of t
 Suppose that  $ W $ and $ \mathcal{C} $ are the winning set and controller resulting from $ \text{Pre}_{\exists,\forall}^{T, U}(V) $. Given $ \widehat{V}= V-\Delta V $ and $ \widehat{U} = U-U_d $, we want to modify $ W $ and $ \mathcal{C} $ to be the winning set and controller resulting from $ \text{Pre}_{\exists,\forall}^{T,\widehat{U}}(\widehat{V}) $. Intuitively if we can find all the invalid transitions $ (s_1,u,s_2) $ in $ A(\mathcal{C}) $ due to $ u\in U_d $ or $ s_2\in\Delta V $, and remove them from $ A(\mathcal{C}) $, that would result in a controller that works for the new problem setting. Motivated by this idea, the patching operator for \eqref{eqn:pre} is:
 {\small
 \begin{align}
-&[\widehat{W},\widehat{\mathcal{C}}]=\overline{\text{Pre}}_{\exists,\forall}^{T, U}(\mathcal{C},\Delta V,U_d)\\
+&[\widehat{W},\widehat{\mathcal{C}}]=\overline{\text{Pre}}_{\exists,\forall}^{T, U}(\mathcal{C},\Delta V,U_d)\nonumber\\
 =&\begin{cases} 
 T_{0} = A(\mathcal{C})\backslash (*,U_d,*)\\
 E =  \widehat{Pre}^{T_0,U-U_d}_{\exists,\exists}(\Delta V)\\
@@ -465,7 +465,7 @@ where $ \widehat{\mathcal{C}} $ is converted from $ T(\widehat{\mathcal{C}}) $. 
 
 Suppose that $ Y $ and $ \mathcal{C} $ are the winning set and controller resulting from $ \text{Inv}_{\exists}^{D,G}(Z,B) $, and $ U_d $ is a set of actions unavailable. If $ D\cap U_d \not= \emptyset$, the winning set is empty by the definition of progress group (see\cite{Nilsson2017}). Given $ \widehat{Z} \subseteq Z $ and $D$ such that $ D\cap U_d=\emptyset $, we want to modify $ Y $ and $ \mathcal{C} $ to be the winning set and controller for $ \text{Inv}_{\exists}^{D,G}(\widehat{Z}, B) $.  The modified winning set $\widehat{Y}$ is contained by $ Y\cup (\Delta Z\cap G\cap B) $. Also, $ \text{Inv}_{\exists}^{D,G}(Z,B) $ computation in \eqref{win-inv} is a contraction algorithm in the sense that $ \{Y_k\}_{k=1}^{\infty} $ is a monotonic decreasing sequence whose limit is the winning set. Combining these two facts, we can warm-start the contraction algorithm in \eqref{win-inv} with $ Y_0=Y\cup (\Delta Z\cap G\cap B)$ instead of $ Q $. Motivated by that idea, the patching operator is
 {\small\begin{align}
-&[\widehat{Y},\widehat{\mathcal{C}}]=\overline{Inv}_{\exists}^{D,G}(Y,\mathcal{C},Z,\widehat{Z}) \\
+&[\widehat{Y},\widehat{\mathcal{C}}]=\overline{Inv}_{\exists}^{D,G}(Y,\mathcal{C},Z,\widehat{Z})\nonumber \\
 =&\begin{cases}
 Y_0 = Y\cup (\Delta Z\cap G \cap B)\\
 \Delta Y_0 = Q - (Y_0 \cup \widehat{Z})\\
@@ -572,7 +572,7 @@ In the algorithm \eqref{patch-until}, for $ k <n $, we patch the $ (2k+1) $th an
 
 Assume that $ W $ and $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ are the winning set and controller resulting from $\text{Win}_{\exists,\forall}^{T,U}((B\mathbf{\ U\ }Z)\vee \Square(B\wedge (\bigwedge_{i\in I} \Diamond R^i)) $. Given that $ \widehat{Z}\subseteq Z $ and $ \widehat{U}\subseteq U $, patch $ W $ and $ \mathcal{C} $ for $\text{Win}_{\exists,\forall}^{T,U}((B\mathbf{\ U\ }\widehat{Z})\vee \Square(B\wedge (\bigwedge_{i\in I} \Diamond R^i)) $. The patching operator for \eqref{win-interm} is 
 {\small\begin{align}
-&[\widehat{W}_{\infty},\widehat{\mathcal{C}}]=\overline{\text{Win}}^{T, U}_{\exists,\forall (\psi)} (\mathcal{C},Z,\widehat{Z},U_d)\\
+&[\widehat{W}_{\infty},\widehat{\mathcal{C}}]=\overline{\text{Win}}^{T, U}_{\exists,\forall (\psi)} (\mathcal{C},Z,\widehat{Z},U_d)\nonumber\\
 =&\begin{cases}
 W_0 = \mathcal{V}(1),\widehat{\mathcal{V}}=\mathcal{V},\widehat{\mathcal{K}}=\mathcal{K}\\
 Z_{\infty}^i = Z\cup (B\cap R^i\cap \text{Pre}_{\exists, \forall}^{T,U}(W_0))\\
@@ -596,8 +596,6 @@ Z_{\infty}^i = Z\cup (B\cap R^i\cap \text{Pre}_{\exists, \forall}^{T,U}(W_0))\\
 \begin{theorem}
 	$ \widehat{W}_\infty $ and $ \widehat{\mathcal{C}} $ returned by \eqref{patch-until} are the same as outputs resulting from $\text{Win}_{\exists,\forall}^{T,\widehat{U}}((B\mathbf{\ U\ }\widehat{Z})\vee \Square(B\wedge (\bigwedge_{i\in I} \Diamond R^i)) $. \label{thm:interm}	
 \end{theorem}
-
-
 \emph{Proof:} Assume that $ W_t $ is the winning set resulting from $\text{Win}_{\exists,\forall}^{T,\widehat{U}}((B\mathbf{\ U\ }\widehat{Z})\vee \Square(B\wedge (\bigwedge_{i\in I} \Diamond R^i)) $. Similar to the proof of Theorem \ref{thm:until}, we can replace all the $ \overline{Win}^{T,U}_{\exists,\forall} $ terms in \eqref{patch-interm} to be $ Win^{T,U-U_d}_{\exists,\forall}(B\mathbf{U}\widehat{Z}_k^i) $, as long as (i) $ \widehat{Z}_0^i\subseteq Z_\infty^i $ and (ii) $ \widehat{Z}_{k+1} \subseteq \widehat{Z}_{k} $ are true. (i) is trivial. For (ii), it's enough to show that $ \widehat{W}_{k+1}\subseteq \widehat{W}_k $, which can be proven by induction. The base case: Since (i) is true, by Theorem \ref{thm:until}, we have $ X_0^i = Win_{\exists,\forall}^{T,\widehat{U}}(B\mathbf{U}\widehat{Z}) $. Then $ \widehat{W}_0 =\bigcap_{i\in I} \text{Win}_{\exists,\forall}^{T,U-U_d}(B\mathbf{\ U\ }\widehat{Z}_0^i)\subseteq \bigcap_{i\in I} \text{Win}_{\exists,\forall}^{T,U}(B\mathbf{\ U\ }Z_{\infty}^i) = W_0 $ by Theorem \ref{thm: 1}. Assume that $ \widehat{W}_{k+1} \subseteq \widehat{W}_k $.  Then $ \widehat{Z}_{k+1}^i\subseteq \widehat{Z}_{k}^i  $ and $ \widehat{W}_{k+1} =\bigcap_{i\in I} \text{Win}_{\exists,\forall}^{T,U-U_d}(B\mathbf{\ U\ }\widehat{Z}_{k+1}^i)\subseteq \bigcap_{i\in I} \text{Win}_{\exists,\forall}^{T,U}(B\mathbf{\ U\ }\widehat{Z}_{k}^i) = \widehat{W}_k $. Therefore by induction argument $ \widehat{W}_{k+1}\subseteq \widehat{W}_k $, and $ \widehat{Z}_{k+1}\subseteq \widehat{Z}_k $ for all $ k $. Then (ii) is true. After the replacements, \eqref{patch-interm} and \eqref{win-interm} are the same except that the contraction of $ W_k $ starts from the existing winning set $ W $ instead of $ Q $. We can show that $ W_t \subseteq \widehat{W}_k $ for all $ k $ by induction (base case: $ W_t \subseteq W_0$ by Theorem \ref{thm: 1}). Also $ W_t $ is the largest fixed point in $ Q $ by definition. So both \eqref{patch-interm} and \eqref{win-interm} will converge to the same fixed point $ W_t$.  \QEDB
 
 Finally we are ready to patch the controller resulting from \eqref{win-phi} for specification in the form of \eqref{phi}.
@@ -606,7 +604,7 @@ Assume that $ W $ and $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ are the winnin
 \text{Win}_{\exists, \forall}^{T,U}\left(\Square A \wedge \Diamond \Square B \wedge \left( \bigwedge_{i\in I} \Square \Diamond R^i\right)\right)$. Assuming that $ \vert \mathcal{K}\vert = n $. For patching purpose, we need some extra information: the lists of winning sets and controllers returned by $\text{Pre}_{\exists,\forall}^{T,U}(V_k)$ in \eqref{win-phi}, i.e. $ [\mathcal{V}_1(k),\mathcal{K}_1(k)]=\text{Pre}_{\exists,\forall}^{T,U}(V_k)$;  the lists of winning sets and controllers returned by $ \text{PGPre}_{\exists,\forall}^{T}(V_k, B) $ in \eqref{win-phi}, i.e. $ [\mathcal{V}_2(k), \mathcal{K}_2(k)]= \text{PGPre}_{\exists,\forall}^{T}(V_k, B)$ ($ k=1,..., n $) ; the controller $ \mathcal{C}_{Inv} $ returned by $ \text{\text{Win}}^{T,U}_{\exists, \forall} ((A\mathbf{U}\emptyset)\vee \Square (A\wedge \Diamond Q)) $ in the first line of \eqref{win-phi}. To restrict action space to $ \widehat{U} = U-U_d $, the patching operator for \eqref{win-phi} is
 {\small
 \begin{align}
-&[\widehat{V}_\infty, \widehat{\mathcal{C}}]=\overline{\text{Win}}_{\exists, \forall,(\phi)}^{T,U}(\mathcal{C},\mathcal{C}_{Inv},\mathcal{V}_1,\mathcal{K}_1,\mathcal{V}_2,\mathcal{K}_2,U_d)\\
+&[\widehat{V}_\infty, \widehat{\mathcal{C}}]=\overline{\text{Win}}_{\exists, \forall,(\phi)}^{T,U}(\mathcal{C},\mathcal{C}_{Inv},\mathcal{V}_1,\mathcal{K}_1,\mathcal{V}_2,\mathcal{K}_2,U_d)\nonumber\\
 =&\begin{cases}\widehat{V}_{\text{inv}} = \overline{\text{Win}}^{T,U}_{\exists, \forall,(\psi)} (\mathcal{C}_{Inv},\emptyset,\emptyset,U_d)\\
 Restrict~ synthesis~ to~ \widehat{V}_{\text{inv}}\\
 \widehat{V}_0 = \emptyset,\ \mathcal{V}(0)=\emptyset,\ \widehat{\mathcal{V}}=\{\},\ \widehat{\mathcal{K}}=\{\}\\
@@ -728,7 +726,7 @@ Now imagine that some holes on the ground are detected, as shown in Figure \ref{
 
 \begin{table}
 	\centering
-	\caption{Compare the time for re-synthesis from scratch (row $ 2 $), re-synthesis from the existing winning set, i.e. restrict the state space of the AFTS to be the existing winning set and re-run \eqref{win-phi} (row $ 3 $) and our patching method (row $ 4 $) under random action profiles. The first row is number of unavailable actions ($ \sharp U_d $). For each number, choose 10 random sets of unavailable actions.}
+	\caption{Compare the average execution time for re-synthesizing from scratch (row $ 2 $), re-synthesizing from the existing winning set, i.e. restrict the state space of the AFTS to be the existing winning set and re-run \eqref{win-phi} (row $ 3 $) and our patching method (row $ 4 $) under random action profiles. The first row is number of unavailable actions ($ \sharp U_d $). For each number, choose 10 random sets of unavailable actions.}
 	\begin{tabular}{ccccccc}
 		\hline 
 		$ \sharp U_d $ & $ 1 $ &$ 5 $ & $ 10 $ & $ 15 $ & $ 20 $ & $ 25 $ \\ 

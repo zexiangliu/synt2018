@@ -11,10 +11,10 @@ The building blocks for algorithm \eqref{win-phi} are (fixed-point based) operat
 
 \begin{table}
 \footnotesize
-\begin{tabular}{cc}
+\begin{tabular}{ll}
 	\begin{minipage}{0.5\textwidth}
 		\begin{align}
-		[V_{\infty},\mathcal{C}] =\  \text{Win}_{\exists, \forall}^{T,U}\left(\Square A \wedge \Diamond \Square B \wedge \left( \bigwedge_{i\in I} \Square \Diamond R^i\right)\right)\\
+		[V_{\infty},\mathcal{C}] =\  \text{Win}_{\exists, \forall}^{T,U}\left(\Square A \wedge \Diamond \Square B \wedge \left( \bigwedge_{i\in I} \Square \Diamond R^i\right)\right)\nonumber\\
 		=\begin{cases}V_{\text{inv}} = \text{\text{Win}}^{T,U}_{\exists, \forall} ((A\mathbf{U}\emptyset)\vee \Square (A\wedge \Diamond Q))\\
 		\text{Restrict~ synthesis~ to~ }V_{\text{inv}}\\
 		V_0 = \emptyset,\ \mathcal{V}=\{\},\ \mathcal{K} = \{\},\  {\color{purple} k=0}\\
@@ -31,7 +31,7 @@ The building blocks for algorithm \eqref{win-phi} are (fixed-point based) operat
 	\end{minipage}
 	\begin{minipage}{0.5\textwidth}
 		\begin{align}
-		[W_{\infty},\mathcal{C}]= \ \text{Win}_{\exists,\forall}^{T,U}((B\mathbf{\ U\ }Z)\vee \Square (B\wedge(\bigwedge_{i\in I}\Diamond R^i)) )\\
+		[W_{\infty},\mathcal{C}]= \ \text{Win}_{\exists,\forall}^{T,U}((B\mathbf{\ U\ }Z)\vee \Square (B\wedge(\bigwedge_{i\in I}\Diamond R^i)) )\nonumber\\
 		=\begin{cases}
 		W_0 = Q,\ \mathcal{V}=\{\},\ \mathcal{K}=\{\}\\ {\color{purple} k=0}\\
 		%{\color{purple} remove:} while\ W_{k+1}\not= W_k:\\
@@ -51,10 +51,10 @@ The building blocks for algorithm \eqref{win-phi} are (fixed-point based) operat
 \end{table}
 \begin{table}
 	\footnotesize
-	\begin{tabular}{cc}
+	\begin{tabular}{ll}
 		\begin{minipage}{.5\textwidth}
 			\begin{align}
-			[X_{\infty},\mathcal{C}]= \text{Win}_{\exists,\forall}^{T,U} (B\mathbf{\ U\ }Z)=\quad\quad\quad\quad\quad\quad\ \ \\
+			[X_{\infty},\mathcal{C}]= \text{Win}_{\exists,\forall}^{T,U} (B\mathbf{\ U\ }Z)=\quad\quad\quad\quad\quad\quad\ \ \nonumber\\
 			\begin{cases}
 			X_0 = \emptyset,\ \mathcal{V}=\{\},\ \mathcal{K}=\{\},\ {\color{purple} k=0}\\
 			%{\color{purple} remove:} while\ X_{k+1}\not= X_k\\
@@ -73,7 +73,7 @@ The building blocks for algorithm \eqref{win-phi} are (fixed-point based) operat
 		\end{minipage} &
 		\begin{minipage}{.5\textwidth}
 			\begin{align}
-			[Z_{\infty},\mathcal{C}]=\text{PGPre}_{\exists,\forall}^{T,U} (Z,B)=\quad \ \\
+			[Z_{\infty},\mathcal{C}]=\text{PGPre}_{\exists,\forall}^{T,U} (Z,B)=\quad \ \nonumber\\
 			\begin{cases}
 			Z_{\infty} = Z,\ \mathcal{V} = \{\},\ \mathcal{K}=\{\}\\ k = 1\\
 			for\ U\in 2^U:\\
@@ -91,10 +91,10 @@ The building blocks for algorithm \eqref{win-phi} are (fixed-point based) operat
 
 \begin{table}
 \footnotesize
-\begin{tabular}{cc}
+\begin{tabular}{ll}
 	\begin{minipage}{.5\textwidth}
 		\begin{align}
-	[W,\mathcal{C}]=\text{Pre}_{\exists,\forall}^{T,U}(V)=\quad \quad \quad \quad \quad \quad \quad\quad\quad\quad\quad\\
+	[W,\mathcal{C}]=\text{Pre}_{\exists,\forall}^{T,U}(V)=\quad \quad \quad \quad \quad \quad \quad\quad\quad\quad\quad\nonumber\\
 	\begin{cases}
 	W = \{q_1\in Q: \exists (u\in U) \forall (q_2\\\quad\quad s.t.\ (q_1, u, q_2) \in \rightarrow_T), q_2\in V\}\\
 	D(q)=\{u\in U: \forall (q_2\ s.t.\ (q,u,q_2)),\ q_2\in V\}\\
@@ -103,7 +103,7 @@ The building blocks for algorithm \eqref{win-phi} are (fixed-point based) operat
 	\end{align}
 	\end{minipage}& 
 \begin{minipage}{.5\textwidth}
-\begin{align} [Y_{\infty},\mathcal{C}]=\text{Inv}_{\exists}^{D,G}(Z,B)=\ \quad \quad \quad \\
+\begin{align} [Y_{\infty},\mathcal{C}]=\text{Inv}_{\exists}^{D,G}(Z,B)=\ \quad \quad \quad \nonumber\\
 \begin{cases}Y_0 = (G\cap B) - Z\\
 while\ Y_{k+1}\not=Y_k:\\
 \quad Y_{k+1} = Y_k\cap \text{Pre}_{\exists,\forall}^{T,D}(Y_k\cup Z)\\
