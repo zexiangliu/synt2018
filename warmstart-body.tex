@@ -709,7 +709,7 @@ where $x$ is the {\color{black} horizontal position of the} center of mass (CoM)
 
 {\color{black} We consider } the state space $ Q = [-2.5,2.5]\times [-4,4] $ with action space $ U = [-3.5,3.5] $. Discretize $ Q $ and $ U $ uniformly with grid size $ 0.1 $ and $ 0.2 $, and compute the transitions between discretized grids over-approximately  using the method described in \cite{Liu2014,Sun2014}. Finally we get a AFTS $ T $ with states indexed $ [1:4000] $, actions $ [1:35] $ and $ 187594 $ valid transitions, which is the abstraction of the walking robot. 
 
-The specification for the control synthesis is $ \Diamond \Square B $,
+The specification for the control synthesis is $\Square Q \wedge \Diamond \Square B $,
 where $ B=[-2.5,2.5]\times[-2,2] $. It says that the CoM of the robot should always stay within $ [-2.5,2.5] $ with velocity lower than $ 2 $ after finite time from beginning. Given the specification, the winning set and controller are computed via \eqref{win-phi} (taking $ A = Q,B=B , C^1 = Q $).
 
 Now imagine that some holes on the ground are detected, as shown in Figure \ref{fig:hoprob}, where the robot should avoid stepping. Therefore some actions need to be disabled. Once we determine which actions will be affected, we can put them in $ U_d $ and patch the existing controllers for the new action profiles.
