@@ -1,8 +1,8 @@
 \section{Fixed-point Operators}\label{app:basic-alg}
 
-In this appendix, we present algorithms from \cite{Nilsson2017} to compute the winning set for a specification in the form \eqref{phi}. In addition to the winning set, these algorithms provide an explicit construction of the control implementation as defined in Definition \ref{def:cont}. 
+In this appendix, we present algorithms from \cite{Nilsson2017} to compute the winning set for a specification in the form \eqref{phi}. In addition to the winning set, these algorithms provide an explicit construction of the control implementation as in Definition \ref{def:cont}. 
 
-The most general algorithm that compute the winning set and controller for specifications in the form of \eqref{phi} is given in \eqref{win-phi}. The winning set {\color{purple} that results from} \eqref{win-phi} is {\color{purple} equal to} $ V_{\infty} $, i.e. {\color{purple} the limit of the expanding sequence $V_k$}. $ \mathcal{C} $ is the controller corresponding to the winning set $ V_{\infty} $. 
+The most general algorithm that computes the winning set and the controller for specifications in the form of \eqref{phi} is given in \eqref{win-phi}. The winning set that results from \eqref{win-phi} is equal to $ V_{\infty} $, i.e. the limit of the expanding sequence $V_k$. $ \mathcal{C} $ is the controller corresponding to the winning set $ V_{\infty} $. 
 
 The building blocks for algorithm \eqref{win-phi} are (fixed-point based) operators \eqref{win-interm}, \eqref{win-until}, \eqref{win-pgpre},\eqref{win-inv} and \eqref{eqn:pre}. Each operator corresponds to a type of LTL formula used in \eqref{win-phi}. Note that when a fixed-point operator appears as part of a formula, it only refers to its first output, i.e. the winning set.
 
@@ -139,11 +139,11 @@ The winning sets {\color{black} resulting from} \eqref{win-interm}, \eqref{win-u
     {\color{purple} the number of children controllers is equal} 
     to the number of iterations before the corresponding fixed-point operator converges. Simple controllers are smallest elements in a controller, i.e. the ones given by \eqref{eqn:pre} and \eqref{win-inv}. 
     
-    \section{Proof of Theorem 3.4}\label{app:pr-31}
+    \section{Proof of Theorem 4}\label{app:pr-31}
     
     {\color{red} Requires careful reading}
 
-\emph{Proof:} Assume that $ Y_t $ and $ \mathcal{C}_t $ are the winning set and controller resulting from $ \text{Inv}_{\exists}^{D,G} (\widehat{Z}) $. We want to show that $ Y_t=\widehat{Y}$, base on which $ T(\mathcal{C}_t) = T(\widehat{C}) $ is obvious.
+\emph{Proof:} Assume that $ Y_t $ and $ \mathcal{C}_t $ are the winning set and the controller resulting from $ \text{Inv}_{\exists}^{D,G} (\widehat{Z}) $. We want to show that $ Y_t=\widehat{Y}$, which immediately implies $ T(\mathcal{C}_t) = T(\widehat{C}) $. {\color{red} is $T$ still defined?}
 	
 The winning set $ Y $ of $ \text{Inv}_{\exists}^{D,G} (Z) $ is the largest subset of $ (G\cap B) - Z  $ satisfying the convergence condition w.r.t $ Z $, i.e. $ Y \subseteq Pre^{T,D}_{\exists, \forall}(Y\cup Z) $, so is $ Y_t $ w.r.t. $ \widehat{Z} $. Also, $ Y_t \subseteq Y_0 $ for $ Y_0 $ in \eqref{patch-inv} by Theorem \ref{thm: inv-set}. 
 	
