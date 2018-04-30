@@ -14,33 +14,33 @@ The building blocks for algorithm \eqref{win-phi} are (fixed-point based) operat
 \begin{tabular}{ll}
 	\begin{minipage}{0.5\textwidth}
 		\begin{align}
-		[V_{\infty},\mathcal{C}] =\  \text{Win}_{\exists, \forall}^{T,U}\left(\Square A \wedge \Diamond \Square B \wedge \left( \bigwedge_{i\in I} \Square \Diamond R^i\right)\right)\nonumber\\
-		=\begin{cases}V_{\text{inv}} = \text{\text{Win}}^{T,U}_{\exists, \forall} ((A\mathbf{U}\emptyset)\vee \Square (A\wedge \Diamond Q))\\
+		[V_{\infty},\mathcal{C}] =\  \text{Win}_{\exists, \forall}^{T}\left(\Square A \wedge \Diamond \Square B \wedge \left( \bigwedge_{i\in I} \Square \Diamond R^i\right)\right)\nonumber\\
+		=\begin{cases}V_{\text{inv}} = \text{\text{Win}}^{T}_{\exists, \forall} ((A\mathbf{U}\emptyset)\vee \Square (A\wedge \Diamond Q))\\
 		\text{Restrict~ synthesis~ to~ }V_{\text{inv}}\\
-		V_0 = \emptyset,\ \mathcal{V}=\{\},\ \mathcal{K} = \{\},\  {\color{purple} k=0}\\
+		V_0 = \emptyset,\ \mathcal{V}=\{\},\ \mathcal{K} = \{\},\  {\color{black} k=0}\\
 		%{\color{purple} remove:} while\ V_{k+1} \not= V_k:\\
-		{\color{purple} repeat:}\\
-		\ \ \ \ Z_{k+1} = \text{Pre}_{\exists,\forall}^{T,U} (V_k) \bigcup \text{PGPre}_{\exists,\forall}^{T,U} (V_k, Q)\\
+		{\color{black} repeat:}\\
+		\ \ \ \ Z_{k+1} = \text{Pre}_{\exists,\forall}^{T,U} (V_k) \bigcup \text{PGPre}_{\exists,\forall}^{T} (V_k, Q)\\
 		\ \ \ \ [V_{k+1}, \mathcal{C}_{k+1}]=\\\ \ \ \ \text{Win}_{\exists,\forall}^{T} ((B \mathbf{\ U\ }Z_{k+1}) \vee \Square (B\wedge ( \bigwedge_{i\in I}\Diamond R^i)))\\
 		\ \ \ \ \mathcal{V}(k+1)=V_{k+1},\ \mathcal{K}(k+1) = \mathcal{C}_{k+1}\\
-		\ \ \ \ {\color{purple} k=k+1}\\
-		{\color{purple} until \ V_{k} = V_{k-1}}\\
+		\ \ \ \ {\color{black} k=k+1}\\
+		{\color{black} until \ V_{k} = V_{k-1}}\\
 		V_{\infty} = V_k,\ \mathcal{C}=(\mathcal{V},\mathcal{K},x)
 		\end{cases}\label{win-phi}
 		\end{align}
 	\end{minipage}
 	\begin{minipage}{0.5\textwidth}
 		\begin{align}
-		[W_{\infty},\mathcal{C}]= \ \text{Win}_{\exists,\forall}^{T,U}((B\mathbf{\ U\ }Z)\vee \Square (B\wedge(\bigwedge_{i\in I}\Diamond R^i)) )\nonumber\\
+		[W_{\infty},\mathcal{C}]= \ \text{Win}_{\exists,\forall}^{T}((B\mathbf{\ U\ }Z)\vee \Square (B\wedge(\bigwedge_{i\in I}\Diamond R^i)) )\nonumber\\
 		=\begin{cases}
-		W_0 = Q,\ \mathcal{V}=\{\},\ \mathcal{K}=\{\}\\ {\color{purple} k=0}\\
+		W_0 = Q,\ \mathcal{V}=\{\},\ \mathcal{K}=\{\}\\ {\color{black} k=0}\\
 		%{\color{purple} remove:} while\ W_{k+1}\not= W_k:\\
-		{\color{purple} repeat:}\\
+		{\color{black} repeat:}\\
 		\ \ \ \ Z_{k+1}^i = Z\cup (B\cap R^i\cap \text{Pre}_{\exists, \forall}^{T,U}(W_k))\\
-		\ \ \ \ [X^i, \mathcal{C}^i]= \text{Win}_{\exists,\forall}^{T,U} (B\mathbf{\ U\ }Z_{k+1}^i), \forall i \in I\\
+		\ \ \ \ [X^i, \mathcal{C}^i]= \text{Win}_{\exists,\forall}^{T} (B\mathbf{\ U\ }Z_{k+1}^i), \forall i \in I\\
 		\ \ \ \ W_{k+1} = \bigcap_{i\in I} X^i\\
-		\ \ \ \ {\color{purple} k=k+1}\\
-		{\color{purple} until \ W_{k}= W_{k-1} }\\
+		\ \ \ \ {\color{black} k=k+1}\\
+		{\color{black} until \ W_{k}= W_{k-1} }\\
 		\mathcal{V}(1)=W_k,\\ \mathcal{V}(i+1) = B\cap R^i,\ 
 		\mathcal{K}(i) = \mathcal{C}^i, \forall i\in I\\
 		W_{\infty} = W_k,\ \mathcal{C} = (\mathcal{V},\mathcal{K},x)
@@ -54,34 +54,34 @@ The building blocks for algorithm \eqref{win-phi} are (fixed-point based) operat
 	\begin{tabular}{ll}
 		\begin{minipage}{.5\textwidth}
 			\begin{align}
-			[X_{\infty},\mathcal{C}]= \text{Win}_{\exists,\forall}^{T,U} (B\mathbf{\ U\ }Z)=\quad\quad\quad\quad\quad\quad\ \ \nonumber\\
+			[X_{\infty},\mathcal{C}]= \text{Win}_{\exists,\forall}^{T} (B\mathbf{\ U\ }Z)=\quad\quad\quad\quad\quad\quad\ \ \nonumber\\
 			\begin{cases}
-			X_0 = \emptyset,\ \mathcal{V}=\{\},\ \mathcal{K}=\{\},\ {\color{purple} k=0}\\
+			X_0 = \emptyset,\ \mathcal{V}=\{\},\ \mathcal{K}=\{\},\ {\color{black} k=0}\\
 			%{\color{purple} remove:} while\ X_{k+1}\not= X_k\\
-			{\color{purple} repeat:}\\
+			{\color{black} repeat:}\\
 			\ \ \ \ [V^1_k,C^1_k]=
 			\text{Pre}_{\exists,\forall}^{T,U}(X_k)\\
-			\ \ \ \  [V^2_k,C^2_k]=\text{PGPre}_{\exists,\forall}^{T,U}(Z\cup(B\cap V^1_k),B)\\
+			\ \ \ \  [V^2_k,C^2_k]=\text{PGPre}_{\exists,\forall}^{T}(Z\cup(B\cap V^1_k),B)\\
 			\ \ \ \ X_{k+1} =Z\cup (B\cap V^1_k)\cup V^2_k\\
 			\ \ \ \ \mathcal{V}(2k+1)=V^1_k, \mathcal{V}(2k+2)=V^2_k\\
 			\ \ \ \ \mathcal{K}(2k+1)=C^1_k,\ \mathcal{K}(2k+2)=C^2_k\\
-			\ \ \ \ {\color{purple} k=k+1}\\
-			{\color{purple} until \ X_{k}= X_{k-1} }\\
+			\ \ \ \ {\color{black} k=k+1}\\
+			{\color{black} until \ X_{k}= X_{k-1} }\\
 			X_{\infty}=X_k,\ \mathcal{C} = (\mathcal{V},\mathcal{K},x)
 			\end{cases}\label{win-until}
 			\end{align}
 		\end{minipage} &
 		\begin{minipage}{.5\textwidth}
 			\begin{align}
-			[Z_{\infty},\mathcal{C}]=\text{PGPre}_{\exists,\forall}^{T,U} (Z,B)=\quad \ \nonumber\\
+			[Z_{\infty},\mathcal{C}]=\text{PGPre}_{\exists,\forall}^{T} (Z,B)=\quad \ \nonumber\\
 			\begin{cases}
 			Z_{\infty} = Z,\ \mathcal{V} = \{\},\ \mathcal{K}=\{\}\\ k = 1\\
-			for\ U\in 2^U:\\
-			\ \ for\ G\in G(U):\\
-			\ \ \ \ [V_k,\mathcal{C}_k]=Inv_{\exists}^{U,G}(Z_{\infty},B)\\
+			for\ D\in 2^U:\\
+			\ \ for\ G\in G(D):\\
+			\ \ \ \ [V_k,\mathcal{C}_k]=Inv_{\exists}^{D,G}(Z_{\infty},B)\\
 			\ \ \ \  Z_{\infty} = Z_{\infty} \cup V_k\\
 			\ \ \ \  \mathcal{V}(k)=V_k,\ \mathcal{K}(k)=\mathcal{C}_k\\
-			\ \ \ \  {\color{purple} k = k+1}\\
+			\ \ \ \  {\color{black} k = k+1}\\
 			\mathcal{C} = (\mathcal{V},\mathcal{K},x)
 			\end{cases}\label{win-pgpre}
 			\end{align}
@@ -117,13 +117,13 @@ Y_{\infty} = Y_k,\ \mathcal{C}\ restricted\ to\ Y_{\infty}
 \iffalse	
 \begin{algorithm}
 	\small
-	\caption{$ \text{PGPre}_{\exists,\forall}^{T,U} (Z,B) $}
+	\caption{$ \text{PGPre}_{\exists,\forall}^{T} (Z,B) $}
 	\label{alg:algorithm-label}
 	\begin{algorithmic}
 		\REQUIRE $ T, U, Z, B $\\
 		\STATE $ Z_{\infty} = Z,\ \mathcal{V} = \{\},\ \mathcal{K}=\{\}, k = 1 $
 		\FOR{$ U\in 2^U $} \FOR{$ G\in G(U) $}
-		\STATE $ [V_k,\mathcal{C}_k]=Inv_{\exists}^{U,G}(Z_{\infty},B) $, $ Z_{\infty} = Z_{\infty} \cup V_k $, $ \mathcal{V}(k)=V_k,\ \mathcal{K}(k)=\mathcal{C}_k $, $ {\color{purple} k = k+1} $
+		\STATE $ [V_k,\mathcal{C}_k]=Inv_{\exists}^{U,G}(Z_{\infty},B) $, $ Z_{\infty} = Z_{\infty} \cup V_k $, $ \mathcal{V}(k)=V_k,\ \mathcal{K}(k)=\mathcal{C}_k $, $ {\color{black} k = k+1} $
 		\ENDFOR
 		\ENDFOR
 		\RETURN $ \mathcal{C} = (\mathcal{V},\mathcal{K},x) $
@@ -132,7 +132,7 @@ Y_{\infty} = Y_k,\ \mathcal{C}\ restricted\ to\ Y_{\infty}
 	\end{algorithm}
 \fi
 
-The winning sets {\color{purple} resulting from} \eqref{win-interm}, \eqref{win-until}, \eqref{win-inv} are $ W_{\infty} $, $ X_{\infty} $ and $ Y_{\infty} $. {\color{purple} $\text{Pre}_{\exists,\forall}^{T,U}$ is a one-step reachability operator, and $\text{Inv}_{\exists}^{U,G}(Z,B)$ computes $Y_\infty \subseteq (G\cap B) - Z$ from where the state can be controlled (with actions in $U$) to either remain inside $Y_\infty$ or reach $Z$, but because $G$ is a progress group under $U$, remaining indefinitely in $G$ is impossible and therefore $Z$ is
+The winning sets {\color{black} resulting from} \eqref{win-interm}, \eqref{win-until}, \eqref{win-inv} are $ W_{\infty} $, $ X_{\infty} $ and $ Y_{\infty} $. {\color{black} $\text{Pre}_{\exists,\forall}^{T,U}$ is a one-step reachability operator, and $\text{Inv}_{\exists}^{U,G}(Z,B)$ computes $Y_\infty \subseteq (G\cap B) - Z$ from where the state can be controlled (with actions in $U$) to either remain inside $Y_\infty$ or reach $Z$, but because $G$ is a progress group under $U$, remaining indefinitely in $G$ is impossible and therefore $Z$ is
 	eventually reached, which is why $Y_\infty$ is a winning set for $B\mathbf{\ U\ }Z$.}
     
     For \eqref{win-phi}, \eqref{win-interm}, \eqref{win-until} and \eqref{win-inv}, the number of sub-controllers in each controller is proportional 
