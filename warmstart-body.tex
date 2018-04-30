@@ -263,7 +263,7 @@ Overall, a controller is a tree structure with controllers at each node and simp
 		\end{itemize}
 		where $ x^+ $ refers to the value of internal variable $ x $ after update.
 		
-		\item[(ii)] Return the output of the $ x^+ $th sub-controller in $ \mathcal{K} $ with input $ s $, i.e.  {\color{purple} (I would rather say something like ``execute the $x^+$th sub-controller ...'')}
+		\item[(ii)] Execute the $ x^+ $th sub-controller and return its output \sout{Return the output of the $ x^+ $th sub-controller in $ \mathcal{K} $ with input $ s $}, i.e.  {\color{purple} (I would rather say something like ``execute the $x^+$th sub-controller ...'')}
 		\begin{displaymath}
 		\mathcal{C}(s) = \mathcal{K}(x^+)(s)
 		\end{displaymath}
@@ -643,7 +643,7 @@ Restrict~ synthesis~ to~ \widehat{V}_{\text{inv}}\\
 \end{align}
 }
 
-The same as \eqref{patch-until}, the patching algorithm firstly patches the existing sub-controllers. If the winning set doesn't converge in $ n $ iterations, the last existing controller is duplicated to the tail of $ \widehat{\mathcal{K}} $ and patched to enlarge the winning set until it converges.
+The same as \eqref{patch-until}, the patching algorithm firstly patches the existing sub-controllers. If the winning set doesn't converge in $ n $ iterations, the last existing controller is duplicated to the tail of $ \widehat{\mathcal{K}} $ and patched to enlarge the winning set until it converges. 
 
 \begin{theorem}
 	$ \widehat{V}_\infty $ and $ \widehat{\mathcal{C}} $ returned by \eqref{patch-final} are the same as outputs resulting from
@@ -653,6 +653,7 @@ The same as \eqref{patch-until}, the patching algorithm firstly patches the exis
 \end{theorem}
 \emph{Proof:} Similar to the previous proofs, we want to replace all the $ \overline{Pre}^{T,U}_{\exists,\forall} $, $ \overline{PGPre}^{T}_{\exists,\forall} $ and $ \overline{Win}_{\exists,\forall, (\Psi)}^{T} $ terms in \eqref{patch-final} with $ Pre^{\widehat{T},\widehat{U}}_{\exists,\forall}(\widehat{V}_k) $, $PGPre^{\widehat{T}}_{\exists,\forall}(\widehat{V}_k, Q) $ and $ Win^{\widehat{T}}_{\exists,\forall}((B\ \mathbf{U}\ \widehat{Z}_{k+1})\vee\Square (B\wedge (\bigwedge_{i\in I}\Diamond R^i)))) $, as long as (i) $ \widehat{V}_{k} \subseteq \mathcal{V}(k) $ and $ \widehat{Z}_{k+1}\subseteq Z_{k+1} $ for $ k < n $ and (ii) $ \widehat{V}_k\subseteq \mathcal{V}(n-1) $ and $ \widehat{Z}_{k+1}\subseteq Z_n $ for $ k\geq n $. Both (i) and (ii) can be proven by induction using Theorem \ref{thm: 1}, \ref{thm:pre}, \ref{thm:pg} and \ref{thm:interm}. (First prove (i) and then use the case where $ k=n-1 $ in (i) to be the base case in the induction argument for (ii)). Also, in the first line of \eqref{patch-final} we use $ \overline{Win}_{\exists,\forall,(\Psi)}^{T} $ to compute $ \widehat{V}_{inv} $, which can can be replaced with $ Win_{\exists,\forall}^{\widehat{T}}((A\mathbf{U}\emptyset)\vee \Square(A\wedge \Diamond Q)) $ since $ \emptyset\subseteq \emptyset $. After the replacements, \eqref{patch-final} and \eqref{win-phi} become exactly the same, which implies that their outputs must be the same. \QEDB
 
+ {\color{teal} Theorem \ref{thm:phi} shows that our patching method gives the same results as re-synthesizing from scratch via \eqref{win-phi}, and furthermore, since the algorithm \eqref{win-phi} is sound and complete, our method is sound and complete surely, which offers one solution to the Problem \ref{prob} addressed in Section \ref{sec:prob}.}
 
 \section{EXAMPLE}
 \label{sec:example}
