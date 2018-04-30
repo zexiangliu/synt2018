@@ -352,7 +352,8 @@ To get the intuition, consider a simple invariance specification ($\Square A$) a
 \section{PATCHING METHOD}
 \label{sec:method}
 
-{\color{red} Not sure if this is still relevant: } \sout{Before presenting the patching methods, we state a property of controller implementations that roughly shows that the controllers contain all the relevant information needed for patching. } Before presenting the patching methods, we state several properties of winning sets that is vital to the success of patching existing controllers.
+{\color{red} Not sure if this is still relevant: } %\sout{Before presenting the patching methods, we state a property of controller implementations that roughly shows that the controllers contain all the relevant information needed for patching. }
+ Before presenting the patching methods, we state several properties of winning sets that is vital to the success of patching existing controllers.
 
 \iffalse
 \begin{definition}
@@ -704,18 +705,15 @@ v
 \end{align}
 where $x$ is the {\color{black} horizontal position of the} center of mass (CoM) of the robot, $v$ is the velocity of CoM and $ u $ is {\color{black} the horizontal position of the foot.} that the robot foot will step on. 
 
-{\color{black} We consider } the state space $ Q = [-2.5,2.5]\times [-4,4] $ with action space $ U = [-3.5,3.5] $. Discretize $ Q $ and $ U $ uniformly with grid size $ 0.1 $ and $ 0.2 $, and compute the transitions between discretized grids over-approximately  using the method described in \cite{Liu2014,Sun2014}. Finally we get a AFTS with states indexed $ [1:4000] $, actions $ [1:35] $ and $ 187594 $ valid transitions, which is the abstraction of the walking robot. 
+{\color{black} We consider } the state space $ Q = [-2.5,2.5]\times [-4,4] $ with action space $ U = [-3.5,3.5] $. Discretize $ Q $ and $ U $ uniformly with grid size $ 0.1 $ and $ 0.2 $, and compute the transitions between discretized grids over-approximately  using the method described in \cite{Liu2014,Sun2014}. Finally we get a AFTS $ T $ with states indexed $ [1:4000] $, actions $ [1:35] $ and $ 187594 $ valid transitions, which is the abstraction of the walking robot. 
 
-The specification for the control synthesis is 
-\begin{align}
-\Diamond \Square B
-\end{align}
+The specification for the control synthesis is $ \Diamond \Square B $,
 where $ B=[-2.5,2.5]\times[-2,2] $. It says that the CoM of the robot should always stay within $ [-2.5,2.5] $ with velocity lower than $ 2 $ after finite time from beginning. Given the specification, the winning set and controller are computed via \eqref{win-phi} (taking $ A = Q,B=B , C^1 = Q $).
 
 Now imagine that some holes on the ground are detected, as shown in Figure \ref{fig:hoprob}, where the robot should avoid stepping. Therefore some actions need to be disabled. Once we determine which actions will be affected, we can put them in $ U_d $ and patch the existing controllers for the new action profiles.
 \begin{table}
 	\centering
-	\caption{Compare the execution time of re-synthesis from scratch (row $ 3 $) and patching method (row $ 4 $) under multiple action profiles. The first row is the set of available actions. The second row is the percentage of transitions left after $ U_d $ is disabled.}
+	\caption{The execution time of re-synthesis from scratch (row $ 3 $) and patching method (row $ 4 $) under multiple action profiles. The first row is the set of available actions. The second row is the percentage of transitions left after $ U_d $ is disabled.}
 	\begin{tabular}{lllllll}
 		\hline 
 		$ U_d $ & $ [1] $ &$ [1:5] $ & $ [1:10] $ & $ [1:15] $ & $ [1:20] $ & $ [1:25] $ \\ 
@@ -730,7 +728,7 @@ Now imagine that some holes on the ground are detected, as shown in Figure \ref{
 
 \begin{table}
 	\centering
-	\caption{Compare the average execution time for re-synthesizing from scratch (row $ 2 $), re-synthesizing from the existing winning set, i.e. restrict the state space of the AFTS to be the existing winning set and re-run \eqref{win-phi} (row $ 3 $) and our patching method (row $ 4 $) under random action profiles. The first row is number of unavailable actions ($ \sharp U_d $). For each number, choose 10 random sets of unavailable actions.}
+	\caption{The average execution time for re-synthesizing from scratch (row $ 2 $), re-synthesizing from the existing winning set, i.e. restrict the state space of the AFTS to be the existing winning set and re-run \eqref{win-phi} (row $ 3 $) and our patching method (row $ 4 $) under random action profiles. The first row is number of unavailable actions ($ \sharp U_d $). For each number, choose 10 random sets of unavailable actions.}
 	\begin{tabular}{ccccccc}
 		\hline 
 		$ \sharp U_d $ & $ 1 $ &$ 5 $ & $ 10 $ & $ 15 $ & $ 20 $ & $ 25 $ \\ 
@@ -767,16 +765,16 @@ Now imagine that some holes on the ground are detected, as shown in Figure \ref{
 		\caption{inputs}
 		\label{fig:input}
 	\end{subfigure}
-	\caption{(a) Six regions with different colors are labeled as $ W_1,W_2,...,W6 $. The winning sets under action profiles $U_d = [1], [1:5],[1:10],...,[1:25]$ are the regions corresponding to $ \bigcup_{i=1}^6 W_i,\ \bigcup_{i=2}^6 W_i,\bigcup_{i=3}^6 W_i,...,\ W_6 $ respectively. (b) Trajectories with initial state $ (0.85,-3.95) $ under $ U_d = \emptyset $ (blue) and $[1:10] $ (red). The region inside orange box is the target set $ B $. (c) Inputs over time under $ U_d = \emptyset $ (blue) and $ [1:10] $ (red) for trajectories in (b). The red dash point line indicates value corresponding to input $ u = 10 $.} %{\color{purple} (a) is a bit hard to understand: we  see only disjoint regions on the image but the winning sets are decreasing in size. Maybe say that the winning set $i$ is the union of the $i$ first regions on the graph. (and redefine them accordingly)}
+	\caption{(a) Six regions with different colors are labeled as $ W_1,W_2,...,W6 $. The winning sets under action profiles $U_d = [1], [1:5],[1:10],...,[1:25]$ are the regions corresponding to $ \bigcup_{i=1}^6 W_i,\ \bigcup_{i=2}^6 W_i,\bigcup_{i=3}^6 W_i,...,\ W_6 $ respectively. (b) Trajectories with initial state $ (0.85,-3.95) $ under $ U_d = \emptyset $ (blue) and $[1:10] $ (red). The region inside orange box is the target set $ B $. (c) Inputs over time under $ U_d = \emptyset $ (blue) and $ [1:10] $ (red) for trajectories in (b). The red dash point line indicates value corresponding to the input {\color{teal}indexed by} $ u = 10 $.} %{\color{purple} (a) is a bit hard to understand: we  see only disjoint regions on the image but the winning sets are decreasing in size. Maybe say that the winning set $i$ is the union of the $i$ first regions on the graph. (and redefine them accordingly)}
 \end{figure*}
 
 The experiment environment is MATLAB R2017a with CPU Intel Core  i7-6820 HQ.
 
 We choose unavailable actions $ U_d= [1],[1:5],...,[1:25] $ for the {\color{black} walking} robot abstraction and compute the controllers via fixed-point operator \eqref{win-phi} and the patching operator \eqref{patch-final} respectively.  The experiment results in Table \ref{tab: exper} make a comparison between the time of synthesizing from scratch ($ t_{syn} $) with the time of patching existing controllers ($ t_{pat} $), which shows that our patching methods can shorten the synthesis time significantly. Figure \ref{fig:winset} shows the winning sets for each $ U_d $, which shrink to the right part in the state space as $ U_d $ (region of holes) grows.
 
-To further show the time efficiency, we randomly choose $ U_d $ with size $n = 1,5,...,25 $, and synthesize the controllers for each $ U_d $ via \eqref{win-phi} and \eqref{patch-final}. Table \ref{tab: exper2}, compares the average time used by the two algorithms for each $ n $. The time for our patching algorithm is less than $ 3\% $ of the time for re-synthesizing on average.
+To further show the time efficiency, we randomly choose $ U_d $ with size $n = 1,5,...,25 $. By Theorem \ref{thm: 1}, the winning set after $ U_d $ is removed is contained by the existing one, so we can restrict the state space of the AFTS $ T $ to be the existing winning set and synthesize over this new abstraction via \eqref{win-phi}. Theoretically it saves less computation cost for the AFTS based on the winning set is smaller than before. We call it naive warm-starting method. Table \ref{tab: exper2} compares the average time used by this algorithm (row $ 3 $) with our patching method (row $ 4 $) and re-synthesizing from scratch (row $ 2 $) for each $ n $. The time for our patching algorithm is less than $ 3\% $ of the time for re-synthesizing on average.
 
-Finally, to show that formal guarantees are satisfied after patching, simulation are run for controllers before and after patching for $ U_d =[1:10]$. The initial state is $ s_0=34 $. Figure \ref{fig:traj} and \ref{fig:input} show the trajectories and the inputs used within $ 60 $ time steps. Both trajectories goes into our target region $ B $, indicated by the orange box. The outputs from patched controller is always above the dash line where $ u=10 $, due to the unavailability of actions $[1:10] $.
+Finally, to show that formal guarantees are satisfied after patching, simulation are run for controllers before and after patching for $ U_d =[1:10]$. The initial state is $ s_0=34 $. Figure \ref{fig:traj} and \ref{fig:input} show the trajectories and the inputs used within $ 60 $ time steps. Both trajectories go into our target region $ B $, indicated by the orange box. The outputs from patched controller is always above the dash line where $ u=10 $, due to the unavailability of actions $[1:10] $.
 
 For practical applications in robot control, if we have the controller for the case that no constraints exists and know all the possible profiles of actions (all the possible constraints on the surface) for a known environment, the patching algorithm can generate the corresponding controllers for those action profiles very quickly. 
 
@@ -784,6 +782,7 @@ For practical applications in robot control, if we have the controller for the c
 In this paper, we proposed an implementation (data structure) for a controller synthesized by fixed-point based control synthesis techniques in \cite{Nilsson2017}. For an existing controller with such a structure, a patching algorithm was developed to modify it for the case that some actions in the original problem setting become unavailable. Furthermore we proved that the winning set resulting from our patching algorithm was exactly the same as the winning set resulting from synthesizing a new controller from scratch. 
 
 We illustrated the efficiency of our method on a example of walking robot. The controller was synthesized for the robot described by a Linear Inverted Pendulum Model with hole constraints on the surface. We firstly synthesized a controller for a smooth surface without holes, and then patched it for the cases that holes existed using our method. Under the same specification, the time used by our method was only $ 1.4\%-7\% $ of the time used for synthesis from scratch and less than $ 3\% $ on average. 
+
 
 %{\color{purple} Maybe mention that since in some cases a small change of the action set results in a completely different strategy, we expect that in the worst case, our warm-start method does not bring any speed-up. This is similar to classical warm-up techniques in control: there is no guarantee on the speed-up. And then mention that in future work, although we know that getting formal guarantees on a speed-up in average would be hard (since it highly depends on the type of problem), we wish to conduct a finer study of how much speed-up we can expect to achieve with the proposed warm-up, for instance by studying its effect on "random systems and random specifications}
 
