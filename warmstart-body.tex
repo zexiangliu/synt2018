@@ -60,7 +60,7 @@ We consider plants modeled as augmented finite transition systems, a discrete st
 
 A \emph{trajectory} of an AFTS $T$ is an infinite sequence of states $\{s(n)\}_{n=0}^{\infty}$ 
 	%(I wouldn't introduce an $s$ here for the whole sequence since later we use several times the variable $s$ to refer to a single state)
-such that for any two consecutive states $s(n), s(n+1)$ in the sequence, exists an action $a\in U$ satisfying $(s(n),a,s(n+1))\in \rightarrow_T$. {\color{red}should we include compliance with the progress group}
+such that for any two consecutive states $s(n), s(n+1)$ in the sequence, there exists an action $a\in U$ satisfying $(s(n),a,s(n+1))\in \rightarrow_T$. {\color{red}should we include compliance with the progress group}
 
 \subsection{Linear Temporal Logic}
 
@@ -246,14 +246,14 @@ Overall, a controller is a tree structure with controllers at each node and simp
 	\begin{itemize}
 		\item[(i)] update the internal variable $ x $ of $ \mathcal{C} $: 
 		\begin{itemize}
-			\item 	if $ \mathcal{C} $ results from \eqref{win-phi}, \eqref{win-until}, \eqref{win-inv}:
+			\item 	if $ \mathcal{C} $ results from \eqref{win-phi}, \eqref{win-until}, \eqref{win-inv} {\color{purple}(see Annex \ref{app:basic-alg})}:
 			\begin{displaymath}
 			x^+ =	\begin{cases}
 			\text{arg}\min_{y\leq x}\{s\in \mathcal{V}(y)\},\ \ \text{if}\ x\not=1\\
 			\text{arg}\min_{y}\{s\in \mathcal{V}(y)\},\ \ \text{otherwise}
 			\end{cases}
 			\end{displaymath}
-			\item  if $ \mathcal{C} $ results from \eqref{win-interm}: %{\color{purple} just $x \mod ..$? It seems that $x$ may remain constant with this definition, are you sure that this is correct?}{\color{teal} there's $ +1 $ after mod}
+			\item  if $ \mathcal{C} $ results from \eqref{win-interm} {\color{purple}(see Annex \ref{app:basic-alg})}: %{\color{purple} just $x \mod ..$? It seems that $x$ may remain constant with this definition, are you sure that this is correct?}{\color{teal} there's $ +1 $ after mod}
 			\begin{displaymath}
 			x^+ = \begin{cases}
 			(x\mod\vert\mathcal{K}\vert) + 1,\ \ \text{if}\ s\in \mathcal{V}(x+1)\\
@@ -263,7 +263,7 @@ Overall, a controller is a tree structure with controllers at each node and simp
 		\end{itemize}
 		where $ x^+ $ refers to the value of internal variable $ x $ after update.
 		
-		\item[(ii)] Return the output of the $ x^+ $th sub-controller in $ \mathcal{K} $ with input $ s $, i.e.
+		\item[(ii)] Return the output of the $ x^+ $th sub-controller in $ \mathcal{K} $ with input $ s $, i.e.  {\color{purple} (I would rather say something like ``execute the $x^+$th sub-controller ...'')}
 		\begin{displaymath}
 		\mathcal{C}(s) = \mathcal{K}(x^+)(s)
 		\end{displaymath}
@@ -320,6 +320,7 @@ Overall, a controller is a tree structure with controllers at each node and simp
 		%\centering
 		%\includegraphics[width=0.8\linewidth]{pic/xupdate-full}
 		\caption{ %{\color{purple} Same comment as on the previous version: it would be nice to see both transition graphs (before/after) side by side. Also: why do you show $x_1^0$ in the two bottom transitions; it could make the reader think that the transitions depend on the values of other internal variables, but it's not the case. The transition to children controllers is relatively clear to me, so I would simpy remove the value of other internal variables in each subgraph.}{\color{teal} the only change on the graph comes from changes in $ \mathcal{V} $ in each sub-controller.} 
+            {\color{purple} I suggest to make the figures a bit wider.}
 			The transition graph here is a visual illustration of the update rules of $ x $ in Definition \ref{def:exec}. (a) corresponds to the example \ref{ex:exec}. (b) corresponds to the example in Section \ref{sec:example1}. $s $ is the current state of the system in Figure \ref{fig:eg1}. At each execution time, each internal variable transits from its current node to one of the neighbor node once the transition condition on the edge is satisfied. If no transition condition is satisfied, internal variable remains unchanged. Update $ x$ first, and then $ x^0 $, and lastly $ x_0^1 $ and $x^1_1 $.} 
 		\label{fig:xupdate}
 	\end{figure}
