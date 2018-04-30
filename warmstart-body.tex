@@ -10,13 +10,12 @@ Control synthesis techniques for discrete systems have been a central topic both
 %Paragraph 3: Related work from Livingston.
 A key challenge in control synthesis is scalability. The scalability depends both on the size of the discrete transition system and the complexity of the specification, e.g., can be doubly exponential in the length of a general linear temporal logic (LTL) specification \cite{pnueli1989synthesis}. Therefore, some research has focused on identifying fragments of LTL that have favorable complexity (see e.g., \cite{bloem2012synthesis,ehlers2011generalized,wolff2013efficient,Nilsson2017}). Although these fragments lead to tractable problems, the time required for synthesis still prevents it from being applicable on-line, necessitating to consider all possible scenarios at design-time. This motivates the following questions: (i) If controllers are to be synthesized off-line for many different scenarios, and if there is a controller for a specific scenario in hand, can this controller be used to synthesize new controllers efficiently? (ii) can this modification approach be fast enough to enable on-line synthesis if new situations are encountered at run-time? 
 
-The problem of incrementally modifying an existing controller, i.e., ``patching" a controller, as opposed to re-synthesizing from scratch, has been studied for different control synthesis techniques, specifically in the context of robotics applications \cite{Livingston,Livingston2014,wong2014correct}. Livingston et al. \cite{Livingston} study a patching method for two player games with the specifications given by the GR(1) fragment of LTL and the control strategies synthesized by a $ \mu $-calculus based method. Assuming that changes in the system and environment only break an existing controller locally, they re-synthesize a controller only for the affected nodes and replace the broken part with the new one. When the ``localness" assumption or estimation of the affected states fails, the performance of this method could degrade to the case that does synthesis from scratch. {\color{purple} 
-The reader may infer that our proposed method does not have this bad property, but it is actually a very general property, probably shared by all warm-up methods.
-I suggest that we remove the previous sentence.
-}This method is also extended to handle changes in the specification such as addition of new goal regions \cite{Livingston2014}. Wong et al. \cite{wong2014correct} also consider GR(1) specifications with corresponding symbolic controller synthesis techniques and develop recovery mechanisms when the environment assumptions become invalid during execution. 
+The problem of incrementally modifying an existing controller, i.e., ``patching" a controller, as opposed to re-synthesizing from scratch, has been studied for different control synthesis techniques, specifically in the context of robotics applications \cite{Livingston,Livingston2014,wong2014correct}. Livingston et al. \cite{Livingston} study a patching method for two player games with the specifications given by the GR(1) fragment of LTL and the control strategies synthesized by a $ \mu $-calculus based method. Assuming that changes in the system and environment only break an existing controller locally, they re-synthesize a controller only for the affected nodes and replace the broken part with the new one. %When the ``localness" assumption or estimation of the affected states fails, the performance of this method could degrade to the case that does synthesis from scratch. {\color{purple} 
+%The reader may infer that our proposed method does not have this bad property, but it is actually a very general property, probably shared by all warm-up methods.I suggest that we remove the previous sentence.}
+This method is also extended to handle changes in the specification such as addition of new goal regions \cite{Livingston2014}. Wong et al. \cite{wong2014correct} also consider GR(1) specifications with corresponding symbolic controller synthesis techniques and develop recovery mechanisms when the environment assumptions become invalid during execution. 
 
-This paper also considers the problem of patching controllers. Different from the existing literature mentioned above, we work with synthesis problems where there exists an explicit transition system to be controlled and the modification required is due to some of the control actions becoming unavailable. The loss of control actions is relevant in the case of actuator faults and also in the context of stabilizing a walking robot on a constrained surface, as described later{\color{purple}, 
-or more generally of systems with action constraints that vary with time or environment changes}. Another difference is the class of specifications considered: the LTL fragment we use includes persistence requirements, which are not expressible within the GR(1) fragment, and is amenable to fixed-point based control synthesis techniques operating directly on the transition system (see e.g., \cite{wolff2013efficient,Nilsson2017}). Our main contribution is to propose a novel \emph{controller implementation}, a data structure consisting of a partially ordered set of controllers corresponding to simple fixed-points in the synthesis algorithm,  that captures all the information required for modification when some of the actions become unavailable. We then present patching techniques using this data structure that modify it appropriately to compute the new controller. The proposed patching techniques are in a sense similar to warm-starting techniques in optimization, where an existing solution (not too far away from the expected new solution) is used to initialize an optimization algorithm. Similarly, we use an existing controller to initialize the synthesis algorithm for finding a controller for the new problem. 
+This paper also considers the problem of patching controllers. Different from the existing literature mentioned above, we work with synthesis problems where there exists an explicit transition system to be controlled and the modification required is due to some of the control actions becoming unavailable. The loss of control actions is relevant in the case of actuator faults and also in the context of stabilizing a walking robot on a constrained surface, as described later, 
+or more generally of systems with action constraints that vary with time or environment changes. Another difference is the class of specifications considered: the LTL fragment we use includes persistence requirements, which are not expressible within the GR(1) fragment, and is amenable to fixed-point based control synthesis techniques operating directly on the transition system (see e.g., \cite{wolff2013efficient,Nilsson2017}). Our main contribution is to propose a novel \emph{controller implementation}, a data structure consisting of a partially ordered set of controllers corresponding to simple fixed-points in the synthesis algorithm,  that captures all the information required for modification when some of the actions become unavailable. We then present patching techniques using this data structure that modify it appropriately to compute the new controller. The proposed patching techniques are in a sense similar to warm-starting techniques in optimization, where an existing solution (not too far away from the expected new solution) is used to initialize an optimization algorithm. Similarly, we use an existing controller to initialize the synthesis algorithm for finding a controller for the new problem. 
 
 %, but they consider a different type of LTL fragment $ GR(1) $ and control strategies synthesized by $ \mu $-calculus based method. Assuming that changes in system and environment only break an existing controller locally, they re-synthesize a controller only for the affected nodes and replace the broken part with the new one. When ``localness" assumption or estimation of the affected states fails, the performance of this method could degrade to the case that does synthesis from scratch.
 
@@ -246,14 +245,14 @@ Overall, a controller is a tree structure with controllers at each node and simp
 	\begin{itemize}
 		\item[(i)] update the internal variable $ x $ of $ \mathcal{C} $: 
 		\begin{itemize}
-			\item 	if $ \mathcal{C} $ results from \eqref{win-phi}, \eqref{win-until}, \eqref{win-inv} {\color{purple}(see Annex \ref{app:basic-alg})}:
+			\item 	if $ \mathcal{C} $ results from \eqref{win-phi}, \eqref{win-until}, \eqref{win-inv} (see Appendix \ref{app:basic-alg}):
 			\begin{displaymath}
 			x^+ =	\begin{cases}
 			\text{arg}\min_{y\leq x}\{s\in \mathcal{V}(y)\},\ \ \text{if}\ x\not=1\\
 			\text{arg}\min_{y}\{s\in \mathcal{V}(y)\},\ \ \text{otherwise}
 			\end{cases}
 			\end{displaymath}
-			\item  if $ \mathcal{C} $ results from \eqref{win-interm} {\color{purple}(see Annex \ref{app:basic-alg})}: %{\color{purple} just $x \mod ..$? It seems that $x$ may remain constant with this definition, are you sure that this is correct?}{\color{teal} there's $ +1 $ after mod}
+			\item  if $ \mathcal{C} $ results from \eqref{win-interm} (see Appendix \ref{app:basic-alg}): 
 			\begin{displaymath}
 			x^+ = \begin{cases}
 			(x\mod\vert\mathcal{K}\vert) + 1,\ \ \text{if}\ s\in \mathcal{V}(x+1)\\
@@ -263,7 +262,7 @@ Overall, a controller is a tree structure with controllers at each node and simp
 		\end{itemize}
 		where $ x^+ $ refers to the value of internal variable $ x $ after update.
 		
-		\item[(ii)] Execute the $ x^+ $th sub-controller and return its output \sout{Return the output of the $ x^+ $th sub-controller in $ \mathcal{K} $ with input $ s $}, i.e.  {\color{purple} (I would rather say something like ``execute the $x^+$th sub-controller ...'')}
+		\item[(ii)] Execute the $ x^+ $th sub-controller and return its output: %\sout{Return the output of the $ x^+ $th sub-controller in $ \mathcal{K} $ with input $ s $}, i.e.  {\color{purple} (I would rather say something like ``execute the $x^+$th sub-controller ...'')}
 		\begin{displaymath}
 		\mathcal{C}(s) = \mathcal{K}(x^+)(s)
 		\end{displaymath}
@@ -354,7 +353,7 @@ To get the intuition, consider a simple invariance specification ($\Square A$) a
 \label{sec:method}
 
 {\color{red} Not sure if this is still relevant: } %\sout{Before presenting the patching methods, we state a property of controller implementations that roughly shows that the controllers contain all the relevant information needed for patching. }
- Before presenting the patching methods, we state several properties of winning sets, which is vital to the success of patching existing controllers.
+ Before presenting the patching methods, we state several properties of winning sets, which are vital to the success of patching existing controllers.
 
 \iffalse
 \begin{definition}
@@ -465,7 +464,7 @@ A(\widehat{\mathcal{C}}) = T_{0}\backslash E\\
 where $ \widehat{\mathcal{C}} $ is converted from $ A(\widehat{\mathcal{C}}) $. $ \widehat{W} $ and $ \widehat{\mathcal{C}} $ are the modified winning set and controller.
 
 \begin{theorem}
-	$ \widehat{W} $ and $ \widehat{\mathcal{C}} $ returned by \eqref{patch-pre} are the same as the outputs resulting from $ \text{Pre}_{\exists,\forall}^{\widehat{T},\widehat{U}}(\widehat{V})$.	\label{thm:pre}
+	$ \widehat{W} $ and $ \widehat{\mathcal{C}} $ returned by \eqref{patch-pre} are the same as the outputs resulting from $ \text{Pre}_{\exists,\forall}^{\widehat{T},\widehat{U}}(\widehat{V})$ in \eqref{eqn:pre}.	\label{thm:pre}
 \end{theorem}
 
 \emph{Proof:} Suppose that $ \text{Pre}_{\exists,\forall}^{\widehat{T},\widehat{U}}(\widehat{V}) $ returns $ W_t $ and $ \mathcal{C}_t $. It's enough to show that $ A(\widehat{\mathcal{C}})= A(\mathcal{C}_t)$, i.e. $ \rightarrow_{A(\widehat{\mathcal{C}})} = \rightarrow_{A(\mathcal{C}_t)} $. By \eqref{eqn:pre} and Definition \ref{def:TC}, it is obvious that $ \rightarrow_{A(\mathcal{C}_t)} \subseteq \rightarrow_{A(\mathcal{C})}$ for $ \widehat{V}\subseteq V $ and $ \widehat{U}\subseteq U $. The set of transitions $ S = (*,U_d,*)\cup E $ is only related to states in $ \Delta V $ or actions in $ U_d $, so $\rightarrow_{A(\mathcal{C}_t)}$ and $ S $ are disjoint. $ \rightarrow_{A(\widehat{\mathcal{C}})}= \rightarrow_{A(\mathcal{C})}-S$. Thus $ \rightarrow_{A(\mathcal{C}_t)}\subseteq \rightarrow_{A(\widehat{\mathcal{C}})}$. By \eqref{patch-pre}, transitions in $ A(\widehat{\mathcal{C}}) $ can only take actions in $ \widehat{U} $ and transit to states in $ \widehat{V} $, which implies that $ \rightarrow_{A(\widehat{\mathcal{C}})}\subseteq \rightarrow_{A(\mathcal{C}_t)} $. \QEDB 
@@ -496,7 +495,7 @@ where $ \Delta Z = Z - \widehat{Z} $, $ E_0 = \{(s_1,a,s_2)\in \rightarrow_{T}: 
 In regards to the patching operator in \eqref{patch-inv}, we have the following result, proof of which is given in Appendix \ref{app:pr-31}:
 
 \begin{theorem}
-	$ \widehat{Y} $ and $ \widehat{\mathcal{C}} $ returned by \eqref{patch-inv} are the same as the outputs resulting from $ \text{Inv}_{\exists}^{D,G}(\widehat{Z},B) $.	\label{thm:inv}
+	$ \widehat{Y} $ and $ \widehat{\mathcal{C}} $ returned by \eqref{patch-inv} are the same as the outputs resulting from $ \text{Inv}_{\exists}^{D,G}(\widehat{Z},B) $ in \eqref{win-inv}.	\label{thm:inv}
 \end{theorem}
 Given a simple controller $ \mathcal{C} $ and new synthesis settings, both \eqref{patch-pre} and \eqref{patch-inv} try to find $ A(\widehat{\mathcal{C}}) $ inside $ A(\mathcal{C}) $. However, if we re-synthesize the new simple controller from scratch, \eqref{eqn:pre} and \eqref{win-inv} would try to find $ A(\mathcal{C}) $ in the whole AFTS $ T $, which in general needs more computation cost, demonstrated by the simulation results in Section \ref{sec:example}. However, in the worst case, there might not be any computational gains.
 
@@ -533,10 +532,10 @@ Remove\ all\ \emptyset\ in\ \widehat{\mathcal{V}}\ and \ \widehat{\mathcal{K}},\
 \end{align}}
 
 \begin{theorem}
-	$ \widehat{Z}_\infty $ and $ \widehat{\mathcal{C}} $ returned by \eqref{patch-pg} are the same as outputs resulting from $ \text{PGPre}_{\exists, \forall}^{\widehat{T}}(\widehat{Z},B)$.	\label{thm:pg}
+	$ \widehat{Z}_\infty $ and $ \widehat{\mathcal{C}} $ returned by \eqref{patch-pg} are the same as outputs resulting from $ \text{PGPre}_{\exists, \forall}^{\widehat{T}}(\widehat{Z},B)$ in \eqref{win-pgpre}.	\label{thm:pg}
 \end{theorem}
 
-\emph{Proof:} By theorem \ref{thm:inv}, the results of \eqref{patch-pg} keep the same if we replace $ \overline{Inv}_{\exists}^{D,G}(\mathcal{V}(k),\mathcal{K}(k),Z_\infty, \widehat{Z}_\infty)$ in \eqref{patch-pg} with $ Inv_\exists^{D,G}(\widehat{Z}_{\infty}) $. After the replacement, the algorithm \eqref{patch-pg} is the same as the algorithm \eqref{win-pgpre}. Therefore, their outputs must be the same. \QEDB
+\emph{Proof:} By theorem \ref{thm:inv}, the results of \eqref{patch-pg} remain the same if we replace $ \overline{Inv}_{\exists}^{D,G}(\mathcal{V}(k),\mathcal{K}(k),Z_\infty, \widehat{Z}_\infty)$ in \eqref{patch-pg} with $ Inv_\exists^{D,G}(\widehat{Z}_{\infty}) $. After the replacement, the algorithm \eqref{patch-pg} is the same as the algorithm \eqref{win-pgpre}. Therefore, their outputs must be the same. \QEDB
 
 
 Assume that $ X_\infty $ and $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ are the winning set and controller resulting from $ \text{Win}_{\exists,\forall}^{T}(B\mathbf{\ U\ }Z) $. Assume $ \vert \mathcal{K}\vert = 2n $, i.e. \eqref{win-until} converges in $ n $ steps. Then, given $ \widehat{Z}\subseteq Z ${\color{teal} \sout{and $ \widehat{U}= U-U_d $}}, to get the winning set and controller for $ \text{Win}_{\exists,\forall}^{\widehat{T}}(B\mathbf{\ U\ }\widehat{Z}) $, the patching operator is
@@ -573,7 +572,7 @@ X_0 = \emptyset, \widehat{X}_0 = \emptyset, \Delta X = \emptyset, \ \widehat{\ma
 
 In the algorithm \eqref{patch-until}, for $ k <n $, we patch the $ (2k+1) $th and $ (2k+2) $th existing sub-controllers in $ \mathcal{K} $. If the winning set doesn't converge in $ n $ iterations, for $ k\geq n $, we duplicate the last two existing sub-controllers to the tail of $ \mathcal{K} $, and patch them to enlarge the winning set until convergence. 
 \begin{theorem}
-	$ \widehat{X}_\infty $ and $ \widehat{\mathcal{C}} $ returned by \eqref{patch-until} are the same as outputs resulting from $ \text{Win}_{\exists,\forall}^{\widehat{T}}(B\mathbf{\ U\ }\widehat{Z}). $\label{thm:until}	
+	$ \widehat{X}_\infty $ and $ \widehat{\mathcal{C}} $ returned by \eqref{patch-until} are the same as outputs resulting from $ \text{Win}_{\exists,\forall}^{\widehat{T}}(B\mathbf{\ U\ }\widehat{Z})  $ in \eqref{win-until}.\label{thm:until}	
 \end{theorem}
 
 \emph{Proof:} Similar to the proof of Theorem \ref{thm:pg}, we can replace all the $ \overline{Pre}_{\exists,\forall}^{T,U} $ and $ \overline{PGPre}_{\exists,\forall}^{T} $ terms with $ \overline{Pre}_{\exists,\forall}^{\widehat{T},\widehat{U}}(\widehat{X}_k) $ and $PGPre_{\exists,\forall}^{\widehat{T}}(\widehat{E_k},B)$. Theorem \ref{thm:pre} and \ref{thm:pg} guarantee that the replacements are equivalent, but we need to verify: (i) $ \widehat{X}_k \subseteq X_k $ and $ \widehat{E}_k \subseteq E_k $ for $ k < n $, and (ii) $ \widehat{X}_k \subseteq X_n $ and $ \widehat{E}_k \subseteq E_n $ for $ k\geq n $. Both (i) and (ii) can be easily checked using induction argument and Theorem \ref{thm: 1} ( base case: $ \widehat{X}_0\subseteq X_0 $ and $ \widehat{E}_1\subseteq E_1 $). After the equivalent replacements, algorithm \eqref{patch-until} and algorithm \eqref{win-until} become the same. Thus their outputs must be the same. \QEDB
@@ -602,7 +601,7 @@ Z_{\infty}^i = Z\cup (B\cap R^i\cap \text{Pre}_{\exists, \forall}^{T,U}(W_0))\\
 \end{align}
 }
 \begin{theorem}
-	$ \widehat{W}_\infty $ and $ \widehat{\mathcal{C}} $ returned by \eqref{patch-until} are the same as outputs resulting from $\text{Win}_{\exists,\forall}^{\widehat{T}}((B\mathbf{\ U\ }\widehat{Z})\vee \Square(B\wedge (\bigwedge_{i\in I} \Diamond R^i)) $. \label{thm:interm}	
+	$ \widehat{W}_\infty $ and $ \widehat{\mathcal{C}} $ returned by \eqref{patch-until} are the same as outputs resulting from $\text{Win}_{\exists,\forall}^{\widehat{T}}((B\mathbf{\ U\ }\widehat{Z})\vee \Square(B\wedge (\bigwedge_{i\in I} \Diamond R^i)) $ in \eqref{win-interm}. \label{thm:interm}	
 \end{theorem}
 \emph{Proof:} Assume that $ W_t $ is the winning set resulting from $\text{Win}_{\exists,\forall}^{\widehat{T}}((B\mathbf{\ U\ }\widehat{Z})\vee \Square(B\wedge (\bigwedge_{i\in I} \Diamond R^i)) $. Similar to the proof of Theorem \ref{thm:until}, we can replace all the $ \overline{Win}^{T}_{\exists,\forall} $ terms in \eqref{patch-interm} with $ Win^{\widehat{T}}_{\exists,\forall}(B\mathbf{U}\widehat{Z}_k^i) $, as long as (i) $ \widehat{Z}_0^i\subseteq Z_\infty^i $ and (ii) $ \widehat{Z}_{k+1} \subseteq \widehat{Z}_{k} $ are true. (i) is trivial. For (ii), it's enough to show that $ \widehat{W}_{k+1}\subseteq \widehat{W}_k $, which can be proven by induction. The base case: Since (i) is true, by Theorem \ref{thm:until}, we have $ X_0^i = Win_{\exists,\forall}^{\widehat{T}}(B\mathbf{U}\widehat{Z}) $. Then $ \widehat{W}_0 =\bigcap_{i\in I} \text{Win}_{\exists,\forall}^{\widehat{T}}(B\mathbf{\ U\ }\widehat{Z}_0^i)\subseteq \bigcap_{i\in I} \text{Win}_{\exists,\forall}^{T}(B\mathbf{\ U\ }Z_{\infty}^i) = W_0 $ by Theorem \ref{thm: 1}. Assume that $ \widehat{W}_{k+1} \subseteq \widehat{W}_k $.  Then $ \widehat{Z}_{k+1}^i\subseteq \widehat{Z}_{k}^i  $ and $ \widehat{W}_{k+1} =\bigcap_{i\in I} \text{Win}_{\exists,\forall}^{\widehat{T}}(B\mathbf{\ U\ }\widehat{Z}_{k+1}^i)\subseteq \bigcap_{i\in I} \text{Win}_{\exists,\forall}^{T}(B\mathbf{\ U\ }\widehat{Z}_{k}^i) = \widehat{W}_k $. Therefore by induction argument $ \widehat{W}_{k+1}\subseteq \widehat{W}_k $, and $ \widehat{Z}_{k+1}\subseteq \widehat{Z}_k $ for all $ k $. Then (ii) is true. After the replacements, \eqref{patch-interm} and \eqref{win-interm} are the same except that the contraction of $ W_k $ starts from the existing winning set $ W $ instead of $ Q $. We can show that $ W_t \subseteq \widehat{W}_k $ for all $ k $ by induction (base case: $ W_t \subseteq W_0$ by Theorem \ref{thm: 1}). Also $ W_t $ is the largest fixed point in $ Q $ by definition. So both \eqref{patch-interm} and \eqref{win-interm} will converge to the same fixed point $ W_t$.  \QEDB
 
@@ -646,10 +645,10 @@ Restrict~ synthesis~ to~ \widehat{V}_{\text{inv}}\\
 The same as \eqref{patch-until}, the patching algorithm firstly patches the existing sub-controllers. If the winning set doesn't converge in $ n $ iterations, the last existing controller is duplicated to the tail of $ \widehat{\mathcal{K}} $ and patched to enlarge the winning set until it converges. 
 
 \begin{theorem}
-	$ \widehat{V}_\infty $ and $ \widehat{\mathcal{C}} $ returned by \eqref{patch-final} are the same as outputs resulting from
+	$ \widehat{V}_\infty $ and $ \widehat{\mathcal{C}} $ returned by \eqref{patch-final} are the same as outputs resulting from \eqref{win-phi} that is
 \begin{displaymath}
 	\text{Win}_{\exists, \forall}^{\widehat{T}}\left(\Square A \wedge \Diamond \Square B \wedge \left( \bigwedge_{i\in I} \Square \Diamond R^i\right)\right).
-\end{displaymath} \label{thm:phi}
+\end{displaymath} \label{thm:phi}.
 \end{theorem}
 \emph{Proof:} Similar to the previous proofs, we want to replace all the $ \overline{Pre}^{T,U}_{\exists,\forall} $, $ \overline{PGPre}^{T}_{\exists,\forall} $ and $ \overline{Win}_{\exists,\forall, (\Psi)}^{T} $ terms in \eqref{patch-final} with $ Pre^{\widehat{T},\widehat{U}}_{\exists,\forall}(\widehat{V}_k) $, $PGPre^{\widehat{T}}_{\exists,\forall}(\widehat{V}_k, Q) $ and $ Win^{\widehat{T}}_{\exists,\forall}((B\ \mathbf{U}\ \widehat{Z}_{k+1})\vee\Square (B\wedge (\bigwedge_{i\in I}\Diamond R^i)))) $, as long as (i) $ \widehat{V}_{k} \subseteq \mathcal{V}(k) $ and $ \widehat{Z}_{k+1}\subseteq Z_{k+1} $ for $ k < n $ and (ii) $ \widehat{V}_k\subseteq \mathcal{V}(n-1) $ and $ \widehat{Z}_{k+1}\subseteq Z_n $ for $ k\geq n $. Both (i) and (ii) can be proven by induction using Theorem \ref{thm: 1}, \ref{thm:pre}, \ref{thm:pg} and \ref{thm:interm}. (First prove (i) and then use the case where $ k=n-1 $ in (i) to be the base case in the induction argument for (ii)). Also, in the first line of \eqref{patch-final} we use $ \overline{Win}_{\exists,\forall,(\Psi)}^{T} $ to compute $ \widehat{V}_{inv} $, which can can be replaced with $ Win_{\exists,\forall}^{\widehat{T}}((A\mathbf{U}\emptyset)\vee \Square(A\wedge \Diamond Q)) $ since $ \emptyset\subseteq \emptyset $. After the replacements, \eqref{patch-final} and \eqref{win-phi} become exactly the same, which implies that their outputs must be the same. \QEDB
 
@@ -783,7 +782,9 @@ For practical applications in robot control, if we have the controller for the c
 \section{CONCLUSION}
 In this paper, we proposed an implementation (data structure) for a controller synthesized by fixed-point based control synthesis techniques in \cite{Nilsson2017}. For an existing controller with such a structure, a patching algorithm was developed to modify it for the case that some actions in the original problem setting become unavailable. Furthermore we proved that the winning set resulting from our patching algorithm was exactly the same as the winning set resulting from synthesizing a new controller from scratch. 
 
-We illustrated the efficiency of our method on a example of walking robot. The controller was synthesized for the robot described by a Linear Inverted Pendulum Model with hole constraints on the surface. We firstly synthesized a controller for a smooth surface without holes, and then patched it for the cases that holes existed using our method. Under the same specification, the time used by our method was only $ 1.4\%-7\% $ of the time used for synthesis from scratch and less than $ 3\% $ on average. 
+We illustrated the efficiency of our method on a example of walking robot. The controller was synthesized for the robot described by a Linear Inverted Pendulum Model with hole constraints on the surface. We first synthesized a controller for a smooth surface without holes, and then patched it using our method for the cases that holes existed. Under the same specification, the time used by our method was only $ 1.4\%-7\% $ of the time used for synthesis from scratch and less than $ 3\% $ on average. 
+
+%It is worth noting that it is possible to construct worst-case examples when the patching method does not provide any speed-ups.  
 
 
 %{\color{purple} Maybe mention that since in some cases a small change of the action set results in a completely different strategy, we expect that in the worst case, our warm-start method does not bring any speed-up. This is similar to classical warm-up techniques in control: there is no guarantee on the speed-up. And then mention that in future work, although we know that getting formal guarantees on a speed-up in average would be hard (since it highly depends on the type of problem), we wish to conduct a finer study of how much speed-up we can expect to achieve with the proposed warm-up, for instance by studying its effect on "random systems and random specifications}
