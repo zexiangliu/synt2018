@@ -538,7 +538,7 @@ Remove\ all\ \emptyset\ in\ \widehat{\mathcal{V}}\ and \ \widehat{\mathcal{K}},\
 	$ \widehat{Z}' $ and $ \widehat{\mathcal{C}} $ returned by \eqref{patch-pg} are the same as outputs resulting from $ \text{PGPre}_{\exists, \forall}^{\widehat{T}}(\widehat{Z},B)$ in \eqref{win-pgpre}.	\label{thm:pg}
 \end{theorem}
 
-\emph{Proof:} By theorem \ref{thm:inv}, the results of \eqref{patch-pg} remain the same if we replace $ \overline{Inv}_{\exists}^{D,G}(\mathcal{V}(k),\mathcal{K}(k),Z_\infty, \widehat{Z}_\infty)$ in \eqref{patch-pg} with $ Inv_\exists^{D,G}(\widehat{Z}_{\infty}) $. After the replacement, the algorithm \eqref{patch-pg} is the same as the algorithm \eqref{win-pgpre}. Therefore, their outputs must be the same. \QEDB
+\emph{Proof:} By theorem \ref{thm:inv}, the results of \eqref{patch-pg} remain the same if we replace $ \overline{Inv}_{\exists}^{D,G}(\mathcal{V}(k),\mathcal{K}(k),Z', \widehat{Z}')$ in \eqref{patch-pg} with $ Inv_\exists^{D,G}(\widehat{Z}') $. After the replacement, the algorithm \eqref{patch-pg} is the same as the algorithm \eqref{win-pgpre}. Therefore, their outputs must be the same. \QEDB
 
 
 Assume that $ X_\infty $ and $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ are the winning set and controller resulting from $ \text{Win}_{\exists,\forall}^{T}(B\mathbf{\ U\ }Z) $. Assume $ \vert \mathcal{K}\vert = 2n $, i.e. \eqref{win-until} converges in $ n $ steps. Then, given $ \widehat{Z}\subseteq Z ${\color{teal} \sout{and $ \widehat{U}= U-U_d $}}, to get the winning set and controller for $ \text{Win}_{\exists,\forall}^{\widehat{T}}(B\mathbf{\ U\ }\widehat{Z}) $, the patching operator is
@@ -573,7 +573,7 @@ X_0 = \emptyset, \widehat{X}_0 = \emptyset, \Delta X = \emptyset, \ \widehat{\ma
 \end{split}
 \end{align}}
 
-In the algorithm \eqref{patch-until}, for $ k <n $, we patch the $ (2k+1) $th and $ (2k+2) $th existing sub-controllers in $ \mathcal{K} $. If the winning set doesn't converge in $ n $ iterations, for $ k\geq n $, we duplicate the last two existing sub-controllers to the tail of $ \mathcal{K} $, and patch them to enlarge the winning set until convergence. 
+In the algorithm \eqref{patch-until}, for $ k <n $, we patch the $ (2k+1) $th and $ (2k+2) $th existing sub-controllers in $ \mathcal{K} $. If the winning set does not converge in $ n $ iterations, for $ k\geq n $, we duplicate the last two existing sub-controllers to the tail of $ \mathcal{K} $, and patch them to enlarge the winning set until convergence. 
 \begin{theorem}
 	$ \widehat{X}_\infty $ and $ \widehat{\mathcal{C}} $ returned by \eqref{patch-until} are the same as outputs resulting from $ \text{Win}_{\exists,\forall}^{\widehat{T}}(B\mathbf{\ U\ }\widehat{Z})  $ in \eqref{win-until}.\label{thm:until}	
 \end{theorem}
@@ -645,7 +645,7 @@ Restrict~ synthesis~ to~ \widehat{V}_{\text{inv}}\\
 \end{align}
 }
 
-The same as \eqref{patch-until}, the patching algorithm firstly patches the existing sub-controllers. If the winning set doesn't converge in $ n $ iterations, the last existing controller is duplicated to the tail of $ \widehat{\mathcal{K}} $ and patched to enlarge the winning set until it converges. 
+The same as \eqref{patch-until}, the patching algorithm firstly patches the existing sub-controllers. If the winning set does not converge in $ n $ iterations, the last existing controller is duplicated to the tail of $ \widehat{\mathcal{K}} $ and patched to enlarge the winning set until it converges. 
 
 \begin{theorem}
 	$ \widehat{V}_\infty $ and $ \widehat{\mathcal{C}} $ returned by \eqref{patch-final} are the same as outputs resulting from \eqref{win-phi} that is
