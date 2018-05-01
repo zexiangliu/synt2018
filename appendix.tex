@@ -1,6 +1,6 @@
 \section{Fixed-point Operators}\label{app:basic-alg}
 
-In this appendix, we present algorithms from \cite{Nilsson2017} to compute the winning set for a specification in the form \eqref{phi}. In addition to the winning set, these algorithms provide an explicit construction of the control implementation as in Definition \ref{def:cont}. 
+In this appendix, we present algorithms from \cite{Nilsson2017} to compute the winning set for a specification in the form of \eqref{phi}. In addition to the winning set, these algorithms provide an explicit construction of the control implementation as in Definition \ref{def:cont}. 
 
 The most general algorithm that computes the winning set and the controller for specifications in the form of \eqref{phi} is given in \eqref{win-phi}. The winning set that results from \eqref{win-phi} is equal to $ V_{\infty} $, i.e. the limit of the expanding sequence $V_k$. $ \mathcal{C} $ is the controller corresponding to the winning set $ V_{\infty} $. 
 
@@ -132,15 +132,13 @@ Y_{\infty} = Y_k,\ \mathcal{C}\ restricted\ to\ Y_{\infty}
 	\end{algorithm}
 \fi
 
-The winning sets {\color{black} resulting from} \eqref{win-interm}, \eqref{win-until}, \eqref{win-inv} are $ W_{\infty} $, $ X_{\infty} $ and $ Y_{\infty} $. {\color{black} $\text{Pre}_{\exists,\forall}^{T,U}$ is a one-step reachability operator, and $\text{Inv}_{\exists}^{U,G}(Z,B)$ computes $Y_\infty \subseteq (G\cap B) - Z$ from where the state can be controlled (with actions in $U$) to either remain inside $Y_\infty$ or reach $Z$, but because $G$ is a progress group under $U$, remaining indefinitely in $G$ is impossible and therefore $Z$ is
-	eventually reached, which is why $Y_\infty$ is a winning set for $B\mathbf{\ U\ }Z$.}
+The winning sets {\color{black} resulting from} \eqref{win-interm}, \eqref{win-until}, \eqref{win-inv} are $ W_{\infty} $, $ X_{\infty} $ and $ Y_{\infty} $. {\color{black} $\text{Pre}_{\exists,\forall}^{T,U}$ is a one-step reachability operator, and $\text{Inv}_{\exists}^{U,G}(Z,B)$ computes $Y_\infty \subseteq (G\cap B) - Z$ from where the state can be controlled (with actions in $U$) to either remain inside $Y_\infty$ or reach $Z$, but because $G$ is a progress group under $U$, remaining indefinitely in $G$ is impossible and therefore $Z$ is eventually reached, which is why $Y_\infty$ is {\color{teal}part of the} winning set for $B\mathbf{\ U\ }Z$.} {\color{teal} $ PGPre_{\exists,\forall}^T(Z,B) $ }
     
-    For \eqref{win-phi}, \eqref{win-interm}, \eqref{win-until} and \eqref{win-inv}, the number of descendant controllers is proportional 
-    to the number of iterations before the corresponding fixed-point operator converges. Simple controllers are smallest elements in a controller, i.e. the ones given by \eqref{eqn:pre} and \eqref{win-inv}. 
-    
-    \section{Proof of Theorem 4}\label{app:pr-31}
-    
-    {\color{red} Requires careful reading}
+For controllers resulting from \eqref{win-phi}, \eqref{win-interm}, \eqref{win-until} and \eqref{win-pgpre}, their descendant controllers come from the outputs of operators they call internally. Simple controllers consist of leaf nodes in a controller, i.e. the ones given by \eqref{eqn:pre} and \eqref{win-inv}. 
+
+\section{Proof of Theorem 4}\label{app:pr-31}
+
+{\color{red} Requires careful reading}
 
 \emph{Proof:} Assume that $ Y_t $ and $ \mathcal{C}_t $ are the winning set and controller resulting from $ \text{Inv}_{\exists}^{D,G} (\widehat{Z}) $. We want to show that $ Y_t=\widehat{Y}$, which immediately implies $ A(\mathcal{C}_t) = A(\widehat{C}) $.
 	
