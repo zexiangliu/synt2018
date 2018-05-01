@@ -458,7 +458,7 @@ Suppose that  $ W $ and $ \mathcal{C} $ are the winning set and controller resul
 T_{0} = A(\mathcal{C})\backslash (*,U_d,*)\\
 E =  \widehat{Pre}^{T_0,U-U_d}_{\exists,\exists}(\Delta V)\\
 A(\widehat{\mathcal{C}}) = T_{0}\backslash E\\
-\widehat{W} = \{s_1: \exists u, \exists s_2 s.t. (s_1,u, s_2)\in \rightarrow_{A(\widehat{\mathcal{C}})} \}
+\widehat{W} = \{s_1: \exists u, \exists s_2 s.t. (s_1,u, s_2)\in \rightarrow_{A(\widehat{\mathcal{C}})} \},
 \end{cases}\label{patch-pre}
 \end{align}}
 where $ \widehat{\mathcal{C}} $ is converted from $ A(\widehat{\mathcal{C}}) $. $ \widehat{W} $ and $ \widehat{\mathcal{C}} $ are the modified winning set and controller.
@@ -487,7 +487,7 @@ T_0  = A(\mathcal{C})\cup E_0\\
 \ \ \ \ Y_{k+1} = Y_k- \Delta Y_{k+1}\\
 \ \ \ \ {\color{black} k=k+1}\\
 {\color{black} until \ Y_k = Y_{k-1}}\\
-\widehat{Y}=Y_k,\ A(\widehat{\mathcal{C}}) = T_{k}.
+\widehat{Y}=Y_k,\ A(\widehat{\mathcal{C}}) = T_{k},
 \end{cases}\label{patch-inv}
 \end{align}}
 where $ \Delta Z = Z - \widehat{Z} $, $ E_0 = \{(s_1,a,s_2)\in \rightarrow_{T}: s_1\in Y_0, a\in D, s_2 \in Q\} $, $ \text{Pre}_{\forall,\exists}^{T_k,D}(\Delta Y_k) = \{q_1: \forall u\in D, \exists q_2\in \Delta Y_k, s.t.\ (q_1, u, q_2) \in \rightarrow_{T_k} \} $. $ \widehat{Y} $ is the modified winning set, and the controller $ \widehat{\mathcal{C}} $ can be recovered from $ A(\widehat{\mathcal{C}}) $.
