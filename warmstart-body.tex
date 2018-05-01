@@ -49,7 +49,7 @@ For two sets $ A $ and $ B $, the set difference is denoted by $ A-B $; the Cart
 
 \subsection{Augmented Finite Transition Systems}
 
-We consider plants modeled as augmented finite transition systems, a discrete structure that can either used as a direct modeling tool or can be obtained by abstracting the dynamics of a continuous-control system \cite{Nilsson2017}.
+We consider plants modeled as augmented finite transition systems, a discrete structure that either can be used as a direct modeling tool or can be obtained by abstracting the dynamics of a continuous-control system \cite{Nilsson2017}.
 
 \begin{definition}
 	An \textbf{augmented finite transition system} (AFTS) is a tuple $ T = (Q,U,\rightarrow_T, G,AP,h_Q) $, where $ Q $ is a set of states, $U$ is a set of actions (control inputs), $ \rightarrow_T\in Q\times U \times Q $ is a transition relation between states under specific actions, $ G: 2^U\rightarrow 2^{2^Q} $ maps a set of actions to a set of progress groups\footnotemark under that action set, $ AP $ is a finite set of atomic propositions, and $ h_Q: Q\rightarrow 2^{AP} $ is a labeling function, which maps each state to the set of atomic propositions that evaluate to true at that state. \footnotetext{ 
@@ -399,7 +399,7 @@ A controller is a tree structure built on simple controllers, i.e. the leaf node
 
 \begin{definition}
 	Given a simple controller $ \mathcal{C} $ over an AFTS $T = (Q,U,\rightarrow_T, G,AP,h_Q) $, a \textbf{finite transition system} (FTS) corresponding to $ \mathcal{C} $ is $A(\mathcal{C}) = (Q_C, U_C, \rightarrow_{A(\mathcal{C})})$ %{\color{purple} I'm not sure $T(C)$ is the best notation, since $T$ is usually our AFTS; A(C)?}
-	, where $ Q_C $ is the set of states that appear in $ \rightarrow_{A(\mathcal{C})} $, $ U_C=\{u: u\in \mathcal{C}(s), \forall s\in W\} $, $ \rightarrow_{A(\mathcal{C})} =\{(s_1,u,s_2)\in \rightarrow_T: s_1\in W,s_2\in Q, u\in \mathcal{C}(s_1)\} $. \label{def:TC}
+	, where $ Q_C $ is the set of states that appear in $ \rightarrow_{A(\mathcal{C})} $, $ U_C=\{u: u\in \mathcal{C}(s), \forall s\in D\} $, $ \rightarrow_{A(\mathcal{C})} =\{(s_1,u,s_2)\in \rightarrow_T: s_1\in D,s_2\in Q, u\in \mathcal{C}(s_1)\} ${\color{teal}, and $ D $ is the domain of $ \mathcal{C} $}. \label{def:TC}
 \end{definition}
 
 \begin{remark}
@@ -482,7 +482,7 @@ T_0  = A(\mathcal{C})\cup E_0\\
 {\color{black} repeat:}\\
 \end{cases}
 \begin{cases}
-\ \ \ \ \Delta Y_{k+1} = \text{Pre}_{\forall,\exists}^{T_k,D}(\Delta Y_k) \\
+\ \ \ \ \Delta Y_{k+1} = \Delta Y_k \cup \text{Pre}_{\forall,\exists}^{T_k,D}(\Delta Y_k) \\
 \ \ \ \ T_{k+1} = T_{k}\backslash (\Delta Y_{k+1},*,*)\\
 \ \ \ \ Y_{k+1} = Y_k- \Delta Y_{k+1}\\
 \ \ \ \ {\color{black} k=k+1}\\
