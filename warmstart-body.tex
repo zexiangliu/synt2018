@@ -538,7 +538,7 @@ Remove\ all\ \emptyset\ in\ \widehat{\mathcal{V}}\ and \ \widehat{\mathcal{K}},\
 \emph{Proof:} By theorem \ref{thm:inv}, the results of \eqref{patch-pg} remain the same if we replace $ \overline{Inv}_{\exists}^{D,G}(\mathcal{V}(k),\mathcal{K}(k),Z', \widehat{Z}')$ in \eqref{patch-pg} with $ Inv_\exists^{D,G}(\widehat{Z}') $. After the replacement, the algorithm \eqref{patch-pg} is the same as the algorithm \eqref{win-pgpre}. Therefore, their outputs must be the same. \QEDB
 
 
-Assume that $ X_\infty $ and $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ are the winning set and controller resulting from $ \text{Win}_{\exists,\forall}^{T}(B\mathbf{\ U\ }Z) $. Assume $ \vert \mathcal{K}\vert = 2n $, i.e. \eqref{win-until} converges in $ n $ steps. Then, given $ \widehat{Z}\subseteq Z $, to get the winning set and controller for $ \text{Win}_{\exists,\forall}^{\widehat{T}}(B\mathbf{\ U\ }\widehat{Z}) $, the patching operator is
+Assume that $ X_\infty $ and $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ are the winning set and controller resulting from $ \text{Win}_{\exists,\forall}^{T}(B\mathbf{\ U\ }Z) $. Assume $ \vert \mathcal{K}\vert = 2n $, i.e. \eqref{win-until} converges in $ n $ steps. Then, given $ \widehat{Z}\subseteq Z $, to get the winning set and controller for $ \text{Win}_{\exists,\forall}^{\widehat{T}}(B\mathbf{\ U\ }\widehat{Z}) $, the patching operator is:
 {\small\begin{align}
 \begin{split}
 &[\widehat{X}_\infty, \widehat{\mathcal{C}}]=\overline{\text{Win}}^{T}_{\exists,\forall, (B\mathbf{\ U\ }Z)}(\mathcal{C},Z,\widehat{Z}, U_d)\\
@@ -565,7 +565,7 @@ X_0 = \emptyset, \widehat{X}_0 = \emptyset, \Delta X = \emptyset, \ \widehat{\ma
 \ \ \ \ \ \ \ \ \overline{\text{PGPre}}_{\exists,\forall}^{T}(\mathcal{K}(2n),E_n, \widehat{E}_k,U_d)\\
 \ \ \ \ \widehat{X}_{k+1} =\widehat{Z}\cup (B\cap \widehat{\mathcal{V}}(2k+1)) \cup \widehat{\mathcal{V}}(2k+2)\\
 \ \ \ \ {\color{black} k=k+1}\\
-\widehat{X}_\infty = \widehat{X}_k,\ \widehat{\mathcal{C}} = (\widehat{\mathcal{V}},\widehat{\mathcal{K}},x)
+\widehat{X}_\infty = \widehat{X}_k,\ \widehat{\mathcal{C}} = (\widehat{\mathcal{V}},\widehat{\mathcal{K}},x).
 \end{cases} \label{patch-until}
 \end{split}
 \end{align}}
@@ -577,7 +577,7 @@ In the algorithm \eqref{patch-until}, for $ k <n $, we patch the $ (2k+1) $th an
 
 \emph{Proof:} Similar to the proof of Theorem \ref{thm:pg}, we can replace all the $ \overline{Pre}_{\exists,\forall}^{T,U} $ and $ \overline{PGPre}_{\exists,\forall}^{T} $ terms with $ \overline{Pre}_{\exists,\forall}^{\widehat{T},\widehat{U}}(\widehat{X}_k) $ and $PGPre_{\exists,\forall}^{\widehat{T}}(\widehat{E_k},B)$. Theorem \ref{thm:pre} and \ref{thm:pg} guarantee that the replacements are equivalent, but we need to verify: (i) $ \widehat{X}_k \subseteq X_k $ and $ \widehat{E}_k \subseteq E_k $ for $ k < n $, and (ii) $ \widehat{X}_k \subseteq X_n $ and $ \widehat{E}_k \subseteq E_n $ for $ k\geq n $. Both (i) and (ii) can be easily checked using induction argument (with the base case $ \widehat{X}_0\subseteq X_0 $ and $ \widehat{E}_1\subseteq E_1 $) and Theorem \ref{thm: 1}. After the equivalent replacements, algorithm \eqref{patch-until} and algorithm \eqref{win-until} become the same. Thus their outputs must be the same. \QEDB
 
-Assume that $ W $ and $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ are the winning set and controller resulting from $\text{Win}_{\exists,\forall}^{T}((B\mathbf{\ U\ }Z)\vee \Square(B\wedge (\bigwedge_{i\in I} \Diamond R^i)) $. Given that $ \widehat{Z}\subseteq Z $ and $ \widehat{U}\subseteq U $, patch $ W $ and $ \mathcal{C} $ for $\text{Win}_{\exists,\forall}^{T}((B\mathbf{\ U\ }\widehat{Z})\vee \Square(B\wedge (\bigwedge_{i\in I} \Diamond R^i)) $. The patching operator for \eqref{win-interm} is 
+Assume that $ W $ and $ \mathcal{C}=(\mathcal{V},\mathcal{K},x) $ are the winning set and controller resulting from $\text{Win}_{\exists,\forall}^{T}((B\mathbf{\ U\ }Z)\vee \Square(B\wedge (\bigwedge_{i\in I} \Diamond R^i)) $. Given that $ \widehat{Z}\subseteq Z $ and $ \widehat{U}\subseteq U $, patch $ W $ and $ \mathcal{C} $ for $\text{Win}_{\exists,\forall}^{T}((B\mathbf{\ U\ }\widehat{Z})\vee \Square(B\wedge (\bigwedge_{i\in I} \Diamond R^i)) $. The patching operator for \eqref{win-interm} is: 
 {\small\begin{align}
 &[\widehat{W}_{\infty},\widehat{\mathcal{C}}]=\overline{\text{Win}}^{T}_{\exists,\forall (\psi)} (\mathcal{C},Z,\widehat{Z},U_d)\nonumber\\
 =&\begin{cases}
@@ -596,7 +596,7 @@ Z_{\infty}^i = Z\cup (B\cap R^i\cap \text{Pre}_{\exists, \forall}^{T,U}(W_0))\\
 \ \ \ \ \widehat{W}_{k+1} = \bigcap_{i\in I} X^i_{k+1}\\
 \ \ \ \ {\color{black} k = k+1}\\
 {\color{black} until \ \widehat{W}_{k}=\widehat{W}_{k-1}}\\
-\widehat{W}_\infty = \widehat{W}_k,\ \widehat{\mathcal{C}}=(\widehat{\mathcal{V}},\widehat{\mathcal{K}},x)
+\widehat{W}_\infty = \widehat{W}_k,\ \widehat{\mathcal{C}}=(\widehat{\mathcal{V}},\widehat{\mathcal{K}},x).
 \end{cases}\label{patch-interm}
 \end{align}
 }
