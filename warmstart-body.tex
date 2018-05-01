@@ -516,17 +516,17 @@ In the section we are going to patch all the non-leaf nodes, i.e  the controller
 Assume that $ Z $ and $ \mathcal{C} = (\mathcal{V},\mathcal{K},x) $ are the winning set and controller resulting from  $ \text{PGPre}_{\exists,\forall}^{T} (Z,B)$. Given $ \widehat{Z}\subseteq Z ${\color{teal}\sout{,  $ \widehat{U}\subseteq U $}}, we want to modify $ Z $ and $ \mathcal{C} $ to be the winning set and controller for $ \text{PGPre}_{\exists, \forall}^{\widehat{T}}(\widehat{Z},B)$. The patching operator is:
 {\small\begin{align}
 \begin{split}
-&[\widehat{Z}_{\infty},\widehat{\mathcal{C}}]=\overline{\text{PGPre}}_{\exists,\forall}^{T} (\mathcal{C},Z,\widehat{Z},U_d)\\
+&[\widehat{Z}',\widehat{\mathcal{C}}]=\overline{\text{PGPre}}_{\exists,\forall}^{T} (\mathcal{C},Z,\widehat{Z},U_d)\\
 &= \begin{cases}
-Z_{\infty} = Z,\ \widehat{Z}_{\infty}=\widehat{Z},\ \widehat{\mathcal{V}}=\{\},\ \widehat{\mathcal{K}}=\{\},\ k = 1\\
+Z' = Z,\ \widehat{Z}'=\widehat{Z},\ \widehat{\mathcal{V}}=\{\},\ \widehat{\mathcal{K}}=\{\},\ k = 1\\
 for\ D\in 2^U:\\
 \ \ for\ G\in G(D):\\
 \ \ \ \ \ \ if\ U_d\cap D = \emptyset:\\
-\ \ \ \ \ \ \ \ \  [\widehat{\mathcal{V}}(k),\widehat{\mathcal{K}}(k)]=\overline{Inv}_{\exists}^{D,G}(\mathcal{V}(k),\mathcal{K}(k),Z_\infty, \widehat{Z}_\infty)\\
+\ \ \ \ \ \ \ \ \  [\widehat{\mathcal{V}}(k),\widehat{\mathcal{K}}(k)]=\overline{Inv}_{\exists}^{D,G}(\mathcal{V}(k),\mathcal{K}(k),Z', \widehat{Z}')\\
 \end{cases}
 \begin{cases}
 \ \ \ \ \ \ else:\ \widehat{\mathcal{V}}(k)=\emptyset, \widehat{\mathcal{K}}(k) = \emptyset\\
-\ \ \ \ \ \  Z_\infty = Z_\infty\cup \mathcal{V}(k),\ \widehat{Z}_{\infty} = \widehat{Z}_{\infty} \cup \widehat{\mathcal{V}}(k)\\
+\ \ \ \ \ \  Z' = Z'\cup \mathcal{V}(k),\ \widehat{Z}' = \widehat{Z}' \cup \widehat{\mathcal{V}}(k)\\
 \ \ \ \ \ \ {\color{black} k = k+1}\\
 Remove\ all\ \emptyset\ in\ \widehat{\mathcal{V}}\ and \ \widehat{\mathcal{K}},\ \ 
 \widehat{\mathcal{C}} = (\widehat{\mathcal{V}},\widehat{\mathcal{K}},x)
@@ -535,7 +535,7 @@ Remove\ all\ \emptyset\ in\ \widehat{\mathcal{V}}\ and \ \widehat{\mathcal{K}},\
 \end{align}}
 
 \begin{theorem}
-	$ \widehat{Z}_\infty $ and $ \widehat{\mathcal{C}} $ returned by \eqref{patch-pg} are the same as outputs resulting from $ \text{PGPre}_{\exists, \forall}^{\widehat{T}}(\widehat{Z},B)$ in \eqref{win-pgpre}.	\label{thm:pg}
+	$ \widehat{Z}' $ and $ \widehat{\mathcal{C}} $ returned by \eqref{patch-pg} are the same as outputs resulting from $ \text{PGPre}_{\exists, \forall}^{\widehat{T}}(\widehat{Z},B)$ in \eqref{win-pgpre}.	\label{thm:pg}
 \end{theorem}
 
 \emph{Proof:} By theorem \ref{thm:inv}, the results of \eqref{patch-pg} remain the same if we replace $ \overline{Inv}_{\exists}^{D,G}(\mathcal{V}(k),\mathcal{K}(k),Z_\infty, \widehat{Z}_\infty)$ in \eqref{patch-pg} with $ Inv_\exists^{D,G}(\widehat{Z}_{\infty}) $. After the replacement, the algorithm \eqref{patch-pg} is the same as the algorithm \eqref{win-pgpre}. Therefore, their outputs must be the same. \QEDB
