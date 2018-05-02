@@ -45,7 +45,7 @@ The paper is organized as follows: In Section \ref{sec:pre}, we give the problem
 \label{sec:pre}
 \subsection{Notation}
 
-For two sets $ A $ and $ B $, the set difference is denoted by $ A-B $. Given $ T\subseteq A\times B \times C $, for a set $ E\subseteq B $, $ (*,E,*)_T $ refers to the set $ (A\times E \times C)\cap T$, and for $ F\subseteq A\times B $, $ (F,*)_T $ refers to the set $ (F\times C)\cap T $.
+For two sets $ A $ and $ B $, the set difference is denoted by $ A-B $. Given $ T\subseteq A\times B \times C $, for a set $ E\subseteq A $, $ (E,*,*)_T $ refers to the set $ (E\times B \times C)\cap T$, and similarly for $ F\subseteq  B $ and $ G\subseteq A\times B $, $ (*,F,*)_T $ and $ (G,*)_T  $ refer to the sets $ (A\times F\times C)\cap T $ and $ (G\times C)\cap T $ respectively.
 %A function or a map $ F: C\rightarrow D $ corresponds to  the set $ \{(c,F(c)):c\in C, F(c)\in D \} $. 
 A list $ \mathcal{V}=[x_1,...,x_n] $ is a totally ordered set, where $ \mathcal{V}(i) $ refers to its $ i $th-order element. 
 To assign $ x_i $ to be the $ i $th element in	 $ \mathcal{V} $, we write $ \mathcal{V}(i) = x_i $. %{\color{purple} Not sure it is really useful to define functions or maps here, the terms are barely used in the rest of the document (function x4, map x1)} 
@@ -291,7 +291,7 @@ Overall, a controller is a tree structure with controllers at each node and simp
 
 \begin{example}
 	\label{ex:exec}
-	For a simple AFTS shown in Figure \ref{fig:eg1}, given the specification $ \phi = \Square \Diamond A \wedge \Square \Diamond B $, the outputs of \eqref{win-phi} are the winning set $ W= \{s_1,s_2,s_3,s_4\}$, and the controller $ \mathcal{C} = (W,\{\mathcal{C}^0_1\}, x = 1) $, where its {\color{black}descendant} controllers\footnote{In this example and  in Section \ref{sec:example}, a simple controller $ \mathcal{C}_{sim} $ is denoted by the set $ \{(s,\mathcal{C}_{sim}(s)): s\in D\} $ for simplicity, where $ D $ is the domain of $ \mathcal{C}_{sim} $.}
+	For a simple AFTS shown in Figure \ref{fig:eg1}, given the specification $ \phi = \Square \Diamond A \wedge \Square \Diamond B $, the outputs of \eqref{win-phi} are the winning set $ W= \{s_1,s_2,s_3,s_4\}$, and the controller $ \mathcal{C} = (W,\{\mathcal{C}^0_1\}, x = 1) $, where its {\color{black}descendant} controllers\footnote{In this example, in Section \ref{sec:example} and Appendix \ref{app:basic-alg}, a simple controller $ \mathcal{C}_{sim} $ is denoted by the set $ \{(s,\mathcal{C}_{sim}(s)): s\in D\} $ for simplicity, where $ D $ is the domain of $ \mathcal{C}_{sim} $.}
 	 are:
 	
 	\noindent$ \mathcal{C}^0_1 = (\{W,\{s_1\},\{s_3,s_4\}\},\{\mathcal{C}^1_1, \mathcal{C}^1_2\}, x^0_1 ) $; 
@@ -468,7 +468,7 @@ where $ \widehat{\mathcal{C}} $ is converted from $ A(\widehat{\mathcal{C}}) $. 
 	$ \widehat{W} $ and $ \widehat{\mathcal{C}} $ returned by \eqref{patch-pre} are the same as the outputs resulting from $ \text{Pre}_{\exists,\forall}^{\widehat{T},\widehat{U}}(\widehat{V})$ in \eqref{eqn:pre}.	\label{thm:pre}
 \end{theorem}
 
-\emph{Proof:} Suppose that $ \text{Pre}_{\exists,\forall}^{\widehat{T},\widehat{U}}(\widehat{V}) $ returns $ W_t $ and $ \mathcal{C}_t $. It is enough to show that $ A(\widehat{\mathcal{C}})= A(\mathcal{C}_t)$, i.e. $ \rightarrow_{A(\widehat{\mathcal{C}})} = \rightarrow_{A(\mathcal{C}_t)} $. By \eqref{eqn:pre} and Definition \ref{def:TC}, it is obvious that $ \rightarrow_{A(\mathcal{C}_t)} \subseteq \rightarrow_{A(\mathcal{C})}$ for $ \widehat{V}\subseteq V $ and $ \widehat{U}\subseteq U $. The transitions in $ S = (*,U_d,*)_{\rightarrow_{A(\mathcal{C})}}\cup (E,*)_{\rightarrow_{T_0}} $ either under actions that may push the system to $ \Delta V $ or under actions in $ U_d $, so $\rightarrow_{A(\mathcal{C}_t)}$ and $ S $ are disjoint. $ \rightarrow_{A(\widehat{\mathcal{C}})}= \rightarrow_{A(\mathcal{C})}-S$. Thus $ \rightarrow_{A(\mathcal{C}_t)}\subseteq \rightarrow_{A(\widehat{\mathcal{C}})}$. By \eqref{patch-pre}, transitions in $ A(\widehat{\mathcal{C}}) $ can only take actions in $ \widehat{U} $ and transit to states in $ \widehat{V} $, which implies that $ \rightarrow_{A(\widehat{\mathcal{C}})}\subseteq \rightarrow_{A(\mathcal{C}_t)} $. \QEDB 
+\emph{Proof:} Suppose that $ \text{Pre}_{\exists,\forall}^{\widehat{T},\widehat{U}}(\widehat{V}) $ returns $ W_t $ and $ \mathcal{C}_t $. It is enough to show that $ A(\widehat{\mathcal{C}})= A(\mathcal{C}_t)$, i.e. $ \rightarrow_{A(\widehat{\mathcal{C}})} = \rightarrow_{A(\mathcal{C}_t)} $. By \eqref{eqn:pre} and Definition \ref{def:TC}, it is obvious that $ \rightarrow_{A(\mathcal{C}_t)} \subseteq \rightarrow_{A(\mathcal{C})}$ for $ \widehat{V}\subseteq V $ and $ \widehat{U}\subseteq U $. The transitions in $ S = (*,U_d,*)_{\rightarrow_{A(\mathcal{C})}}\cup (E,*)_{\rightarrow_{T_0}} $ are either under actions that may push the system to $ \Delta V $ or under actions in $ U_d $, so $\rightarrow_{A(\mathcal{C}_t)}$ and $ S $ are disjoint. $ \rightarrow_{A(\widehat{\mathcal{C}})}= \rightarrow_{A(\mathcal{C})}-S$. Thus $ \rightarrow_{A(\mathcal{C}_t)}\subseteq \rightarrow_{A(\widehat{\mathcal{C}})}$. By \eqref{patch-pre}, transitions in $ A(\widehat{\mathcal{C}}) $ can only take actions in $ \widehat{U} $ and transit to states in $ \widehat{V} $, which implies that $ \rightarrow_{A(\widehat{\mathcal{C}})}\subseteq \rightarrow_{A(\mathcal{C}_t)} $. \QEDB 
 
 
 Suppose that $ Y $ and $ \mathcal{C} $ are the winning set and controller resulting from $ \text{Inv}_{\exists}^{D,G}(Z,B) $. If $ D\cap U_d \not= \emptyset$, the winning set is empty by the definition of progress group (see\cite{Nilsson2017}). Given $ \widehat{Z} \subseteq Z $ and $D$ such that $ D\cap U_d=\emptyset $, we want to modify $ Y $ and $ \mathcal{C} $ to be the winning set and controller for $ \text{Inv}_{\exists}^{D,G}(\widehat{Z}, B) $.  The modified winning set $\widehat{Y}$ is contained by $ Y\cup (\Delta Z\cap G\cap B) $. Also, $ \text{Inv}_{\exists}^{D,G}(Z,B) $ computation in \eqref{win-inv} is a contraction algorithm in the sense that the sequence $ \{Y_k\}_{k=1}^{\infty} $ is monotonically decreasing in set inclusion sense and its limit is the winning set. Combining these two facts, we can warm-start the contraction algorithm in \eqref{win-inv} with $ Y_0=Y\cup (\Delta Z\cap G\cap B)$ instead of $ Q $. The patching operator is:
@@ -484,7 +484,7 @@ T_0  = A(\mathcal{C})\cup E_0\\
 \ \ \ \ \Delta Y_{k+1} = \Delta Y_k \cup \text{Pre}_{\forall,\exists}^{T_k,D}(\Delta Y_k) \\
 \end{cases}
 \begin{cases}
-\ \ \ \ T_{k+1} = T_{k}\backslash (\Delta Y_{k+1},*,*)\\
+\ \ \ \ T_{k+1} = T_{k}\backslash (\Delta Y_{k+1},*,*)_{\rightarrow_{T_k}}\\
 \ \ \ \ Y_{k+1} = Y_k- \Delta Y_{k+1}\\
 \ \ \ \ {\color{black} k=k+1}\\
 {\color{black} until \ Y_k = Y_{k-1}}\\
