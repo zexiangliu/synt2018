@@ -45,7 +45,7 @@ The paper is organized as follows: In Section \ref{sec:pre}, we give the problem
 \label{sec:pre}
 \subsection{Notation}
 
-For two sets $ A $ and $ B $, the set difference is denoted by $ A-B $. 
+For two sets $ A $ and $ B $, the set difference is denoted by $ A-B $. Given $ T\subseteq A\times B \times C $, for a set $ E\subseteq B $, $ (*,E,*)_T $ refers to the set $ (A\times E \times C)\cap T$, and for $ F\subseteq A\times B $, $ (F,*)_T $ refers to the set $ (F\times C)\cap T $.
 %A function or a map $ F: C\rightarrow D $ corresponds to  the set $ \{(c,F(c)):c\in C, F(c)\in D \} $. 
 A list $ \mathcal{V}=[x_1,...,x_n] $ is a totally ordered set, where $ \mathcal{V}(i) $ refers to its $ i $th-order element. 
 To assign $ x_i $ to be the $ i $th element in	 $ \mathcal{V} $, we write $ \mathcal{V}(i) = x_i $. %{\color{purple} Not sure it is really useful to define functions or maps here, the terms are barely used in the rest of the document (function x4, map x1)} 
@@ -444,7 +444,7 @@ $ A(\mathcal{C}) $ contains the transitions behind the state-action pairs in $ \
 		\hline
 		\emph{transition removing} & given $ E\subseteq Q\times U\times Q $, replace $ \rightarrow_{A(\mathcal{C})} $ with $\rightarrow_{A(\mathcal{C})} - E$ & $ A(\mathcal{C})\backslash E $\\
 		\emph{transition adding} & given $ E\subseteq Q\times U\times Q $, replace $ \rightarrow_{A(\mathcal{C})} $ with $ \rightarrow_{A(\mathcal{C})}\cup E $ & $ A(\mathcal{C})\cup E $\\
-		\emph{state-action pre} &  Given $ S_2\subseteq Q $, output $ \{(s_1,a): (s_1,a,s_2)\in \rightarrow_{A(\mathcal{C})}, s_2\in S_2\} $ & $ \widehat{Pre}^{A(\mathcal{C}),U}_{\exists,\exists}(S_2) $\\
+		\emph{transition pre} &  given $ S_2\subseteq Q $, output $ \{(s_1,a):\exists s_2\in S_2, (s_1,a,s_2)\in \rightarrow_{A(\mathcal{C})} \} $ & $ \widehat{\text{Pre}}^{A(\mathcal{C})}_{\exists,\exists}(S_2) $\\
 		\hline
 	\end{tabular}
 	\label{tab:oper}
@@ -456,10 +456,10 @@ Suppose that  $ W $ and $ \mathcal{C} $ are the winning set and controller resul
 \begin{align}
 &[\widehat{W},\widehat{\mathcal{C}}]=\overline{\text{Pre}}_{\exists,\forall}^{T, U}(\mathcal{C},\Delta V,U_d)\nonumber\\
 =&\begin{cases} 
-T_{0} = A(\mathcal{C})\backslash (*,U_d,*)\\
-E =  \widehat{Pre}^{T_0,U-U_d}_{\exists,\exists}(\Delta V)\\
-A(\widehat{\mathcal{C}}) = T_{0}\backslash E\\
-\widehat{W} = \{s_1: \exists u, \exists s_2 s.t. (s_1,u, s_2)\in \rightarrow_{A(\widehat{\mathcal{C}})} \},
+T_{0} = A(\mathcal{C})\backslash (*,U_d,*)_{\rightarrow_{A(\mathcal{C})}}\\
+E =  \widehat{\text{Pre}}^{T_0}_{\exists,\exists}(\Delta V)\\
+A(\widehat{\mathcal{C}}) = T_{0}\backslash (E,*)_{\rightarrow_{T_0}}\\
+\widehat{W} = \{s_1: \exists u, \exists s_2\ s.t.\ (s_1,u, s_2)\in \rightarrow_{A(\widehat{\mathcal{C}})} \},
 \end{cases}\label{patch-pre}
 \end{align}}
 where $ \widehat{\mathcal{C}} $ is converted from $ A(\widehat{\mathcal{C}}) $. $ \widehat{W} $ and $ \widehat{\mathcal{C}} $ are the modified winning set and controller.
@@ -468,7 +468,7 @@ where $ \widehat{\mathcal{C}} $ is converted from $ A(\widehat{\mathcal{C}}) $. 
 	$ \widehat{W} $ and $ \widehat{\mathcal{C}} $ returned by \eqref{patch-pre} are the same as the outputs resulting from $ \text{Pre}_{\exists,\forall}^{\widehat{T},\widehat{U}}(\widehat{V})$ in \eqref{eqn:pre}.	\label{thm:pre}
 \end{theorem}
 
-\emph{Proof:} Suppose that $ \text{Pre}_{\exists,\forall}^{\widehat{T},\widehat{U}}(\widehat{V}) $ returns $ W_t $ and $ \mathcal{C}_t $. It is enough to show that $ A(\widehat{\mathcal{C}})= A(\mathcal{C}_t)$, i.e. $ \rightarrow_{A(\widehat{\mathcal{C}})} = \rightarrow_{A(\mathcal{C}_t)} $. By \eqref{eqn:pre} and Definition \ref{def:TC}, it is obvious that $ \rightarrow_{A(\mathcal{C}_t)} \subseteq \rightarrow_{A(\mathcal{C})}$ for $ \widehat{V}\subseteq V $ and $ \widehat{U}\subseteq U $. The set of transitions $ S = (*,U_d,*)\cup E $ is only related to states in $ \Delta V $ or actions in $ U_d $, so $\rightarrow_{A(\mathcal{C}_t)}$ and $ S $ are disjoint. $ \rightarrow_{A(\widehat{\mathcal{C}})}= \rightarrow_{A(\mathcal{C})}-S$. Thus $ \rightarrow_{A(\mathcal{C}_t)}\subseteq \rightarrow_{A(\widehat{\mathcal{C}})}$. By \eqref{patch-pre}, transitions in $ A(\widehat{\mathcal{C}}) $ can only take actions in $ \widehat{U} $ and transit to states in $ \widehat{V} $, which implies that $ \rightarrow_{A(\widehat{\mathcal{C}})}\subseteq \rightarrow_{A(\mathcal{C}_t)} $. \QEDB 
+\emph{Proof:} Suppose that $ \text{Pre}_{\exists,\forall}^{\widehat{T},\widehat{U}}(\widehat{V}) $ returns $ W_t $ and $ \mathcal{C}_t $. It is enough to show that $ A(\widehat{\mathcal{C}})= A(\mathcal{C}_t)$, i.e. $ \rightarrow_{A(\widehat{\mathcal{C}})} = \rightarrow_{A(\mathcal{C}_t)} $. By \eqref{eqn:pre} and Definition \ref{def:TC}, it is obvious that $ \rightarrow_{A(\mathcal{C}_t)} \subseteq \rightarrow_{A(\mathcal{C})}$ for $ \widehat{V}\subseteq V $ and $ \widehat{U}\subseteq U $. The transitions in $ S = (*,U_d,*)_{\rightarrow_{A(\mathcal{C})}}\cup (E,*)_{\rightarrow_{T_0}} $ either under actions that may push the system to $ \Delta V $ or under actions in $ U_d $, so $\rightarrow_{A(\mathcal{C}_t)}$ and $ S $ are disjoint. $ \rightarrow_{A(\widehat{\mathcal{C}})}= \rightarrow_{A(\mathcal{C})}-S$. Thus $ \rightarrow_{A(\mathcal{C}_t)}\subseteq \rightarrow_{A(\widehat{\mathcal{C}})}$. By \eqref{patch-pre}, transitions in $ A(\widehat{\mathcal{C}}) $ can only take actions in $ \widehat{U} $ and transit to states in $ \widehat{V} $, which implies that $ \rightarrow_{A(\widehat{\mathcal{C}})}\subseteq \rightarrow_{A(\mathcal{C}_t)} $. \QEDB 
 
 
 Suppose that $ Y $ and $ \mathcal{C} $ are the winning set and controller resulting from $ \text{Inv}_{\exists}^{D,G}(Z,B) $. If $ D\cap U_d \not= \emptyset$, the winning set is empty by the definition of progress group (see\cite{Nilsson2017}). Given $ \widehat{Z} \subseteq Z $ and $D$ such that $ D\cap U_d=\emptyset $, we want to modify $ Y $ and $ \mathcal{C} $ to be the winning set and controller for $ \text{Inv}_{\exists}^{D,G}(\widehat{Z}, B) $.  The modified winning set $\widehat{Y}$ is contained by $ Y\cup (\Delta Z\cap G\cap B) $. Also, $ \text{Inv}_{\exists}^{D,G}(Z,B) $ computation in \eqref{win-inv} is a contraction algorithm in the sense that the sequence $ \{Y_k\}_{k=1}^{\infty} $ is monotonically decreasing in set inclusion sense and its limit is the winning set. Combining these two facts, we can warm-start the contraction algorithm in \eqref{win-inv} with $ Y_0=Y\cup (\Delta Z\cap G\cap B)$ instead of $ Q $. The patching operator is:
@@ -488,18 +488,18 @@ T_0  = A(\mathcal{C})\cup E_0\\
 \ \ \ \ Y_{k+1} = Y_k- \Delta Y_{k+1}\\
 \ \ \ \ {\color{black} k=k+1}\\
 {\color{black} until \ Y_k = Y_{k-1}}\\
-\widehat{Y}=Y_k,\ [-,\widehat{\mathcal{C}}] = \overline{\text{Pre}}_{\exists,\forall}^{T,D}(\mathcal{C}, (Y\cup Z )- (\widehat{Y}\cup \widehat{Z}),\emptyset)\\  \widehat{\mathcal{C}}\ restricted\ to\ \widehat{Y},
+\widehat{Y}=Y_k,\ [-,\widehat{\mathcal{C}}] = \text{Pre}_{\exists,\forall}^{T_k,D}(\widehat{Y}\cup \widehat{Z}),
 %A(\widehat{\mathcal{C}}) = T_{k} 
 \end{cases}\label{patch-inv}
 \end{align}}
-where $ \Delta Z = Z - \widehat{Z} $, $ E_0 = \{(s_1,a,s_2)\in \rightarrow_{T}: s_1\in Y_0, a\in D, s_2 \in Q\} $, $ \text{Pre}_{\forall,\exists}^{T_k,D}(\Delta Y_k) = \{q_1: \forall u\in D, \exists q_2\in \Delta Y_k, s.t.\ (q_1, u, q_2) \in \rightarrow_{T_k} \} $. $ \widehat{Y} $ is the modified winning set, and the controller $ \widehat{\mathcal{C}} $ can either be recovered from $ T_k $ or be computed as in \eqref{patch-inv}.
+where $ \Delta Z = Z - \widehat{Z} $, $ E_0 = \{(s_1,a,s_2)\in \rightarrow_{T}: s_1\in Y_0, a\in D, s_2 \in Q\} $, $ \text{Pre}_{\forall,\exists}^{T_k,D}(\Delta Y_k) = \{q_1: \forall u\in D, \exists q_2\in \Delta Y_k, s.t.\ (q_1, u, q_2) \in \rightarrow_{T_k} \} $. $ \widehat{Y} $ is the modified winning set, and the controller $ \widehat{\mathcal{C}} $ can be computed from $ T_k $.
 
 In regards to the patching operator in \eqref{patch-inv}, we have the following result, proof of which is given in Appendix \ref{app:pr-31}:
 
 \begin{theorem}
 	$ \widehat{Y} $ and $ \widehat{\mathcal{C}} $ returned by \eqref{patch-inv} are the same as the outputs resulting from $ \text{Inv}_{\exists}^{D,G}(\widehat{Z},B) $ in \eqref{win-inv}.	\label{thm:inv}
 \end{theorem}
-Given a simple controller $ \mathcal{C} $ and new synthesis settings, both \eqref{patch-pre} and \eqref{patch-inv} try to find $ A(\widehat{\mathcal{C}}) $ inside $ A(\mathcal{C}) $. However, if we re-synthesize the new simple controller from scratch, \eqref{eqn:pre} and \eqref{win-inv} would try to find $ A(\mathcal{C}) $ in the whole AFTS $ T $, which in general needs more computation cost, demonstrated by the simulation results in Section \ref{sec:example}. However, in the worst case, there might not be any computational gains.
+Given a simple controller $ \mathcal{C} $ and new synthesis settings, both \eqref{patch-pre} and \eqref{patch-inv} try to find the modified winning sets inside $ A(\mathcal{C}) $ (or $ A(\mathcal{C})\cup E_0 $). However, if we re-synthesize the new simple controllers from scratch, \eqref{eqn:pre} and \eqref{win-inv} start to find the winning sets in the whole AFTS $ T $, which in general needs more computation cost, demonstrated by the simulation results in Section \ref{sec:example}. However, in the worst case, there might not be any computational gains.
 
 \subsection{Patching General Controllers}
 \label{sec:patch-cont}
