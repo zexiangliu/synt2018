@@ -57,8 +57,9 @@ We consider plants modeled as augmented finite transition systems, a discrete st
 \begin{definition}
 	An \textbf{augmented finite transition system} (AFTS) is a tuple $ T = (Q,U,\rightarrow_T, G,AP,h_Q) $, where $ Q $ is a set of states, $U$ is a set of actions (control inputs), $ \rightarrow_T\in Q\times U \times Q $ is a transition relation between states under specific actions, $ G: 2^U\rightarrow 2^{2^Q} $ maps a set of actions to a set of progress groups\footnotemark under that action set, $ AP $ is a finite set of atomic propositions, and $ h_Q: Q\rightarrow 2^{AP} $ is a labeling function, which maps each state to the set of atomic propositions that evaluate to true at that state. \footnotetext{ 
 		A set $G \in G(D)$ is called a \emph{progress group under the action set $D$} , and it is related to the following semantic notion: the system cannot remain indefinitely within
-		$G$ by exclusively choosing actions from $U$. This restricts the behaviors allowed by the transition relation. Moreover, it is assumed that $G$ is not invariant under the actions $U$ for the well-formedness of the definition (see \cite{Nilsson2017,Sun2014,Liu2014}).}
+		$G$ by exclusively choosing actions from $U$. This restricts the behaviors allowed by the transition relation. Moreover, it is assumed that $G$ is not invariant under the actions $U$ for the well-formedness of the definition (see \cite{Nilsson2017,Sun2014,Liu2014}).} 
 \end{definition}
+Without loss of generality for a given AFTS, we assume that all the actions are available at each state. 
 
 A \emph{trajectory} of an AFTS $T$ is an infinite sequence of states $\{s(n)\}_{n=0}^{\infty}$
 	%(I wouldn't introduce an $s$ here for the whole sequence since later we use several times the variable $s$ to refer to a single state)
@@ -480,17 +481,18 @@ T_0  = A(\mathcal{C})\cup E_0\\
 {\color{black} k=0}\\
 %while \ Y_{k+1}\not= Y_k:\\
 {\color{black} repeat:}\\
+\ \ \ \ \Delta Y_{k+1} = \Delta Y_k \cup \text{Pre}_{\forall,\exists}^{T_k,D}(\Delta Y_k) \\
 \end{cases}
 \begin{cases}
-\ \ \ \ \Delta Y_{k+1} = \Delta Y_k \cup \text{Pre}_{\forall,\exists}^{T_k,D}(\Delta Y_k) \\
 \ \ \ \ T_{k+1} = T_{k}\backslash (\Delta Y_{k+1},*,*)\\
 \ \ \ \ Y_{k+1} = Y_k- \Delta Y_{k+1}\\
 \ \ \ \ {\color{black} k=k+1}\\
 {\color{black} until \ Y_k = Y_{k-1}}\\
-\widehat{Y}=Y_k,\ A(\widehat{\mathcal{C}}) = T_{k},
+\widehat{Y}=Y_k,\ [-,\widehat{\mathcal{C}}] = \overline{\text{Pre}}_{\exists,\forall}^{T,D}(\mathcal{C}, (Y\cup Z )- (\widehat{Y}\cup \widehat{Z}),\emptyset)\\  \widehat{\mathcal{C}}\ restricted\ to\ \widehat{Y},
+%A(\widehat{\mathcal{C}}) = T_{k} 
 \end{cases}\label{patch-inv}
 \end{align}}
-where $ \Delta Z = Z - \widehat{Z} $, $ E_0 = \{(s_1,a,s_2)\in \rightarrow_{T}: s_1\in Y_0, a\in D, s_2 \in Q\} $, $ \text{Pre}_{\forall,\exists}^{T_k,D}(\Delta Y_k) = \{q_1: \forall u\in D, \exists q_2\in \Delta Y_k, s.t.\ (q_1, u, q_2) \in \rightarrow_{T_k} \} $. $ \widehat{Y} $ is the modified winning set, and the controller $ \widehat{\mathcal{C}} $ can be recovered from $ A(\widehat{\mathcal{C}}) $.
+where $ \Delta Z = Z - \widehat{Z} $, $ E_0 = \{(s_1,a,s_2)\in \rightarrow_{T}: s_1\in Y_0, a\in D, s_2 \in Q\} $, $ \text{Pre}_{\forall,\exists}^{T_k,D}(\Delta Y_k) = \{q_1: \forall u\in D, \exists q_2\in \Delta Y_k, s.t.\ (q_1, u, q_2) \in \rightarrow_{T_k} \} $. $ \widehat{Y} $ is the modified winning set, and the controller $ \widehat{\mathcal{C}} $ can either be recovered from $ T_k $ or be computed as in \eqref{patch-inv}.
 
 In regards to the patching operator in \eqref{patch-inv}, we have the following result, proof of which is given in Appendix \ref{app:pr-31}:
 
